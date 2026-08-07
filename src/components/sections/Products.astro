@@ -1,0 +1,98 @@
+---
+import type { Locale } from '../../types';
+import { products } from '../../data/products';
+import { getTranslations } from '../../i18n/ui';
+import Button from '../ui/Button.astro';
+import ProductBox from '../ui/ProductBox.astro';
+import VideoEmbed from '../ui/VideoEmbed.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+---
+
+<section id="products" class="section-padding">
+  <div class="container-main">
+    <div class="mb-12 text-center">
+      <h2 class="heading-soft mb-4 text-3xl font-bold sm:text-4xl">{t.products.title}</h2>
+      <p class="mx-auto max-w-2xl text-text-muted">{t.products.subtitle}</p>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-2">
+      {
+        products.map((product) => (
+          <article class="card-surface group overflow-hidden transition hover:border-primary/30 hover:shadow-[0_0_30px_rgba(34,211,238,0.08)]">
+            {
+              product.boxLogo && (
+                <ProductBox
+                  logoSrc={product.boxLogo}
+                  alt={product.name[locale]}
+                  label={product.name[locale]}
+                  logoBlend={product.id === 'crypto-pro' ? 'screen' : 'normal'}
+                />
+              )
+            }
+
+            {product.video && (
+              <div class="border-b border-border p-4">
+                <p class="mb-3 text-xs font-medium tracking-wide text-text-dim uppercase">
+                  {t.products.watchVideo}
+                </p>
+                <VideoEmbed
+                  provider={product.video.provider}
+                  embedId={product.video.embedId}
+                  title={product.name[locale]}
+                />
+              </div>
+            )}
+
+            <div class="flex flex-1 flex-col p-6">
+              <div class="mb-4 flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h3 class="heading-soft text-xl font-bold">{product.name[locale]}</h3>
+                  <p class="mt-1 text-sm text-primary">{product.market[locale]}</p>
+                </div>
+                <span class="rounded-lg border border-primary/20 bg-primary/10 px-4 py-1.5 font-mono text-base font-semibold text-primary sm:text-lg">
+                  {product.price[locale]}
+                </span>
+              </div>
+
+              <p class="mb-4 text-sm leading-relaxed text-text-muted">{product.description[locale]}</p>
+
+              <dl class="mb-4 text-sm">
+                <div>
+                  <dt class="text-text-dim">{t.products.strategy}</dt>
+                  <dd class="heading-soft font-medium">{product.strategy[locale]}</dd>
+                </div>
+              </dl>
+
+              <ul class="mb-6 space-y-2">
+                {product.features[locale].map((feature) => (
+                  <li class="flex items-center gap-2 text-sm text-text-muted">
+                    <span class="text-primary">✓</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <div class="mt-auto">
+                <Button
+                  variant="primary"
+                  class="w-full"
+                  data-open-order="true"
+                  data-product-id={product.id}
+                  data-product-name={product.name[locale]}
+                >
+                  {t.products.order}
+                </Button>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

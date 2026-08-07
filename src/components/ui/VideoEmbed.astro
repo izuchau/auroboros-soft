@@ -1,0 +1,34 @@
+---
+import type { VideoProvider } from '../../types';
+
+interface Props {
+  provider: VideoProvider;
+  embedId: string;
+  title?: string;
+}
+
+const { provider, embedId, title = 'Video' } = Astro.props;
+
+function getEmbedSrc(provider: VideoProvider, embedId: string): string {
+  if (provider === 'youtube') {
+    return `https://www.youtube-nocookie.com/embed/${embedId}?rel=0`;
+  }
+  if (embedId.startsWith('http')) {
+    return embedId;
+  }
+  return embedId;
+}
+
+const src = getEmbedSrc(provider, embedId);
+---
+
+<div class="relative aspect-video overflow-hidden rounded-xl border border-border bg-black">
+  <iframe
+    src={src}
+    title={title}
+    class="absolute inset-0 h-full w-full"
+    loading="lazy"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+  ></iframe>
+</div>

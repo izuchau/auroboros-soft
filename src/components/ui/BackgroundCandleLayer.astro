@@ -1,0 +1,284 @@
+---
+type Candle = {
+  x: number;
+  openY: number;
+  closeY: number;
+  highY: number;
+  lowY: number;
+  p: number;
+};
+
+const VIEW_W = 1200;
+const VIEW_H = 800;
+const DIAG_LEN = VIEW_W * VIEW_W + VIEW_H * VIEW_H;
+
+function diagonalProgress(x: number, y: number): number {
+  return (x * VIEW_W + (VIEW_H - y) * VIEW_H) / DIAG_LEN;
+}
+
+function buildCandles(count: number, seed: number): Candle[] {
+  const candles: Candle[] = [];
+  let offset = 22 + (seed % 4) * 8;
+
+  for (let i = 0; i < count; i++) {
+    const t = i / Math.max(count - 1, 1);
+    const x = 32 + t * 1136;
+    const targetY = 756 - t * 636;
+    const slot = (i + seed * 7) % 36;
+
+    if (slot < 11) {
+      offset += 18 + ((i + seed) % 8);
+    } else if (slot >= 26 && slot < 30) {
+      offset += 10 + ((i + seed) % 5);
+    } else if (slot >= 16 && slot < 19) {
+      offset += ((i * 5 + seed * 3) % 9) - 4;
+    } else {
+      offset -= 14 + ((i + seed) % 7);
+    }
+
+    offset *= 0.968;
+    offset = Math.max(-50, Math.min(92, offset));
+
+    const closeY = Math.max(92, Math.min(772, targetY + offset));
+    const openY = i === 0 ? closeY + 8 : candles[i - 1].closeY;
+
+    const bodyTop = Math.min(openY, closeY);
+    const bodyBottom = Math.max(openY, closeY);
+    const highY = bodyTop - (5 + ((i + seed) % 6));
+    const lowY = bodyBottom + (5 + ((i * 2 + seed) % 6));
+
+    candles.push({
+      x,
+      openY,
+      closeY,
+      highY,
+      lowY,
+      p: diagonalProgress(x, closeY),
+    });
+  }
+
+  return candles;
+}
+
+function candlesPath(candles: Candle[]): string {
+  return candles
+    .map((c, i) => `${i === 0 ? 'M' : 'L'} ${c.x} ${c.closeY}`)
+    .join(' ');
+}
+
+const candleSets = [
+  buildCandles(60, 1),
+  buildCandles(60, 5),
+  buildCandles(60, 9),
+  buildCandles(60, 13),
+  buildCandles(60, 17),
+];
+
+const initialSet = candleSets[0];
+const initialPath = candlesPath(initialSet);
+---
+
+<div class="live-bg__candles pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+  <svg
+    class="live-bg__candles-svg"
+    viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <clipPath id="bg-candles-clip" clipPathUnits="userSpaceOnUse">
+        <polygon id="bg-candles-clip-poly" points={`0,${VIEW_H} 0,${VIEW_H} 0,${VIEW_H}`}></polygon>
+      </clipPath>
+    </defs>
+
+    <g clip-path="url(#bg-candles-clip)">
+      <path
+        id="bg-candles-path"
+        class="live-bg__candles-path"
+        fill="none"
+        stroke="rgba(34,211,238,0.24)"
+        stroke-width="1.2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d={initialPath}></path>
+
+      <g id="bg-candles-group">
+        {
+          initialSet.map((c, i) => {
+            const up = c.closeY <= c.openY;
+            const bodyTop = Math.min(c.openY, c.closeY);
+            const bodyHeight = Math.max(Math.abs(c.closeY - c.openY), 2);
+            const stroke = up ? 'rgba(34,211,238,0.42)' : 'rgba(125,211,252,0.28)';
+            const fill = up ? 'rgba(34,211,238,0.28)' : 'rgba(125,211,252,0.16)';
+
+            return (
+              <g class="live-bg__candle" data-i={i} data-p={c.p.toFixed(5)}>
+                <line x1={c.x} y1={c.highY} x2={c.x} y2={c.lowY} stroke={stroke} stroke-width="1"></line>
+                <rect
+                  x={c.x - 4}
+                  y={bodyTop}
+                  width="8"
+                  height={bodyHeight}
+                  fill={fill}
+                  stroke={stroke}
+                  stroke-width="0.5"></rect>
+              </g>
+            );
+          })
+        }
+      </g>
+
+      <g id="bg-candles-head" class="live-bg__candles-head" opacity="0">
+        <circle class="live-bg__candles-head-glow" r="5" cx="0" cy="0"></circle>
+        <circle class="live-bg__candles-head-dot" r="2.5" cx="0" cy="0"></circle>
+      </g>
+    </g>
+  </svg>
+</div>
+
+<script define:vars={{ candleSets, VIEW_W, VIEW_H, DIAG_LEN }}>
+  const DRAW_MS = 9500;
+  const PAUSE_MS = 2200;
+
+  function diagonalProgress(x, y) {
+    return (x * VIEW_W + (VIEW_H - y) * VIEW_H) / DIAG_LEN;
+  }
+
+  function diagonalClipPoints(progress) {
+    const p = Math.max(0, Math.min(1, progress));
+    const x = p * VIEW_W;
+    const y = VIEW_H * (1 - p);
+    return `0,${VIEW_H} ${x},${VIEW_H} ${x},${y} 0,${y}`;
+  }
+
+  function candlesPathFromSet(candles) {
+    return candles
+      .map((c, i) => `${i === 0 ? 'M' : 'L'} ${c.x} ${c.closeY}`)
+      .join(' ');
+  }
+
+  function isPointInClip(px, py, progress) {
+    const clipX = progress * VIEW_W;
+    const clipY = VIEW_H * (1 - progress);
+    return px <= clipX + 1 && py >= clipY - 1;
+  }
+
+  function placeHeadOnPath(pathEl, progress) {
+    const total = pathEl.getTotalLength();
+    if (!total) return { x: 0, y: VIEW_H };
+
+    const target = Math.max(0, Math.min(1, progress));
+    let bestLen = 0;
+    const steps = 280;
+
+    for (let s = 0; s <= steps; s += 1) {
+      const len = (total * s) / steps;
+      const pt = pathEl.getPointAtLength(len);
+      if (isPointInClip(pt.x, pt.y, target)) bestLen = len;
+    }
+
+    return pathEl.getPointAtLength(bestLen);
+  }
+
+  function renderCandles(group, candles) {
+    group.innerHTML = candles
+      .map((c, i) => {
+        const up = c.closeY <= c.openY;
+        const bodyTop = Math.min(c.openY, c.closeY);
+        const bodyHeight = Math.max(Math.abs(c.closeY - c.openY), 2);
+        const stroke = up ? 'rgba(34,211,238,0.42)' : 'rgba(125,211,252,0.28)';
+        const fill = up ? 'rgba(34,211,238,0.28)' : 'rgba(125,211,252,0.16)';
+
+        return `<g class="live-bg__candle" data-i="${i}" data-p="${c.p.toFixed(5)}" style="opacity:0">
+          <line x1="${c.x}" y1="${c.highY}" x2="${c.x}" y2="${c.lowY}" stroke="${stroke}" stroke-width="1"></line>
+          <rect x="${c.x - 4}" y="${bodyTop}" width="8" height="${bodyHeight}" fill="${fill}" stroke="${stroke}" stroke-width="0.5"></rect>
+        </g>`;
+      })
+      .join('');
+  }
+
+  function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function initBackgroundCandles() {
+    const clipPoly = document.getElementById('bg-candles-clip-poly');
+    const pathEl = document.getElementById('bg-candles-path');
+    const group = document.getElementById('bg-candles-group');
+    const head = document.getElementById('bg-candles-head');
+    if (!clipPoly || !pathEl || !group || !head) return;
+
+    let setIndex = 0;
+    let rafId = 0;
+    let pauseTimer = 0;
+    let firstRun = true;
+
+    function applyProgress(progress, candles) {
+      clipPoly.setAttribute('points', diagonalClipPoints(progress));
+
+      group.querySelectorAll('.live-bg__candle').forEach((node) => {
+        const i = Number(node.getAttribute('data-i'));
+        const candle = candles[i];
+        if (!candle) return;
+        node.style.opacity = isPointInClip(candle.x, candle.closeY, progress) ? '1' : '0';
+      });
+
+      const point = placeHeadOnPath(pathEl, progress);
+      head.setAttribute('transform', `translate(${point.x} ${point.y})`);
+      head.setAttribute('opacity', '0.95');
+    }
+
+    function playSet(index, animate) {
+      cancelAnimationFrame(rafId);
+      clearTimeout(pauseTimer);
+
+      const candles = candleSets[index];
+      pathEl.setAttribute('d', candlesPathFromSet(candles));
+      pathEl.style.strokeDasharray = 'none';
+      pathEl.style.strokeDashoffset = '0';
+
+      if (!firstRun || index !== 0) {
+        renderCandles(group, candles);
+      } else {
+        group.querySelectorAll('.live-bg__candle').forEach((node) => {
+          node.style.opacity = '0';
+        });
+      }
+      firstRun = false;
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (!animate || prefersReducedMotion()) {
+            applyProgress(1, candles);
+            return;
+          }
+
+          applyProgress(0, candles);
+          const start = performance.now();
+
+          function frame(now) {
+            const t = Math.min((now - start) / DRAW_MS, 1);
+            const eased = 1 - Math.pow(1 - t, 2.4);
+            applyProgress(eased, candles);
+
+            if (t < 1) {
+              rafId = requestAnimationFrame(frame);
+            } else {
+              pauseTimer = window.setTimeout(() => {
+                setIndex = (setIndex + 1) % candleSets.length;
+                playSet(setIndex, true);
+              }, PAUSE_MS);
+            }
+          }
+
+          rafId = requestAnimationFrame(frame);
+        });
+      });
+    }
+
+    playSet(0, true);
+  }
+
+  initBackgroundCandles();
+  document.addEventListener('astro:page-load', initBackgroundCandles);
+</script>

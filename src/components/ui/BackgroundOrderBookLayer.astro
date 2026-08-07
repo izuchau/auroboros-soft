@@ -1,0 +1,247 @@
+---
+---
+
+<div class="live-bg__orderbook pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+  <div class="live-bg__orderbook-panel">
+    <div class="live-bg__orderbook-head">
+      <span>ORDER BOOK</span>
+      <span id="ob-spread" class="live-bg__orderbook-spread-val">0.04</span>
+    </div>
+
+    <div class="live-bg__orderbook-body">
+      <div id="ob-asks" class="live-bg__orderbook-side live-bg__orderbook-side--ask"></div>
+      <div id="ob-mid" class="live-bg__orderbook-mid">
+        <span id="ob-last">104.76</span>
+        <span class="live-bg__orderbook-mid-tag">LAST</span>
+      </div>
+      <div id="ob-bids" class="live-bg__orderbook-side live-bg__orderbook-side--bid"></div>
+    </div>
+  </div>
+
+  <div id="live-bg-orderbook-trades" class="live-bg__orderbook-trades"></div>
+</div>
+
+<script>
+  const BOOK_BASES = [104.76, 104.82, 104.69, 104.91, 104.64, 104.88, 104.73];
+  const BOOK_SHIFTS = [-26, 18, -14, 22, -20, 12, -16];
+
+  function isMobileLayout() {
+    return window.matchMedia('(max-width: 767px)').matches;
+  }
+
+  function getLevelCount() {
+    return 14;
+  }
+
+  function getMaxTrades() {
+    return isMobileLayout() ? 8 : 22;
+  }
+
+  function getTradeInterval() {
+    return isMobileLayout() ? 1100 : 380;
+  }
+
+  function buildState(base) {
+    const levels = getLevelCount();
+    const asks = [];
+    const bids = [];
+
+    for (let i = 1; i <= levels; i += 1) {
+      asks.push({
+        price: (base + i * 0.01).toFixed(2),
+        size: `${(400 + ((i * 137) % 1800)).toLocaleString('en-US')}`,
+        w: 35 + ((i * 19) % 58),
+      });
+      bids.push({
+        price: (base - i * 0.01).toFixed(2),
+        size: `${(380 + ((i * 151) % 1700)).toLocaleString('en-US')}`,
+        w: 32 + ((i * 23) % 60),
+      });
+    }
+
+    return {
+      last: base.toFixed(2),
+      spread: (0.03 + (Math.round(base * 100) % 5) * 0.01).toFixed(2),
+      asks,
+      bids,
+      shift: 0,
+    };
+  }
+
+  function buildBookStates() {
+    return BOOK_BASES.map((base, i) => {
+      const state = buildState(base);
+      state.shift = isMobileLayout() ? BOOK_SHIFTS[i] * 0.45 : BOOK_SHIFTS[i];
+      return state;
+    });
+  }
+
+  function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function renderSide(container, rows) {
+    container.innerHTML = rows
+      .map(
+        (row, i) => `
+        <div class="live-bg__orderbook-row" style="--depth:${row.w}%;--i:${i}">
+          <span class="live-bg__orderbook-price">${row.price}</span>
+          <span class="live-bg__orderbook-size">${row.size}</span>
+          <span class="live-bg__orderbook-bar"></span>
+        </div>`
+      )
+      .join('');
+  }
+
+  function applyState(state, bodyEl, lastEl, spreadEl, asksEl, bidsEl, animate) {
+    renderSide(asksEl, state.asks);
+    renderSide(bidsEl, state.bids);
+    lastEl.textContent = state.last;
+    spreadEl.textContent = state.spread;
+
+    if (animate && !prefersReducedMotion()) {
+      bodyEl.style.transition = 'none';
+      bodyEl.style.transform = `translateY(${state.shift}px)`;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          bodyEl.style.transition = '';
+          bodyEl.style.transform = 'translateY(0)';
+        });
+      });
+    } else {
+      bodyEl.style.transform = 'translateY(0)';
+    }
+  }
+
+  function isVisibleRect(rect) {
+    return Boolean(rect && rect.width > 0 && rect.height > 0);
+  }
+
+  function pickPeopleTarget() {
+    if (isMobileLayout()) return null;
+
+    const peopleMain = document.querySelector('.live-bg__people-group--main');
+    const peopleSecondary = document.querySelector('.live-bg__people-group--secondary');
+    const mainRect = peopleMain?.getBoundingClientRect();
+    const secondaryRect = peopleSecondary?.getBoundingClientRect();
+    const mainVisible = isVisibleRect(mainRect);
+    const secondaryVisible = isVisibleRect(secondaryRect);
+
+    if (mainVisible && secondaryVisible && Math.random() > 0.42) {
+      return secondaryRect;
+    }
+    if (mainVisible) return mainRect;
+    if (secondaryVisible) return secondaryRect;
+    return null;
+  }
+
+  function pickMobileTradeTarget(boxRect, startLeft, startTop) {
+    const zones = [
+      { x: 0.58, y: 0.22 },
+      { x: 0.74, y: 0.34 },
+      { x: 0.86, y: 0.48 },
+      { x: 0.66, y: 0.58 },
+      { x: 0.82, y: 0.72 },
+    ];
+    const zone = zones[Math.floor(Math.random() * zones.length)];
+
+    const targetX = boxRect.width * (zone.x + (Math.random() * 0.06 - 0.03));
+    const targetY = boxRect.height * (zone.y + (Math.random() * 0.08 - 0.04));
+
+    return {
+      flyX: targetX - startLeft,
+      flyY: targetY - startTop,
+    };
+  }
+
+  function spawnTrade(container, midEl) {
+    if (!container || !midEl) return;
+
+    const midRect = midEl.getBoundingClientRect();
+    const boxRect = container.getBoundingClientRect();
+    if (!isVisibleRect(midRect) || !isVisibleRect(boxRect)) return;
+
+    const isBuy = Math.random() > 0.47;
+    const el = document.createElement('span');
+    const price = midEl.querySelector('#ob-last')?.textContent ?? '104.76';
+    const mobile = isMobileLayout();
+
+    const startLeft = midRect.right - boxRect.left + 6;
+    const startTop = midRect.top - boxRect.top + (Math.random() * 16 - 8);
+
+    let flyX = boxRect.width * 0.62 - startLeft;
+    let flyY = boxRect.height * 0.12 - startTop;
+
+    const peopleRect = pickPeopleTarget();
+
+    if (peopleRect) {
+      const targetX = peopleRect.left - boxRect.left + peopleRect.width * (0.15 + Math.random() * 0.55);
+      const targetY = peopleRect.top - boxRect.top + peopleRect.height * (0.2 + Math.random() * 0.6);
+      flyX = targetX - startLeft;
+      flyY = targetY - startTop;
+    } else if (mobile) {
+      ({ flyX, flyY } = pickMobileTradeTarget(boxRect, startLeft, startTop));
+    }
+
+    el.className = `live-bg__orderbook-trade live-bg__orderbook-trade--${isBuy ? 'buy' : 'sell'}`;
+    el.textContent = price;
+    el.style.top = `${startTop}px`;
+    el.style.left = `${startLeft}px`;
+    el.style.setProperty('--fly-x', `${flyX}px`);
+    el.style.setProperty('--fly-y', `${flyY}px`);
+    el.style.animationDuration = mobile ? `${3.6 + Math.random() * 2.2}s` : `${2.8 + Math.random() * 1.8}s`;
+
+    container.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+
+    const maxTrades = getMaxTrades();
+    while (container.children.length > maxTrades) {
+      container.firstChild?.remove();
+    }
+  }
+
+  function initOrderBook() {
+    const asksEl = document.getElementById('ob-asks');
+    const bidsEl = document.getElementById('ob-bids');
+    const lastEl = document.getElementById('ob-last');
+    const spreadEl = document.getElementById('ob-spread');
+    const bodyEl = document.querySelector('.live-bg__orderbook-body');
+    const tradesEl = document.getElementById('live-bg-orderbook-trades');
+    const midEl = document.getElementById('ob-mid');
+
+    if (!asksEl || !bidsEl || !lastEl || !spreadEl || !bodyEl || !tradesEl || !midEl) return;
+
+    let bookStates = buildBookStates();
+    let stateIndex = 0;
+    let stateTimer = 0;
+    let tradeTimer = 0;
+
+    function refreshLayout() {
+      bookStates = buildBookStates();
+      stateIndex = 0;
+      applyState(bookStates[0], bodyEl, lastEl, spreadEl, asksEl, bidsEl, false);
+    }
+
+    if (asksEl.dataset.initialized) {
+      refreshLayout();
+      return;
+    }
+
+    asksEl.dataset.initialized = 'true';
+    applyState(bookStates[0], bodyEl, lastEl, spreadEl, asksEl, bidsEl, false);
+
+    if (!prefersReducedMotion()) {
+      stateTimer = window.setInterval(() => {
+        stateIndex = (stateIndex + 1) % bookStates.length;
+        applyState(bookStates[stateIndex], bodyEl, lastEl, spreadEl, asksEl, bidsEl, true);
+      }, 3200);
+
+      tradeTimer = window.setInterval(() => spawnTrade(tradesEl, midEl), getTradeInterval());
+    }
+
+    window.addEventListener('resize', refreshLayout, { passive: true });
+  }
+
+  initOrderBook();
+  document.addEventListener('astro:page-load', initOrderBook);
+</script>

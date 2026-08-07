@@ -1,0 +1,159 @@
+---
+import type { Locale } from '../../types';
+import { getTranslations, localePath } from '../../i18n/ui';
+import Button from '../ui/Button.astro';
+import Logo from '../ui/Logo.astro';
+import HeaderBackground from '../ui/HeaderBackground.astro';
+import HeaderTicker from '../ui/HeaderTicker.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+const currentPath = Astro.url.pathname.replace(/^\/(ru|en)/, '') || '/';
+
+const navLinks = [
+  { href: '#services', label: t.nav.services },
+  { href: '#products', label: t.nav.products },
+  { href: '#about', label: t.nav.about },
+  { href: '#faq', label: t.nav.faq },
+  { href: '#contact', label: t.nav.contact },
+];
+---
+
+<header
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-40 overflow-x-hidden overflow-y-visible border-b border-primary/15 bg-bg/70 backdrop-blur-xl md:overflow-hidden"
+>
+  <HeaderBackground />
+  <div class="container-main relative z-10 flex h-16 items-center justify-between gap-2 px-4 sm:px-6 md:grid md:h-[9rem] md:grid-cols-[auto_1fr_auto] md:items-center md:gap-4 lg:h-40 lg:px-8">
+    <a href={localePath(locale)} class="flex shrink-0 items-center py-1 md:h-full md:py-2">
+      <Logo variant="header" glow={true} />
+    </a>
+
+    <div class="header-nav-col hidden min-h-0 self-stretch md:flex md:flex-col md:items-center md:justify-center">
+      <nav class="flex items-center gap-6" aria-label="Main">
+        {
+          navLinks.map((link) => (
+            <a href={link.href} class="text-sm text-text-muted transition hover:text-text">{link.label}</a>
+          ))
+        }
+      </nav>
+    </div>
+
+    <div class="flex items-center justify-end gap-2 md:gap-3">
+      <div class="flex rounded-lg border border-border bg-bg-card p-0.5 text-xs font-medium">
+        <a
+          href={localePath('ru', currentPath)}
+          class:list={['rounded-md px-2 py-1 transition sm:px-2.5', locale === 'ru' ? 'bg-primary/80 text-bg' : 'text-text-muted hover:text-text']}
+          >RU</a
+        >
+        <a
+          href={localePath('en', currentPath)}
+          class:list={['rounded-md px-2 py-1 transition sm:px-2.5', locale === 'en' ? 'bg-primary/80 text-bg' : 'text-text-muted hover:text-text']}
+          >EN</a
+        >
+      </div>
+      <Button href="#contact" size="sm" class="hidden lg:inline-flex">{t.nav.cta}</Button>
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        class="mobile-menu-toggle inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-bg-card text-text-muted transition hover:border-primary/40 hover:text-text md:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu-panel"
+        aria-label={t.nav.menuOpen}
+      >
+        <span class="mobile-menu-toggle__icon" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <HeaderTicker />
+  </div>
+</header>
+
+<div id="mobile-menu" class="mobile-menu fixed inset-0 z-50 hidden md:hidden" aria-hidden="true">
+  <button
+    id="mobile-menu-backdrop"
+    type="button"
+    class="absolute inset-0 bg-black/75 backdrop-blur-sm"
+    aria-label={t.nav.menuClose}
+  ></button>
+  <div
+    id="mobile-menu-panel"
+    class="mobile-menu__panel absolute top-0 right-0 flex h-full w-[min(86vw,320px)] flex-col border-l border-border bg-bg/95 p-5 shadow-2xl backdrop-blur-xl"
+  >
+    <div class="mb-6 flex items-center justify-between">
+      <span class="font-mono text-xs tracking-[0.2em] text-primary/70 uppercase">Menu</span>
+      <button
+        id="mobile-menu-close"
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border text-text-muted transition hover:border-primary/40 hover:text-text"
+        aria-label={t.nav.menuClose}
+      >
+        ✕
+      </button>
+    </div>
+    <nav class="flex flex-col gap-1" aria-label="Mobile">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="mobile-menu__link rounded-xl px-4 py-3 text-base text-silver/85 transition hover:bg-primary/5 hover:text-text"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="mt-auto pt-6">
+      <Button href="#contact" class="mobile-menu__cta w-full">{t.nav.cta}</Button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const panel = document.getElementById('mobile-menu-panel');
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const closeBtn = document.getElementById('mobile-menu-close');
+    const backdrop = document.getElementById('mobile-menu-backdrop');
+    const links = document.querySelectorAll('.mobile-menu__link, .mobile-menu__cta');
+
+    if (!menu || !panel || !toggle || !closeBtn || !backdrop) return;
+    if (menu.dataset.initialized) return;
+    menu.dataset.initialized = 'true';
+
+    function openMenu() {
+      menu.classList.remove('hidden');
+      menu.setAttribute('aria-hidden', 'false');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('mobile-menu-open');
+    }
+
+    function closeMenu() {
+      menu.classList.add('hidden');
+      menu.setAttribute('aria-hidden', 'true');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('mobile-menu-open');
+    }
+
+    toggle.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    backdrop.addEventListener('click', closeMenu);
+    links.forEach((link) => link.addEventListener('click', closeMenu));
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !menu.classList.contains('hidden')) closeMenu();
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) closeMenu();
+    });
+  }
+
+  initMobileMenu();
+  document.addEventListener('astro:page-load', initMobileMenu);
+</script>

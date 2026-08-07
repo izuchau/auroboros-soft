@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import { getTranslations, localePath } from '../../i18n/ui';
+
+const locale = 'ru';
+const t = getTranslations(locale);
+---
+
+<BaseLayout locale={locale} title={t.legal.privacyTitle} description={t.legal.privacyTitle}>
+  <Header locale={locale} />
+  <main class="section-padding pt-44">
+    <article class="container-main max-w-3xl prose prose-invert">
+      <h1 class="heading-soft mb-8 text-3xl font-bold">{t.legal.privacyTitle}</h1>
+
+      <div class="space-y-6 text-sm leading-relaxed text-text-muted">
+        <p>
+          Настоящая Политика конфиденциальности определяет порядок обработки персональных данных пользователей
+          сайта Auroboros Soft (далее — «Сайт»).
+        </p>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">1. Какие данные мы собираем</h2>
+          <p>
+            При заполнении формы обратной связи мы можем получать: имя, адрес электронной почты, номер телефона,
+            текст сообщения, а также информацию о выбранном продукте и типе заявки.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">2. Цели обработки</h2>
+          <p>
+            Данные используются для связи с вами, обработки заявок на покупку торговых роботов или разработку на
+            заказ, а также для улучшения качества обслуживания.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">3. Передача данных третьим лицам</h2>
+          <p>
+            Для доставки заявок на email мы используем сервис Formspree. Данные не передаются третьим лицам в
+            маркетинговых целях без вашего согласия.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">4. Ваши права</h2>
+          <p>
+            Вы вправе запросить доступ, исправление или удаление ваших персональных данных, направив запрос на
+            <a href="mailto:promasterboros@gmail.com" class="text-primary hover:underline">promasterboros@gmail.com</a>.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">5. Контакты</h2>
+          <p>
+            Email: <a href="mailto:promasterboros@gmail.com" class="text-primary hover:underline">promasterboros@gmail.com</a>
+          </p>
+        </section>
+
+        <p class="text-xs text-text-dim">
+          Документ является шаблоном. Рекомендуем согласовать окончательную версию с юристом перед публикацией.
+        </p>
+      </div>
+
+      <a href={localePath(locale)} class="mt-8 inline-block text-primary hover:underline">{t.legal.backHome}</a>
+    </article>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

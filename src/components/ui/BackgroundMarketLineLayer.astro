@@ -1,0 +1,167 @@
+---
+const VIEW_W = 1200;
+const VIEW_H = 800;
+const DIAG_LEN = VIEW_W * VIEW_W + VIEW_H * VIEW_H;
+
+function diagonalProgress(x: number, y: number): number {
+  return (x * VIEW_W + (VIEW_H - y) * VIEW_H) / DIAG_LEN;
+}
+
+function buildLinePath(count: number, seed: number): string {
+  let offset = 18 + (seed % 4) * 6;
+  const points: { x: number; y: number }[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const t = i / Math.max(count - 1, 1);
+    const x = 32 + t * 1136;
+    const targetY = 756 - t * 636;
+    const slot = (i + seed * 5) % 32;
+
+    if (slot < 9) offset += 14 + ((i + seed) % 6);
+    else if (slot >= 22 && slot < 25) offset += 8;
+    else offset -= 12 + ((i + seed) % 5);
+
+    offset *= 0.97;
+    offset = Math.max(-45, Math.min(85, offset));
+    points.push({ x, y: Math.max(92, Math.min(772, targetY + offset)) });
+  }
+
+  return points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+}
+
+const linePaths = [2, 4, 6, 8, 10, 12, 14].map((seed) => buildLinePath(48, seed));
+const initialPath = linePaths[0];
+---
+
+<div class="live-bg__market-line pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+  <svg
+    class="live-bg__market-line-svg"
+    viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <clipPath id="bg-market-line-clip" clipPathUnits="userSpaceOnUse">
+        <polygon id="bg-market-line-clip-poly" points={`0,${VIEW_H} 0,${VIEW_H} 0,${VIEW_H}`}></polygon>
+      </clipPath>
+    </defs>
+
+    <g clip-path="url(#bg-market-line-clip)">
+      <path
+        id="bg-market-path"
+        class="live-bg__market-line-path"
+        fill="none"
+        stroke="rgba(34, 211, 238, 0.3)"
+        stroke-width="1.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d={initialPath}></path>
+    </g>
+
+    <g id="bg-market-head" class="live-bg__market-line-head" opacity="0">
+      <circle class="live-bg__market-line-head-glow" r="5" cx="0" cy="0"></circle>
+      <circle class="live-bg__market-line-head-dot" r="2.5" cx="0" cy="0"></circle>
+    </g>
+  </svg>
+</div>
+
+<script define:vars={{ linePaths, VIEW_W, VIEW_H, DIAG_LEN }}>
+  const DRAW_MS = 9500;
+  const PAUSE_MS = 2200;
+
+  function diagonalProgress(x, y) {
+    return (x * VIEW_W + (VIEW_H - y) * VIEW_H) / DIAG_LEN;
+  }
+
+  function diagonalClipPoints(progress) {
+    const p = Math.max(0, Math.min(1, progress));
+    const x = p * VIEW_W;
+    const y = VIEW_H * (1 - p);
+    return `0,${VIEW_H} ${x},${VIEW_H} ${x},${y} 0,${y}`;
+  }
+
+  function isPointInClip(px, py, progress) {
+    const clipX = progress * VIEW_W;
+    const clipY = VIEW_H * (1 - progress);
+    return px <= clipX + 1 && py >= clipY - 1;
+  }
+
+  function placeHeadOnPath(pathEl, progress) {
+    const total = pathEl.getTotalLength();
+    if (!total) return { x: 0, y: VIEW_H };
+
+    const target = Math.max(0, Math.min(1, progress));
+    let bestLen = 0;
+    const steps = 280;
+
+    for (let s = 0; s <= steps; s += 1) {
+      const len = (total * s) / steps;
+      const pt = pathEl.getPointAtLength(len);
+      if (isPointInClip(pt.x, pt.y, target)) bestLen = len;
+    }
+
+    return pathEl.getPointAtLength(bestLen);
+  }
+
+  function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function initBackgroundMarketLine() {
+    const clipPoly = document.getElementById('bg-market-line-clip-poly');
+    const pathEl = document.getElementById('bg-market-path');
+    const head = document.getElementById('bg-market-head');
+    if (!clipPoly || !pathEl || !head) return;
+    if (pathEl.dataset.initialized) return;
+    pathEl.dataset.initialized = 'true';
+
+    let setIndex = 0;
+    let rafId = 0;
+    let pauseTimer = 0;
+
+    function applyProgress(progress) {
+      clipPoly.setAttribute('points', diagonalClipPoints(progress));
+      const point = placeHeadOnPath(pathEl, progress);
+      head.setAttribute('transform', `translate(${point.x} ${point.y})`);
+      head.setAttribute('opacity', '0.95');
+    }
+
+    function playSet(index, animate) {
+      cancelAnimationFrame(rafId);
+      clearTimeout(pauseTimer);
+      pathEl.setAttribute('d', linePaths[index]);
+
+      requestAnimationFrame(() => {
+        if (!animate || prefersReducedMotion()) {
+          applyProgress(1);
+          return;
+        }
+
+        applyProgress(0);
+        const start = performance.now();
+
+        function frame(now) {
+          const t = Math.min((now - start) / DRAW_MS, 1);
+          const eased = 1 - Math.pow(1 - t, 2.4);
+          applyProgress(eased);
+
+          if (t < 1) {
+            rafId = requestAnimationFrame(frame);
+          } else {
+            pauseTimer = window.setTimeout(() => {
+              setIndex = (setIndex + 1) % linePaths.length;
+              playSet(setIndex, true);
+            }, PAUSE_MS);
+          }
+        }
+
+        rafId = requestAnimationFrame(frame);
+      });
+    }
+
+    playSet(0, true);
+  }
+
+  initBackgroundMarketLine();
+  document.addEventListener('astro:page-load', initBackgroundMarketLine);
+</script>

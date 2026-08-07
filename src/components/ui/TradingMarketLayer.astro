@@ -1,0 +1,79 @@
+---
+const tickers = [
+  'MOEX +0.84%',
+  'BTC/USDT',
+  'ETH/USDT',
+  'SBER',
+  'GAZP',
+  'SiH6',
+  'BYBIT',
+  'BNB/USDT',
+  'IMOEX',
+  'OKX',
+];
+---
+
+<div class="trade-layer pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+  <!-- Scrolling ticker -->
+  <div class="trade-layer__ticker-wrap">
+    <div class="trade-layer__ticker">
+      {
+        [...tickers, ...tickers].map((item) => (
+          <span class="trade-layer__ticker-item">
+            <span class="trade-layer__ticker-dot"></span>
+            {item}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Line chart panel (right) -->
+  <svg
+    class="trade-layer__panel trade-layer__panel--line"
+    viewBox="0 0 280 120"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      class="trade-layer__line-chart"
+      d="M0,90 L20,82 L40,88 L60,70 L80,75 L100,55 L120,60 L140,45 L160,50 L180,35 L200,42 L220,28 L240,38 L260,22 L280,30"
+      fill="none"
+      stroke="rgba(34,211,238,0.35)"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+    <path
+      class="trade-layer__line-area"
+      d="M0,90 L20,82 L40,88 L60,70 L80,75 L100,55 L120,60 L140,45 L160,50 L180,35 L200,42 L220,28 L240,38 L260,22 L280,30 L280,120 L0,120 Z"
+      fill="url(#lineAreaGrad)"></path>
+    <defs>
+      <linearGradient id="lineAreaGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="rgba(34,211,238,0.12)"></stop>
+        <stop offset="100%" stop-color="rgba(34,211,238,0)"></stop>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- Volume bars bottom -->
+  <svg class="trade-layer__volume" viewBox="0 0 400 40" xmlns="http://www.w3.org/2000/svg">
+    <g class="trade-layer__volume-bars">
+      {
+        Array.from({ length: 40 }).map((_, i) => {
+          const h = 8 + ((i * 17) % 28);
+          const up = i % 3 !== 0;
+          return (
+            <rect
+              x={i * 10}
+              y={40 - h}
+              width="6"
+              height={h}
+              fill={up ? 'rgba(52,211,153,0.25)' : 'rgba(248,113,113,0.2)'}
+              class="trade-layer__vol-bar"
+              style={`--vi: ${i}`}
+            />
+          );
+        })
+      }
+    </g>
+  </svg>
+</div>

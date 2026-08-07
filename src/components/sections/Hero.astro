@@ -1,0 +1,37 @@
+---
+import type { Locale } from '../../types';
+import { getTranslations } from '../../i18n/ui';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+---
+
+<section class="relative overflow-hidden pt-24 pb-14 sm:pt-40 sm:pb-16 lg:pt-48 lg:pb-24">
+  <div class="container-main relative px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-4xl text-center">
+      <p class="mb-4 font-mono text-xs tracking-[0.25em] text-primary/80 uppercase">{t.hero.badge}</p>
+
+      <h1 class="mb-5 text-3xl leading-tight font-bold tracking-tight sm:text-4xl lg:text-5xl">
+        <span class="gradient-text">
+          {t.hero.titleLine1}
+          <br />
+          {t.hero.titleLine2}
+        </span>
+      </h1>
+
+      <p class="mb-3 text-sm tracking-wide text-silver/70 italic">{t.hero.tagline}</p>
+
+      <p class="mx-auto mb-10 max-w-2xl text-base leading-relaxed text-text-muted sm:text-lg">{t.hero.subtitle}</p>
+
+      <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <Button href="#contact" variant="secondary" size="lg">{t.hero.ctaPrimary}</Button>
+        <Button href="#products" size="lg" class="btn-glow">{t.hero.ctaSecondary}</Button>
+      </div>
+    </div>
+  </div>
+</section>

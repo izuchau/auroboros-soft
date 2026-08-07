@@ -1,0 +1,31 @@
+---
+import TradingMarketLayer from './TradingMarketLayer.astro';
+import BackgroundCandleLayer from './BackgroundCandleLayer.astro';
+import BackgroundMarketLineLayer from './BackgroundMarketLineLayer.astro';
+import BackgroundOrderBookLayer from './BackgroundOrderBookLayer.astro';
+import BackgroundPeopleLayer from './BackgroundPeopleLayer.astro';
+---
+
+<div class="live-bg pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+  <div class="live-bg__gradient"></div>
+
+  <BackgroundCandleLayer />
+  <BackgroundMarketLineLayer />
+  <BackgroundOrderBookLayer />
+
+  <div class="live-bg__grid"></div>
+
+  <BackgroundPeopleLayer />
+
+  <div class="live-bg__orb live-bg__orb--1"></div>
+  <div class="live-bg__orb live-bg__orb--2"></div>
+  <div class="live-bg__orb live-bg__orb--3"></div>
+
+  <div class="live-bg__particles">
+    {Array.from({ length: 14 }).map((_, i) => (
+      <span class="live-bg__particle" style={`--i: ${i}`}></span>
+    ))}
+  </div>
+
+  <TradingMarketLayer />
+</div>

@@ -1,0 +1,34 @@
+---
+interface Props {
+  logoSrc: string;
+  alt: string;
+  label?: string;
+  logoBlend?: 'normal' | 'screen';
+}
+
+const { logoSrc, alt, label, logoBlend = 'normal' } = Astro.props;
+---
+
+<div class="product-box-wrap">
+  <div class="product-box-scene">
+    <div class="product-box">
+      <div class="product-box__face product-box__face--front">
+        <img
+          src={logoSrc}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          class:list={[{ 'product-box__logo--screen': logoBlend === 'screen' }]}
+        />
+      </div>
+      <div class="product-box__face product-box__face--back" aria-hidden="true"></div>
+      <div class="product-box__face product-box__face--right" aria-hidden="true"></div>
+      <div class="product-box__face product-box__face--left" aria-hidden="true"></div>
+      <div class="product-box__face product-box__face--top" aria-hidden="true">
+        {label && <span class="product-box__top-label">{label}</span>}
+      </div>
+      <div class="product-box__face product-box__face--bottom" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div class="product-box__shadow" aria-hidden="true"></div>
+</div>

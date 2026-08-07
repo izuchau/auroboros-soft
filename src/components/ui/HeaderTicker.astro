@@ -1,0 +1,148 @@
+---
+type TickerItem = {
+  label: string;
+  value: string;
+  tone: 'up' | 'down' | 'neutral';
+};
+
+type TickerState = {
+  items: TickerItem[];
+};
+
+const tickerStates: TickerState[] = [
+  {
+    items: [
+      { label: 'IMOEX', value: '+1.08%', tone: 'up' },
+      { label: 'MOEX', value: '+0.84%', tone: 'up' },
+      { label: 'SBER', value: '+0.31%', tone: 'up' },
+      { label: 'GAZP', value: '-0.12%', tone: 'down' },
+      { label: 'BTC/USDT', value: '+1.40%', tone: 'up' },
+      { label: 'ETH/USDT', value: '+0.82%', tone: 'up' },
+      { label: 'USD/RUB', value: '+0.04%', tone: 'up' },
+    ],
+  },
+  {
+    items: [
+      { label: 'RTSI', value: '+0.62%', tone: 'up' },
+      { label: 'LKOH', value: '+0.44%', tone: 'up' },
+      { label: 'NVTK', value: '+0.89%', tone: 'up' },
+      { label: 'SiH6', value: '-0.22%', tone: 'down' },
+      { label: 'SOL/USDT', value: '+2.14%', tone: 'up' },
+      { label: 'BNB/USDT', value: '-0.31%', tone: 'down' },
+      { label: 'GOLD', value: '+0.41%', tone: 'up' },
+    ],
+  },
+  {
+    items: [
+      { label: 'IMOEX', value: '-0.34%', tone: 'down' },
+      { label: 'YNDX', value: '+1.12%', tone: 'up' },
+      { label: 'TCSG', value: '-0.18%', tone: 'down' },
+      { label: 'GAZP', value: '+0.52%', tone: 'up' },
+      { label: 'BTC/USDT', value: '+0.63%', tone: 'up' },
+      { label: 'XRP/USDT', value: '+1.87%', tone: 'up' },
+      { label: 'EUR/RUB', value: '-0.08%', tone: 'down' },
+    ],
+  },
+  {
+    items: [
+      { label: 'MOEX', value: '+0.93%', tone: 'up' },
+      { label: 'SBER', value: '+0.27%', tone: 'up' },
+      { label: 'LKOH', value: '-0.08%', tone: 'down' },
+      { label: 'ROSN', value: '+0.35%', tone: 'up' },
+      { label: 'ETH/USDT', value: '-0.24%', tone: 'down' },
+      { label: 'BTC/USDT', value: '+0.11%', tone: 'up' },
+      { label: 'MTSS', value: '-0.14%', tone: 'down' },
+    ],
+  },
+  {
+    items: [
+      { label: 'RTSI', value: '+0.48%', tone: 'up' },
+      { label: 'NVTK', value: '+0.73%', tone: 'up' },
+      { label: 'ROSN', value: '+0.35%', tone: 'up' },
+      { label: 'MTSS', value: '-0.14%', tone: 'down' },
+      { label: 'BTC/USDT', value: '+0.91%', tone: 'up' },
+      { label: 'ETH/USDT', value: '+1.08%', tone: 'up' },
+      { label: 'USD/RUB', value: '+0.06%', tone: 'up' },
+    ],
+  },
+  {
+    items: [
+      { label: 'IMOEX', value: '-0.21%', tone: 'down' },
+      { label: 'GAZP', value: '-0.37%', tone: 'down' },
+      { label: 'SBER', value: '-0.24%', tone: 'down' },
+      { label: 'SiH6', value: '-0.31%', tone: 'down' },
+      { label: 'BTC/USDT', value: '-0.82%', tone: 'down' },
+      { label: 'SOL/USDT', value: '-1.38%', tone: 'down' },
+      { label: 'GOLD', value: '-0.19%', tone: 'down' },
+    ],
+  },
+  {
+    items: [
+      { label: 'MOEX', value: '+1.02%', tone: 'up' },
+      { label: 'IMOEX', value: '+1.24%', tone: 'up' },
+      { label: 'SBER', value: '+0.58%', tone: 'up' },
+      { label: 'LKOH', value: '+0.41%', tone: 'up' },
+      { label: 'BTC/USDT', value: '+1.62%', tone: 'up' },
+      { label: 'ETH/USDT', value: '+1.31%', tone: 'up' },
+      { label: 'BNB/USDT', value: '+0.47%', tone: 'up' },
+    ],
+  },
+];
+---
+
+<div class="header-ticker pointer-events-none absolute inset-x-0 bottom-1 hidden md:flex md:justify-center" aria-hidden="true">
+  <div class="header-ticker__inner">
+    <div id="header-ticker-track" class="header-ticker__track">
+    {
+      tickerStates[0].items.map((item, index) => (
+        <>
+          {index > 0 && <span class="header-ticker__sep">·</span>}
+          <span class="header-ticker__item">
+            <span class="header-ticker__label">{item.label}</span>
+            <span class:list={['header-ticker__value', `header-ticker__value--${item.tone}`]}>{item.value}</span>
+          </span>
+        </>
+      ))
+    }
+  </div>
+  </div>
+</div>
+
+<script define:vars={{ tickerStates }}>
+  function renderTickerState(state) {
+    return state.items
+      .map((item, index) => {
+        const sep = index > 0 ? '<span class="header-ticker__sep">·</span>' : '';
+        return `${sep}<span class="header-ticker__item"><span class="header-ticker__label">${item.label}</span><span class="header-ticker__value header-ticker__value--${item.tone}">${item.value}</span></span>`;
+      })
+      .join('');
+  }
+
+  function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function initHeaderTicker() {
+    const track = document.getElementById('header-ticker-track');
+    if (!track) return;
+    if (track.dataset.initialized) return;
+    track.dataset.initialized = 'true';
+
+    let index = 0;
+
+    if (prefersReducedMotion()) return;
+
+    window.setInterval(() => {
+      index = (index + 1) % tickerStates.length;
+      track.style.opacity = '0';
+
+      window.setTimeout(() => {
+        track.innerHTML = renderTickerState(tickerStates[index]);
+        track.style.opacity = '1';
+      }, 420);
+    }, 4200);
+  }
+
+  initHeaderTicker();
+  document.addEventListener('astro:page-load', initHeaderTicker);
+</script>

@@ -1,43 +1,113 @@
-# Astro Starter Kit: Minimal
+# Auroboros Soft — Landing
 
-```sh
-npm create astro@latest -- --template minimal
+Лендинг для продажи торговых роботов (MOEX, крипто, международные биржи).
+
+**Стек:** Astro 7 + Tailwind CSS 4 + TypeScript  
+**Языки:** RU / EN
+
+## Быстрый старт
+
+```bash
+npm install
+cp .env.example .env
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Сайт: http://localhost:4321/ru/
 
-## 🚀 Project Structure
+## Настройка формы (email)
 
-Inside of your Astro project, you'll see the following folders and files:
+1. Зарегистрируйтесь на [formspree.io](https://formspree.io)
+2. Создайте форму и скопируйте ID
+3. В `.env` укажите: `PUBLIC_FORMSPREE_ID=ваш_id`
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+## CAPTCHA в форме (без перехода на другую страницу)
+
+Встроенная CAPTCHA Formspree **всегда открывает отдельную страницу** — для формы на сайте используем **reCAPTCHA v2** (галочка прямо в форме).
+
+### 1. Google reCAPTCHA
+
+1. [google.com/recaptcha/admin](https://www.google.com/recaptcha/admin) → **Create**
+2. Тип: **Challenge (v2)** → **「I'm not a robot」 Checkbox**
+3. Domains: `localhost`, `127.0.0.1`, ваш домен
+4. Скопируйте **Site Key** и **Secret Key**
+
+### 2. Сайт — `.env`
+
+```
+PUBLIC_RECAPTCHA_SITE_KEY=ваш_site_key
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Перезапустите: `npm run dev`
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### 3. Formspree
 
-Any static assets, like images, can be placed in the `public/` directory.
+1. **Settings** → **CAPTCHA** → **Изменить настройки**
+2. CAPTCHA **включена**
+3. **Custom reCAPTCHA Key** → вставьте **Secret Key** (не Site Key!)
+4. Save
 
-## 🧞 Commands
+Форма остаётся на сайте: галочка → Отправить → сообщение об успехе.
 
-All commands are run from the root of the project, from a terminal:
+## Добавление / редактирование роботов
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Файл: `src/data/products.ts`
 
-## 👀 Want to learn more?
+```ts
+{
+  id: 'my-bot',
+  name: { ru: 'Название', en: 'Name' },
+  // ...
+  video: {
+    provider: 'youtube',  // или 'vk'
+    embedId: 'VIDEO_ID',  // YouTube ID или полный VK embed URL
+  },
+}
+```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### YouTube
+
+Из ссылки `https://www.youtube.com/watch?v=dQw4w9WgXcQ` возьмите ID: `dQw4w9WgXcQ`
+
+### VK Video
+
+1. Откройте видео на VK → «Поделиться» → «Код для вставки»
+2. Скопируйте URL из атрибута `src` iframe
+3. Вставьте в `embedId` целиком
+
+## Email и реквизиты
+
+- Email в footer: `promasterboros@gmail.com` (`src/components/layout/Footer.astro`)
+- Formspree: `https://formspree.io/f/xeajqpob` — заявки приходят на email, указанный в Formspree
+
+## Деплой
+
+### Vercel / Netlify
+
+1. Подключите репозиторий
+2. Build command: `npm run build`
+3. Output directory: `dist`
+4. Добавьте env: `PUBLIC_FORMSPREE_ID`
+
+### GitHub Pages
+
+Потребуется настроить `site` в `astro.config.mjs` и base path при необходимости.
+
+## Структура
+
+```
+src/
+  components/   UI, секции, формы
+  data/         products.ts, faq.ts
+  i18n/         переводы интерфейса
+  layouts/      BaseLayout
+  pages/        ru/, en/
+```
+
+## Скрипты
+
+| Команда | Описание |
+|---------|----------|
+| `npm run dev` | Dev-сервер |
+| `npm run build` | Production-сборка |
+| `npm run preview` | Просмотр сборки |

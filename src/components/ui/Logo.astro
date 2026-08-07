@@ -1,0 +1,25 @@
+---
+interface Props {
+  class?: string;
+  variant?: 'header' | 'footer' | 'hero';
+  glow?: boolean;
+}
+
+const { class: className = '', variant = 'header', glow = false } = Astro.props;
+
+const sizes = {
+  header: 'h-9 w-auto max-w-[min(50vw,190px)] md:h-[7.5rem] md:max-w-[min(72vw,420px)] lg:h-[9rem] lg:max-w-[520px]',
+  footer: 'h-16 w-auto max-w-[280px]',
+  hero: 'h-44 w-auto sm:h-56 md:h-72 lg:h-80 max-w-[min(92vw,560px)]',
+};
+
+const glowClass = glow ? (variant === 'hero' ? 'logo-glow' : 'logo-glow-soft') : '';
+---
+
+<img
+  src="/logo.png"
+  alt="Auroboros — торговые роботы"
+  class:list={[sizes[variant], 'object-contain', glowClass, className]}
+  loading={variant === 'hero' ? 'eager' : 'lazy'}
+  decoding="async"
+/>

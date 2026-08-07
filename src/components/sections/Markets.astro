@@ -1,0 +1,36 @@
+---
+import type { Locale } from '../../types';
+import { getTranslations } from '../../i18n/ui';
+
+import MarketIcon from '../ui/MarketIcon.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+
+const iconIds = ['moex', 'crypto', 'international'] as const;
+---
+
+<section id="markets" class="section-padding">
+  <div class="container-main">
+    <div class="mb-12 text-center">
+      <h2 class="heading-soft mb-4 text-3xl font-bold sm:text-4xl">{t.markets.title}</h2>
+      <p class="mx-auto max-w-2xl text-text-muted">{t.markets.subtitle}</p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      {
+        t.markets.items.map((item, i) => (
+          <article class="card-surface group p-6 transition hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+            <MarketIcon id={iconIds[i]} />
+            <h3 class="heading-soft mb-2 text-xl font-semibold">{item.title}</h3>
+            <p class="text-sm leading-relaxed text-text-muted">{item.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

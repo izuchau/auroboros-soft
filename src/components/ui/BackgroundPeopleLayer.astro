@@ -1,0 +1,239 @@
+---
+type Node = {
+  x: number;
+  y: number;
+  tone: 'green' | 'red' | 'watch';
+};
+
+type Network = {
+  id: string;
+  viewBox: string;
+  nodes: Node[];
+  links: readonly (readonly [number, number])[];
+};
+
+const r = 34;
+
+function hexPoints(x: number, y: number, radius: number): string {
+  return Array.from({ length: 6 })
+    .map((_, i) => {
+      const angle = (Math.PI / 3) * i - Math.PI / 6;
+      return `${x + radius * Math.cos(angle)},${y + radius * Math.sin(angle)}`;
+    })
+    .join(' ');
+}
+
+function buildViewBox(nodes: Node[], pad: number): string {
+  const minX = Math.min(...nodes.map((node) => node.x)) - pad;
+  const minY = Math.min(...nodes.map((node) => node.y)) - pad;
+  const maxX = Math.max(...nodes.map((node) => node.x)) + pad;
+  const maxY = Math.max(...nodes.map((node) => node.y)) + pad;
+  return `${minX} ${minY} ${maxX - minX} ${maxY - minY}`;
+}
+
+const scale = 1.2;
+const baseNodes: Node[] = [
+  { x: 48, y: 40, tone: 'green' },
+  { x: 182, y: 24, tone: 'red' },
+  { x: 308, y: 46, tone: 'watch' },
+  { x: 404, y: 30, tone: 'red' },
+  { x: 90, y: 112, tone: 'red' },
+  { x: 236, y: 118, tone: 'green' },
+  { x: 364, y: 106, tone: 'green' },
+];
+
+const centerX = baseNodes.reduce((sum, node) => sum + node.x, 0) / baseNodes.length;
+const centerY = baseNodes.reduce((sum, node) => sum + node.y, 0) / baseNodes.length;
+
+const mainNodes = baseNodes.map(({ x, y, tone }) => ({
+  x: Math.round(centerX + (x - centerX) * scale),
+  y: Math.round(centerY + (y - centerY) * scale),
+  tone,
+}));
+
+const mainLinks = [
+  [0, 1],
+  [1, 2],
+  [2, 3],
+  [0, 4],
+  [1, 5],
+  [2, 6],
+  [4, 5],
+  [5, 6],
+  [0, 5],
+  [2, 5],
+  [3, 6],
+] as const;
+
+const secondaryNodes: Node[] = [
+  { x: 60, y: 30, tone: 'green' },
+  { x: 168, y: 16, tone: 'red' },
+  { x: 264, y: 38, tone: 'watch' },
+  { x: 104, y: 100, tone: 'red' },
+  { x: 210, y: 104, tone: 'green' },
+];
+
+const secondaryLinks = [
+  [0, 1],
+  [1, 2],
+  [0, 3],
+  [1, 4],
+  [3, 4],
+  [2, 4],
+] as const;
+
+const pad = r + 12;
+
+const bridgeLinks: readonly (readonly [number, number])[] = [
+  [4, 0],
+  [5, 1],
+  [6, 2],
+  [5, 3],
+  [4, 4],
+];
+
+const networks: Network[] = [
+  {
+    id: 'main',
+    viewBox: buildViewBox(mainNodes, pad),
+    nodes: mainNodes,
+    links: mainLinks,
+  },
+  {
+    id: 'secondary',
+    viewBox: buildViewBox(secondaryNodes, pad),
+    nodes: secondaryNodes,
+    links: secondaryLinks,
+  },
+];
+---
+
+<div class="live-bg__people pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+  <svg id="people-bridge-svg" class="live-bg__people-bridge" xmlns="http://www.w3.org/2000/svg"></svg>
+  {
+    networks.map((network, networkIndex) => (
+      <div class:list={['live-bg__people-group', `live-bg__people-group--${network.id}`]}>
+        <svg class="live-bg__people-svg" viewBox={network.viewBox} xmlns="http://www.w3.org/2000/svg">
+          {
+            network.links.map(([a, b], i) => (
+              <line
+                class="live-bg__people-link"
+                vector-effect="non-scaling-stroke"
+                x1={network.nodes[a].x}
+                y1={network.nodes[a].y}
+                x2={network.nodes[b].x}
+                y2={network.nodes[b].y}
+                style={`animation-delay: ${i * 0.28 + networkIndex * 0.35}s`}
+              />
+            ))
+          }
+          {
+            network.nodes.map((node, i) => (
+              <g
+                class:list={['live-bg__people-node', `live-bg__people-node--${node.tone}`]}
+                transform={`translate(${node.x} ${node.y})`}
+                data-node={i}
+                style={`animation-delay: ${i * 0.32 + networkIndex * 0.45}s`}
+              >
+                <polygon class="live-bg__people-hex" points={hexPoints(0, 0, r)} />
+                <circle class="live-bg__people-head" cx="0" cy="-5" r="4.2" />
+                <path class="live-bg__people-body" d="M-6 2 Q0 6 6 2 L5 14 Q0 11 -5 14 Z" />
+              </g>
+            ))
+          }
+        </svg>
+      </div>
+    ))
+  }
+</div>
+
+<script define:vars={{ bridgeLinks }}>
+  function isVisibleRect(rect) {
+    return Boolean(rect && rect.width > 0 && rect.height > 0);
+  }
+
+  function isMobileBridge() {
+    return window.matchMedia('(max-width: 767px)').matches;
+  }
+
+  function getNodeCenter(networkId, nodeIndex) {
+    const group = document.querySelector(`.live-bg__people-group--${networkId}`);
+    const node = group?.querySelector(`[data-node="${nodeIndex}"]`);
+    const container = document.querySelector('.live-bg__people');
+    if (!node || !container || !group) return null;
+
+    const groupRect = group.getBoundingClientRect();
+    if (!isVisibleRect(groupRect)) return null;
+
+    const nodeRect = node.getBoundingClientRect();
+    if (!isVisibleRect(nodeRect)) return null;
+
+    const boxRect = container.getBoundingClientRect();
+
+    return {
+      x: nodeRect.left + nodeRect.width / 2 - boxRect.left,
+      y: nodeRect.top + nodeRect.height / 2 - boxRect.top,
+    };
+  }
+
+  function drawPeopleBridge() {
+    const svg = document.getElementById('people-bridge-svg');
+    const container = document.querySelector('.live-bg__people');
+    if (!svg || !container) return;
+
+    if (isMobileBridge()) {
+      svg.innerHTML = '';
+      return;
+    }
+
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    if (!width || !height) return;
+
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+    const lines = bridgeLinks
+      .map(([mainIndex, secondaryIndex], i) => {
+        const from = getNodeCenter('main', mainIndex);
+        const to = getNodeCenter('secondary', secondaryIndex);
+        if (!from || !to) return '';
+
+        return `<line class="live-bg__people-bridge-link" vector-effect="non-scaling-stroke" x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" style="animation-delay:${i * 0.32}s"></line>`;
+      })
+      .join('');
+
+    svg.innerHTML = lines;
+  }
+
+  function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function initPeopleBridge() {
+    const svg = document.getElementById('people-bridge-svg');
+    if (!svg || svg.dataset.initialized) return;
+    svg.dataset.initialized = 'true';
+
+    let rafId = 0;
+    let lastDraw = 0;
+
+    function tick(now) {
+      if (now - lastDraw > 80) {
+        drawPeopleBridge();
+        lastDraw = now;
+      }
+      rafId = requestAnimationFrame(tick);
+    }
+
+    drawPeopleBridge();
+
+    if (!prefersReducedMotion()) {
+      rafId = requestAnimationFrame(tick);
+    }
+
+    window.addEventListener('resize', drawPeopleBridge, { passive: true });
+  }
+
+  initPeopleBridge();
+  document.addEventListener('astro:page-load', initPeopleBridge);
+</script>

@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import { getTranslations, localePath } from '../../i18n/ui';
+
+const locale = 'en';
+const t = getTranslations(locale);
+---
+
+<BaseLayout locale={locale} title={t.legal.termsTitle} description={t.legal.termsTitle}>
+  <Header locale={locale} />
+  <main class="section-padding pt-44">
+    <article class="container-main max-w-3xl">
+      <h1 class="heading-soft mb-8 text-3xl font-bold">{t.legal.termsTitle}</h1>
+
+      <div class="space-y-6 text-sm leading-relaxed text-text-muted">
+        <p>
+          These Terms of Service govern the use of the Auroboros Soft website and the provision of trading bot
+          software and related services.
+        </p>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">1. Services</h2>
+          <p>
+            We provide trading bot software, custom development, configuration, and support services for financial
+            markets.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">2. Trading risks</h2>
+          <p>
+            Trading financial markets involves risk of capital loss. Past performance does not guarantee future
+            results. Software is not investment advice.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">3. Liability</h2>
+          <p>
+            The client is responsible for decisions made when using trading bots, including risk settings and
+            instrument selection.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">4. Contact</h2>
+          <p>
+            Email: <a href="mailto:promasterboros@gmail.com" class="text-primary hover:underline">promasterboros@gmail.com</a>
+          </p>
+        </section>
+
+        <p class="text-xs text-text-dim">This document is a template. Consult a legal professional before publishing.</p>
+      </div>
+
+      <a href={localePath(locale)} class="mt-8 inline-block text-primary hover:underline">{t.legal.backHome}</a>
+    </article>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

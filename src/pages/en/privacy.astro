@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import { getTranslations, localePath } from '../../i18n/ui';
+
+const locale = 'en';
+const t = getTranslations(locale);
+---
+
+<BaseLayout locale={locale} title={t.legal.privacyTitle} description={t.legal.privacyTitle}>
+  <Header locale={locale} />
+  <main class="section-padding pt-44">
+    <article class="container-main max-w-3xl">
+      <h1 class="heading-soft mb-8 text-3xl font-bold">{t.legal.privacyTitle}</h1>
+
+      <div class="space-y-6 text-sm leading-relaxed text-text-muted">
+        <p>
+          This Privacy Policy describes how Auroboros Soft (the "Site") collects and processes personal data of
+          users.
+        </p>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">1. Data we collect</h2>
+          <p>
+            When you submit the contact form, we may receive your name, email, phone number, message, selected
+            product, and request type.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">2. Purpose of processing</h2>
+          <p>
+            Data is used to contact you, process orders for trading bots or custom development, and improve our
+            services.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">3. Third parties</h2>
+          <p>
+            We use Formspree to deliver form submissions to email. Data is not shared with third parties for
+            marketing without your consent.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">4. Your rights</h2>
+          <p>
+            You may request access, correction, or deletion of your data by emailing
+            <a href="mailto:promasterboros@gmail.com" class="text-primary hover:underline">promasterboros@gmail.com</a>.
+          </p>
+        </section>
+
+        <p class="text-xs text-text-dim">This document is a template. Consult a legal professional before publishing.</p>
+      </div>
+
+      <a href={localePath(locale)} class="mt-8 inline-block text-primary hover:underline">{t.legal.backHome}</a>
+    </article>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

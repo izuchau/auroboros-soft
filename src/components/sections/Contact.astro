@@ -1,0 +1,98 @@
+---
+import type { Locale } from '../../types';
+import { getTranslations } from '../../i18n/ui';
+import ContactForm from '../forms/ContactForm.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+---
+
+<section id="contact" class="section-padding">
+  <div class="container-main max-w-2xl">
+    <ContactForm locale={locale} formId="main-contact-form" />
+  </div>
+</section>
+
+<!-- Order modal -->
+<div
+  id="order-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center p-4"
+  aria-hidden="true"
+  role="dialog"
+  aria-labelledby="order-modal-title"
+>
+  <div id="order-modal-backdrop" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+  <div class="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-border bg-bg-card p-6 shadow-2xl">
+    <div class="mb-4 flex items-center justify-between">
+      <h2 id="order-modal-title" class="heading-soft text-xl font-bold">{t.contact.orderTitle}</h2>
+      <button
+        id="order-modal-close"
+        type="button"
+        class="rounded-lg p-2 text-text-muted transition hover:bg-bg-elevated hover:text-text"
+        aria-label="Close"
+      >
+        ✕
+      </button>
+    </div>
+    <ContactForm locale={locale} formId="order-contact-form" showTitle={false} />
+  </div>
+</div>
+
+<script>
+  function initOrderModal() {
+    const modal = document.getElementById('order-modal');
+    const backdrop = document.getElementById('order-modal-backdrop');
+    const closeBtn = document.getElementById('order-modal-close');
+    const orderForm = document.getElementById('order-contact-form') as HTMLFormElement | null;
+
+    if (!modal || !orderForm) return;
+
+    const productIdInput = document.getElementById('order-contact-form-product-id') as HTMLInputElement | null;
+    const productNameInput = document.getElementById('order-contact-form-product-name') as HTMLInputElement | null;
+    const productDisplayInput = document.getElementById('order-contact-form-product-display') as HTMLInputElement | null;
+    const productField = document.getElementById('order-contact-form-product-field') as HTMLElement | null;
+    const requestTypeSelect = orderForm.querySelector<HTMLSelectElement>('select[name="request_type"]');
+
+    function openModal(productId: string, productName: string) {
+      if (productIdInput) productIdInput.value = productId;
+      if (productNameInput) productNameInput.value = productName;
+      if (productDisplayInput) productDisplayInput.value = productName;
+      if (productField) productField.hidden = false;
+      if (requestTypeSelect) requestTypeSelect.value = 'ready';
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll<HTMLElement>('[data-open-order]').forEach((button) => {
+      button.addEventListener('click', () => {
+        openModal(button.dataset.productId ?? '', button.dataset.productName ?? '');
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeModal);
+    backdrop?.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
+
+  initOrderModal();
+  document.addEventListener('astro:page-load', initOrderModal);
+</script>

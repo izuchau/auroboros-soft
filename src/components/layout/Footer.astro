@@ -1,0 +1,56 @@
+---
+import type { Locale } from '../../types';
+import { getTranslations, localePath } from '../../i18n/ui';
+import Logo from '../ui/Logo.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-bg-card">
+  <div class="container-main section-padding !py-12">
+    <div class="grid gap-8 md:grid-cols-3">
+      <div>
+        <div class="mb-4">
+          <Logo variant="footer" glow={true} />
+        </div>
+        <p class="text-sm text-text-muted">{t.footer.tagline}</p>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-text-muted">Links</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#products" class="text-text-muted transition hover:text-primary">{t.nav.products}</a></li>
+          <li><a href="#contact" class="text-text-muted transition hover:text-primary">{t.nav.contact}</a></li>
+          <li>
+            <a href={localePath(locale, '/privacy')} class="text-text-muted transition hover:text-primary"
+              >{t.footer.privacy}</a
+            >
+          </li>
+          <li>
+            <a href={localePath(locale, '/terms')} class="text-text-muted transition hover:text-primary"
+              >{t.footer.terms}</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-text-muted">Contact</h3>
+        <a href="mailto:promasterboros@gmail.com" class="text-sm text-primary hover:underline"
+          >promasterboros@gmail.com</a
+        >
+        <p class="mt-4 text-xs leading-relaxed text-text-dim">{t.footer.disclaimer}</p>
+      </div>
+    </div>
+
+    <div class="mt-10 border-t border-border pt-6 text-center text-xs text-text-dim">
+      © {year} Auroboros Soft. {t.footer.rights}.
+    </div>
+  </div>
+</footer>

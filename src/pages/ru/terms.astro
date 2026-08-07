@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import { getTranslations, localePath } from '../../i18n/ui';
+
+const locale = 'ru';
+const t = getTranslations(locale);
+---
+
+<BaseLayout locale={locale} title={t.legal.termsTitle} description={t.legal.termsTitle}>
+  <Header locale={locale} />
+  <main class="section-padding pt-44">
+    <article class="container-main max-w-3xl">
+      <h1 class="heading-soft mb-8 text-3xl font-bold">{t.legal.termsTitle}</h1>
+
+      <div class="space-y-6 text-sm leading-relaxed text-text-muted">
+        <p>
+          Настоящее Пользовательское соглашение регулирует использование сайта Auroboros Soft и условия оказания
+          услуг по разработке и поставке торговых роботов.
+        </p>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">1. Предмет</h2>
+          <p>
+            Компания предоставляет программное обеспечение (торговые роботы) и услуги по их разработке, настройке
+            и поддержке.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">2. Риски торговли</h2>
+          <p>
+            Торговля на финансовых рынках сопряжена с риском потери капитала. Прошлые результаты не гарантируют
+            будущую доходность. Программное обеспечение не является инвестиционной рекомендацией.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">3. Ответственность</h2>
+          <p>
+            Клиент несёт ответственность за решения, принимаемые при использовании торговых роботов, включая
+            настройку риск-параметров и выбор торговых инструментов.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">4. Контакты</h2>
+          <p>
+            Email: <a href="mailto:promasterboros@gmail.com" class="text-primary hover:underline">promasterboros@gmail.com</a>
+          </p>
+        </section>
+
+        <p class="text-xs text-text-dim">
+          Документ является шаблоном. Рекомендуем согласовать окончательную версию с юристом.
+        </p>
+      </div>
+
+      <a href={localePath(locale)} class="mt-8 inline-block text-primary hover:underline">{t.legal.backHome}</a>
+    </article>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

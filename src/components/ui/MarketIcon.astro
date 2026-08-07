@@ -1,0 +1,77 @@
+---
+interface Props {
+  id: 'moex' | 'crypto' | 'international';
+}
+
+const { id } = Astro.props;
+---
+
+<div class="markets-icon" aria-hidden="true">
+  {
+    id === 'moex' && (
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M6 34V26H14V34H6Z"
+          fill="currentColor"
+          fill-opacity="0.42"></path>
+        <path
+          d="M16 34V18H24V34H16Z"
+          fill="currentColor"
+          fill-opacity="0.62"></path>
+        <path
+          d="M26 34V10H38V34H26Z"
+          fill="currentColor"
+          fill-opacity="0.82"></path>
+        <path
+          d="M18 20H30V22H18V20Z"
+          fill="currentColor"
+          fill-opacity="0.9"></path>
+        <text
+          x="24"
+          y="43"
+          text-anchor="middle"
+          fill="currentColor"
+          font-family="var(--font-mono), ui-monospace, monospace"
+          font-size="6.5"
+          font-weight="700"
+          letter-spacing="0.08em">MOEX</text>
+      </svg>
+    )
+  }
+
+  {
+    id === 'crypto' && (
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="17" stroke="currentColor" stroke-width="1.75"></circle>
+        <text
+          x="24"
+          y="31"
+          text-anchor="middle"
+          fill="currentColor"
+          font-size="22"
+          font-weight="700"
+          font-family="system-ui, -apple-system, sans-serif">₿</text>
+      </svg>
+    )
+  }
+
+  {
+    id === 'international' && (
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="17" stroke="currentColor" stroke-width="1.75"></circle>
+        <ellipse cx="24" cy="24" rx="7.5" ry="17" stroke="currentColor" stroke-width="1.75"></ellipse>
+        <path d="M7 24H41" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"></path>
+        <path
+          d="M9.5 16.5C14.5 19 19 20 24 20C29 20 33.5 19 38.5 16.5"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"></path>
+        <path
+          d="M9.5 31.5C14.5 29 19 28 24 28C29 28 33.5 29 38.5 31.5"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"></path>
+      </svg>
+    )
+  }
+</div>
