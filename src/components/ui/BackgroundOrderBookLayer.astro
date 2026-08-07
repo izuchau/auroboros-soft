@@ -117,9 +117,25 @@
     return Boolean(rect && rect.width > 0 && rect.height > 0);
   }
 
-  function pickPeopleTarget() {
-    if (isMobileLayout()) return null;
+  function pickMobileHexNode(boxRect) {
+    const group = document.querySelector('.live-bg__people-group--main');
+    if (!group) return null;
 
+    const nodes = Array.from(group.querySelectorAll('[data-node]')).filter((node) =>
+      isVisibleRect(node.getBoundingClientRect())
+    );
+    if (!nodes.length) return null;
+
+    const node = nodes[Math.floor(Math.random() * nodes.length)];
+    const nodeRect = node.getBoundingClientRect();
+
+    return {
+      x: nodeRect.left + nodeRect.width / 2 - boxRect.left,
+      y: nodeRect.top + nodeRect.height / 2 - boxRect.top,
+    };
+  }
+
+  function pickPeopleTarget() {
     const peopleMain = document.querySelector('.live-bg__people-group--main');
     const peopleSecondary = document.querySelector('.live-bg__people-group--secondary');
     const mainRect = peopleMain?.getBoundingClientRect();
@@ -137,11 +153,11 @@
 
   function pickMobileTradeTarget(boxRect, startLeft, startTop) {
     const zones = [
-      { x: 0.58, y: 0.22 },
-      { x: 0.74, y: 0.34 },
-      { x: 0.86, y: 0.48 },
-      { x: 0.66, y: 0.58 },
-      { x: 0.82, y: 0.72 },
+      { x: 0.58, y: 0.38 },
+      { x: 0.72, y: 0.48 },
+      { x: 0.84, y: 0.58 },
+      { x: 0.64, y: 0.66 },
+      { x: 0.78, y: 0.74 },
     ];
     const zone = zones[Math.floor(Math.random() * zones.length)];
 
@@ -172,15 +188,23 @@
     let flyX = boxRect.width * 0.62 - startLeft;
     let flyY = boxRect.height * 0.12 - startTop;
 
-    const peopleRect = pickPeopleTarget();
+    if (mobile) {
+      const hexTarget = pickMobileHexNode(boxRect);
+      if (hexTarget) {
+        flyX = hexTarget.x - startLeft;
+        flyY = hexTarget.y - startTop;
+      } else {
+        ({ flyX, flyY } = pickMobileTradeTarget(boxRect, startLeft, startTop));
+      }
+    } else {
+      const peopleRect = pickPeopleTarget();
 
-    if (peopleRect) {
-      const targetX = peopleRect.left - boxRect.left + peopleRect.width * (0.15 + Math.random() * 0.55);
-      const targetY = peopleRect.top - boxRect.top + peopleRect.height * (0.2 + Math.random() * 0.6);
-      flyX = targetX - startLeft;
-      flyY = targetY - startTop;
-    } else if (mobile) {
-      ({ flyX, flyY } = pickMobileTradeTarget(boxRect, startLeft, startTop));
+      if (peopleRect) {
+        const targetX = peopleRect.left - boxRect.left + peopleRect.width * (0.15 + Math.random() * 0.55);
+        const targetY = peopleRect.top - boxRect.top + peopleRect.height * (0.2 + Math.random() * 0.6);
+        flyX = targetX - startLeft;
+        flyY = targetY - startTop;
+      }
     }
 
     el.className = `live-bg__orderbook-trade live-bg__orderbook-trade--${isBuy ? 'buy' : 'sell'}`;

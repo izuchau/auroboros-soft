@@ -553,7 +553,7 @@
     top: 44%;
     right: 7%;
     left: auto;
-    width: min(38vw, 340px);
+    width: min(44vw, 280px);
     opacity: 0.3;
     animation: live-people-float-2 30s ease-in-out infinite;
   }
@@ -1256,15 +1256,35 @@
     }
   }
 
+  @media (min-width: 768px) {
+    .live-bg__people-group--main {
+      top: 26%;
+      right: 4%;
+      left: auto;
+      width: min(52vw, 500px);
+      opacity: 0.38;
+      animation: live-people-float-1 24s ease-in-out infinite;
+    }
+
+    .live-bg__people-group--secondary {
+      top: 44%;
+      right: 7%;
+      left: auto;
+      width: min(44vw, 280px);
+      opacity: 0.3;
+      animation: live-people-float-2 30s ease-in-out infinite;
+    }
+  }
+
   @media (max-width: 767px) {
     .live-bg__orderbook {
-      opacity: 0.34;
+      opacity: 0.31;
       mask-image: linear-gradient(
         180deg,
         transparent 0,
         transparent calc(var(--site-header-height) - 0.15rem),
         black calc(var(--site-header-height) + 0.35rem),
-        black 94%,
+        black 96%,
         transparent 100%
       );
     }
@@ -1272,8 +1292,13 @@
     .live-bg__orderbook-panel {
       top: calc(var(--site-header-height) + 0.35rem);
       left: 1%;
-      width: min(36vw, 142px);
+      width: min(32.4vw, 128px);
       font-size: 0.46rem;
+    }
+
+    .live-bg__orderbook-body {
+      transform: scaleY(1.2);
+      transform-origin: top left;
     }
 
     .live-bg__orderbook-head {
@@ -1283,7 +1308,7 @@
     }
 
     .live-bg__orderbook-row {
-      gap: 0.24rem;
+      gap: 0.22rem;
       padding: 0.13rem 0;
     }
 
@@ -1306,16 +1331,16 @@
       min-width: 1.45rem;
       height: 1.45rem;
       font-size: 0.46rem;
-      opacity: 0.88;
+      opacity: 0.79;
     }
 
     .live-bg__candles {
-      opacity: 0.34;
+      opacity: 0.31;
       mask-image: radial-gradient(ellipse 120% 100% at 50% 42%, black 32%, transparent 92%);
     }
 
     .live-bg__market-line {
-      opacity: 0.32;
+      opacity: 0.29;
       mask-image: radial-gradient(ellipse 115% 95% at 55% 68%, black 28%, transparent 90%);
     }
 
@@ -1325,34 +1350,35 @@
     }
 
     .live-bg__people-group--main {
-      top: 20%;
-      right: 2%;
+      top: calc(var(--site-header-height) + 8.75rem);
+      right: 1.5%;
       left: auto;
-      width: min(58vw, 250px);
-      opacity: 0.3;
+      width: min(46vw, 200px);
+      opacity: 0.27;
+      animation: none;
     }
 
     .live-bg__people-link {
       stroke-width: 0.9;
-      stroke: rgba(34, 211, 238, 0.32);
+      stroke: rgba(34, 211, 238, 0.29);
     }
 
     .live-bg__people-node--green .live-bg__people-hex,
     .live-bg__people-node--red .live-bg__people-hex,
     .live-bg__people-node--watch .live-bg__people-hex {
-      stroke-opacity: 0.78;
+      stroke-opacity: 0.7;
     }
 
     .live-bg__orderbook-side--ask .live-bg__orderbook-price {
-      color: rgba(248, 113, 113, 0.72);
+      color: rgba(248, 113, 113, 0.65);
     }
 
     .live-bg__orderbook-side--bid .live-bg__orderbook-price {
-      color: rgba(52, 211, 153, 0.74);
+      color: rgba(52, 211, 153, 0.67);
     }
 
     .live-bg__orderbook-mid {
-      color: rgba(34, 211, 238, 0.76);
+      color: rgba(34, 211, 238, 0.68);
     }
 
     .live-bg__grid {
