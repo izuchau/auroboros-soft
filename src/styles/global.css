@@ -1278,7 +1278,7 @@
 
   @media (max-width: 767px) {
     .live-bg__orderbook {
-      opacity: 0.31;
+      opacity: 0.44;
       mask-image: linear-gradient(
         180deg,
         transparent 0,
@@ -1292,12 +1292,12 @@
     .live-bg__orderbook-panel {
       top: calc(var(--site-header-height) + 0.35rem);
       left: 1%;
-      width: min(32.4vw, 128px);
+      width: min(25.92vw, 102px);
       font-size: 0.46rem;
     }
 
     .live-bg__orderbook-body {
-      transform: scaleY(1.2);
+      transform: scaleY(1.44);
       transform-origin: top left;
     }
 
@@ -1331,16 +1331,16 @@
       min-width: 1.45rem;
       height: 1.45rem;
       font-size: 0.46rem;
-      opacity: 0.79;
+      opacity: 0.95;
     }
 
     .live-bg__candles {
-      opacity: 0.31;
+      opacity: 0.44;
       mask-image: radial-gradient(ellipse 120% 100% at 50% 42%, black 32%, transparent 92%);
     }
 
     .live-bg__market-line {
-      opacity: 0.29;
+      opacity: 0.42;
       mask-image: radial-gradient(ellipse 115% 95% at 55% 68%, black 28%, transparent 90%);
     }
 
@@ -1350,35 +1350,35 @@
     }
 
     .live-bg__people-group--main {
-      top: calc(var(--site-header-height) + 8.75rem);
+      top: calc(var(--site-header-height) + 12.6rem);
       right: 1.5%;
       left: auto;
       width: min(46vw, 200px);
-      opacity: 0.27;
+      opacity: 0.38;
       animation: none;
     }
 
     .live-bg__people-link {
       stroke-width: 0.9;
-      stroke: rgba(34, 211, 238, 0.29);
+      stroke: rgba(34, 211, 238, 0.42);
     }
 
     .live-bg__people-node--green .live-bg__people-hex,
     .live-bg__people-node--red .live-bg__people-hex,
     .live-bg__people-node--watch .live-bg__people-hex {
-      stroke-opacity: 0.7;
+      stroke-opacity: 1;
     }
 
     .live-bg__orderbook-side--ask .live-bg__orderbook-price {
-      color: rgba(248, 113, 113, 0.65);
+      color: rgba(248, 113, 113, 0.94);
     }
 
     .live-bg__orderbook-side--bid .live-bg__orderbook-price {
-      color: rgba(52, 211, 153, 0.67);
+      color: rgba(52, 211, 153, 0.96);
     }
 
     .live-bg__orderbook-mid {
-      color: rgba(34, 211, 238, 0.68);
+      color: rgba(34, 211, 238, 0.98);
     }
 
     .live-bg__grid {
