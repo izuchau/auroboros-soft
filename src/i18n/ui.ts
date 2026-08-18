@@ -153,7 +153,7 @@ const translations = {
       orderTitle: 'Заказ робота',
     },
     footer: {
-      tagline: 'Разработка торговых роботов для финансовых рынков',
+      taglineLines: ['Разработка торговых роботов', 'для финансовых рынков'],
       privacy: 'Конфиденциальность',
       terms: 'Соглашение',
       nda: 'Соглашение о нераспространении',
@@ -331,7 +331,7 @@ const translations = {
       orderTitle: 'Order bot',
     },
     footer: {
-      tagline: 'Trading bot development for financial markets',
+      taglineLines: ['Trading bot development', 'for financial markets'],
       privacy: 'Privacy',
       terms: 'Terms',
       nda: 'Non-Disclosure Agreement',

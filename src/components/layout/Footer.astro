@@ -20,7 +20,11 @@ const year = new Date().getFullYear();
         <div class="mb-4">
           <Logo variant="footer" glow={true} />
         </div>
-        <p class="text-sm text-text-muted">{t.footer.tagline}</p>
+        <div class="space-y-0.5 text-sm text-text-muted">
+          {t.footer.taglineLines.map((line) => (
+            <p>{line}</p>
+          ))}
+        </div>
       </div>
 
       <div>
