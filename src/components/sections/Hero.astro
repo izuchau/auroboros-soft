@@ -26,11 +26,9 @@ const t = getTranslations(locale);
 
       <p class="mb-3 text-sm tracking-wide text-silver/70 italic">{t.hero.tagline}</p>
 
-      <div class="mx-auto mb-10 max-w-2xl space-y-1.5 text-base leading-relaxed text-text-muted sm:text-lg">
-        {t.hero.subtitleLines.map((line) => (
-          <p>{line}</p>
-        ))}
-      </div>
+      <p class="mx-auto mb-10 max-w-3xl text-base leading-relaxed whitespace-nowrap text-text-muted sm:text-lg max-sm:whitespace-normal">
+        {t.hero.subtitle}
+      </p>
 
       <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
         <Button href="#contact" variant="secondary" size="lg">{t.hero.ctaPrimary}</Button>
