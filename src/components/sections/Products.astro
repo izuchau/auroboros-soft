@@ -18,7 +18,11 @@ const t = getTranslations(locale);
   <div class="container-main">
     <div class="mb-12 text-center">
       <h2 class="heading-soft mb-4 text-3xl font-bold sm:text-4xl">{t.products.title}</h2>
-      <p class="mx-auto max-w-2xl text-text-muted">{t.products.subtitle}</p>
+      <div class="mx-auto max-w-2xl space-y-1 text-text-muted">
+        {t.products.subtitleLines.map((line) => (
+          <p>{line}</p>
+        ))}
+      </div>
     </div>
 
     <div class="grid gap-8 lg:grid-cols-2 lg:items-stretch">

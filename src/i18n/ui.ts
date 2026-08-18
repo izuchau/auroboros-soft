@@ -70,8 +70,10 @@ const translations = {
     },
     products: {
       title: 'Готовые решения',
-      subtitle:
-        'Купить торгового робота для MOEX и Bybit: акции, облигации ОФЗ, криптовалюта — от 27 900 ₽. Бэктест и тестовый режим перед боевым запуском',
+      subtitleLines: [
+        'Купить торгового робота для MOEX: Акции, Облигации',
+        'Bybit: Криптовалюта',
+      ],
       watchVideo: 'Смотреть видео',
       order: 'Заказать',
       strategy: 'Стратегии',
@@ -246,8 +248,10 @@ const translations = {
     },
     products: {
       title: 'Ready-made solutions',
-      subtitle:
-        'Buy a trading bot for MOEX and Bybit: Russian equities, OFZ bonds, crypto — from 27,900 RUB. Backtesting and test mode before live launch',
+      subtitleLines: [
+        'Buy a trading bot for MOEX: Equities, Bonds',
+        'Bybit: Cryptocurrency',
+      ],
       watchVideo: 'Watch video',
       order: 'Order',
       strategy: 'Strategies',
