@@ -4,22 +4,47 @@ interface Props {
   alt: string;
   label?: string;
   logoBlend?: 'normal' | 'screen';
+  brandVariant?: 'moex-pro' | 'crypto-pro';
 }
 
-const { logoSrc, alt, label, logoBlend = 'normal' } = Astro.props;
+const { logoSrc, alt, label, logoBlend = 'normal', brandVariant } = Astro.props;
+
+const brandParts =
+  brandVariant === 'moex-pro'
+    ? { a: 'MOEX', b: 'PRO' }
+    : brandVariant === 'crypto-pro'
+      ? { a: 'CRYPTO', b: 'PRO' }
+      : null;
 ---
 
 <div class="product-box-wrap">
   <div class="product-box-scene">
-    <div class="product-box">
+    <div class:list={['product-box', brandVariant && `product-box--${brandVariant}`]}>
       <div class="product-box__face product-box__face--front">
-        <img
-          src={logoSrc}
-          alt={alt}
-          loading="lazy"
-          decoding="async"
-          class:list={[{ 'product-box__logo--screen': logoBlend === 'screen' }]}
-        />
+        <div class="product-box__front-inner">
+          <div class:list={['product-box__logo-wrap', brandVariant && `product-box__logo-wrap--${brandVariant}`]}>
+            <img
+              src={logoSrc}
+              alt={alt}
+              loading="lazy"
+              decoding="async"
+              class:list={[
+                { 'product-box__logo--screen': logoBlend === 'screen' },
+                brandVariant && `product-box__logo--${brandVariant}`,
+              ]}
+            />
+          </div>
+          {
+            brandParts && brandVariant && (
+              <div class="product-box__brand-zone">
+                <p class:list={['product-box__brand', `product-box__brand--${brandVariant}`]}>
+                  <span class="product-box__brand-a">{brandParts.a}</span>
+                  <span class="product-box__brand-b">{brandParts.b}</span>
+                </p>
+              </div>
+            )
+          }
+        </div>
       </div>
       <div class="product-box__face product-box__face--back" aria-hidden="true"></div>
       <div class="product-box__face product-box__face--right" aria-hidden="true"></div>

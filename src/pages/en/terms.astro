@@ -6,52 +6,226 @@ import { getTranslations, localePath } from '../../i18n/ui';
 
 const locale = 'en';
 const t = getTranslations(locale);
+const updated = 'August 8, 2026';
+const privacyPath = localePath(locale, 'privacy');
 ---
 
 <BaseLayout locale={locale} title={t.legal.termsTitle} description={t.legal.termsTitle}>
   <Header locale={locale} />
   <main class="section-padding pt-44">
     <article class="container-main max-w-3xl">
-      <h1 class="heading-soft mb-8 text-3xl font-bold">{t.legal.termsTitle}</h1>
+      <h1 class="heading-soft mb-2 text-3xl font-bold">{t.legal.termsTitle}</h1>
+      <p class="mb-8 text-xs text-text-dim">Last updated: {updated}</p>
 
       <div class="space-y-6 text-sm leading-relaxed text-text-muted">
         <p>
-          These Terms of Service govern the use of the Auroboros Soft website and the provision of trading bot
-          software and related services.
+          These Terms of Service ("Terms") govern your use of the Auroboros Soft website (the "Site") and the
+          provision of trading bot software and related services ("Software", "bot", "services"). By using the
+          Site, submitting a request, or purchasing our products and services, you confirm that you have read and
+          accept these Terms.
         </p>
 
         <section>
-          <h2 class="heading-soft mb-3 text-lg font-semibold">1. Services</h2>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">1. Parties and definitions</h2>
           <p>
-            We provide trading bot software, custom development, configuration, and support services for financial
-            markets.
+            <strong class="text-text">Provider</strong> — Auroboros Soft, offering Software and services through
+            the Site.
+          </p>
+          <p class="mt-2">
+            <strong class="text-text">User / Client</strong> — any individual or legal entity that visits the Site,
+            submits a request, or uses purchased Software.
+          </p>
+          <p class="mt-2">
+            <strong class="text-text">Ready-made products</strong> — software for automated trading listed in the
+            Products section of the Site, including MOEX PRO, CRYPTO PRO, and any other ready-made bots or related
+            materials we publish on the Site at the time of your order.
+          </p>
+          <p class="mt-2">
+            <strong class="text-text">Custom development</strong> — building or adapting a trading bot to the Client's
+            requirements.
           </p>
         </section>
 
         <section>
-          <h2 class="heading-soft mb-3 text-lg font-semibold">2. Trading risks</h2>
-          <p>
-            Trading financial markets involves risk of capital loss. Past performance does not guarantee future
-            results. Software is not investment advice.
+          <h2 class="heading-soft mb-3 text-lg font-semibold">2. Services</h2>
+          <p>The Provider offers:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>ready-made trading bot Software for supported platforms;</li>
+            <li>custom development, configuration, and adaptation;</li>
+            <li>consultations on installation, setup, and operation;</li>
+            <li>technical support — within the scope agreed at the time of order.</li>
+          </ul>
+          <p class="mt-2">
+            Specific scope, timelines, pricing, and delivery method are agreed when your request is processed and may
+            be recorded in correspondence, an invoice, contract, or other document as agreed.
           </p>
         </section>
 
         <section>
-          <h2 class="heading-soft mb-3 text-lg font-semibold">3. Liability</h2>
-          <p>
-            The client is responsible for decisions made when using trading bots, including risk settings and
-            instrument selection.
+          <h2 class="heading-soft mb-3 text-lg font-semibold">3. Use of the Site</h2>
+          <p>When using the Site, you agree to:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>provide accurate information in the contact form;</li>
+            <li>not disrupt the Site or attempt unauthorized access to systems;</li>
+            <li>not use Site materials in violation of copyright or without the Provider's consent;</li>
+            <li>comply with applicable law and the rules of trading platforms used with the Software.</li>
+          </ul>
+          <p class="mt-2">
+            The Provider may restrict access or decline to process a request in case of violation of these Terms or
+            suspected abuse, spam, or fraud.
           </p>
         </section>
 
         <section>
-          <h2 class="heading-soft mb-3 text-lg font-semibold">4. Contact</h2>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">4. No investment advice</h2>
           <p>
-            Email: <a href="mailto:promasterboros@gmail.com" class="text-primary hover:underline">promasterboros@gmail.com</a>
+            Information on the Site, in product descriptions, FAQ, and correspondence is informational and technical.
+            We are not an investment adviser, broker, or asset manager. We do not tell you what to buy or sell: the
+            bot executes predefined rules. Trading decisions, instrument selection, position size, and risk settings
+            are yours alone.
           </p>
         </section>
 
-        <p class="text-xs text-text-dim">This document is a template. Consult a legal professional before publishing.</p>
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">5. Trading risks</h2>
+          <p>
+            Trading financial markets involves the risk of losing capital. The bot does not guarantee returns — results
+            depend on the market, settings, connectivity to the exchange or broker, and your decisions. A successful
+            backtest, demo, or test run does not mean future results will be the same.
+          </p>
+          <p class="mt-2">
+            You acknowledge that using the Software does not eliminate losses, slippage, connectivity failures,
+            exchange rule changes, or other market and technical risks. We recommend starting with conservative
+            settings and sizes that match your financial situation.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">6. Software operation and technical risks</h2>
+          <p>
+            The trading bot is software. It may contain errors, stop working, work partially, or behave differently
+            from what is described on the Site or what the Client expects — for any reason, including code defects,
+            hardware or OS incompatibility, internet or server failures, exchange or broker API changes, third-party
+            software updates, misconfiguration, actions of third parties, or force majeure.
+          </p>
+          <p class="mt-2">
+            The Provider does not guarantee that the Software will run without interruption, without errors, or in
+            line with your expectations. We are not liable if the bot fails to start, stops working, behaves
+            incorrectly, or produces results different from what you expected. All risks related to installation,
+            configuration, operation, and consequences of using the Software are borne by the Client.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">7. License and intellectual property</h2>
+          <p>
+            All Site materials (text, design, logos, descriptions, source and compiled Software code) belong to the
+            Provider or are used under lawful rights. The Client receives a non-exclusive right to use purchased
+            Software according to the order terms. For ready-made bots, unless agreed otherwise: one license key
+            is for activation on one Client computer.
+          </p>
+          <p class="mt-2">Without written consent from the Provider, the Client may not:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>copy, distribute, resell, or sublicense the Software to third parties;</li>
+            <li>decompile, modify, or create derivative products based on the Software, unless agreed separately;</li>
+            <li>remove or hide authorship or usage restrictions.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">8. Orders, payment, and delivery</h2>
+          <p>
+            Requests are accepted via the Site form or email. Price, payment method, and delivery timeline are agreed
+            individually. Until payment is received (unless otherwise agreed), the Provider may withhold files, access
+            keys, or other Software materials.
+          </p>
+          <p class="mt-2">
+            Delivery may be by electronic means (archive, link, repository, etc.). The Client must be able to receive
+            materials and keep any access credentials confidential.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">9. Client responsibilities</h2>
+          <p>The Client is solely responsible for:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>risk settings, limits, and instrument selection;</li>
+            <li>compliance with exchange, broker, or platform rules;</li>
+            <li>suitable hardware, OS, internet connection, and accounts;</li>
+            <li>backing up settings and monitoring the bot in live trading;</li>
+            <li>tax and other applicable laws in their jurisdiction.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">10. Support and updates</h2>
+          <p>
+            Support scope (consultations, fixes, updates) is defined by the specific order. For ready-made MOEX pro
+            and CRYPTO pro bots, free technical support for first launch is provided for 30 calendar days from
+            delivery unless otherwise agreed. We aim to respond
+            promptly but do not guarantee uninterrupted operation when exchanges, broker terminals, or third-party
+            software change. Adaptation timelines may be agreed separately.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">11. Limitation of liability</h2>
+          <p>
+            Software and services are provided "as is" to the extent permitted by law. The Provider is not liable for
+            Software failures, errors, or incorrect operation (including the cases described in Section 6), trading
+            losses, lost profits, indirect or incidental damages arising from use or inability to use the
+            Software, actions of third parties (exchanges, brokers, connectivity providers), or Client decisions.
+          </p>
+          <p class="mt-2">
+            Total liability for any claim related to a specific order is limited to the amount actually paid by the
+            Client for that product or service, unless mandatory law requires otherwise.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">12. Refunds</h2>
+          <p>
+            Because Software is digital, refunds after files, keys, or access have been delivered are generally not
+            provided unless explicitly agreed or required by mandatory law. If a material technical defect is confirmed
+            by the Provider, the parties will agree on a fix, replacement, or other remedy.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">13. Personal data</h2>
+          <p>
+            Processing of personal data is governed by our{' '}
+            <a href={privacyPath} class="text-primary hover:underline">Privacy Policy</a>. By submitting a request,
+            you confirm that you have read it.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">14. Changes to these Terms</h2>
+          <p>
+            We may update these Terms. The current version is always on this page with the date at the top. Continued
+            use of the Site or Software after changes means you accept the updated Terms, unless applicable law
+            requires otherwise.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">15. Governing law and disputes</h2>
+          <p>
+            These Terms are governed by the laws of the Russian Federation unless otherwise agreed in a separate
+            contract. Disputes should first be resolved through negotiation; if that fails, they may be submitted to
+            a court at the Provider's location unless mandatory rules provide otherwise.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">16. Contact</h2>
+          <p>For questions about these Terms, orders, or support:</p>
+          <p class="mt-2">
+            Email:{' '}
+            <a href="mailto:auroboros.soft@gmail.com" class="text-primary hover:underline">auroboros.soft@gmail.com</a>
+          </p>
+        </section>
       </div>
 
       <a href={localePath(locale)} class="mt-8 inline-block text-primary hover:underline">{t.legal.backHome}</a>

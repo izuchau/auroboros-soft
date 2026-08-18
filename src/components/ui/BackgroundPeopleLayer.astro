@@ -31,6 +31,103 @@ function buildViewBox(nodes: Node[], pad: number): string {
   return `${minX} ${minY} ${maxX - minX} ${maxY - minY}`;
 }
 
+function nodeDistance(a: Node, b: Node): number {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function segmentHitsHex(
+  ax: number,
+  ay: number,
+  bx: number,
+  by: number,
+  cx: number,
+  cy: number,
+  hitRadius: number
+): boolean {
+  const dx = bx - ax;
+  const dy = by - ay;
+  const len2 = dx * dx + dy * dy;
+  if (len2 === 0) return nodeDistance({ x: ax, y: ay }, { x: cx, y: cy }) < hitRadius;
+
+  const t = Math.max(0, Math.min(1, ((cx - ax) * dx + (cy - ay) * dy) / len2));
+  const px = ax + t * dx;
+  const py = ay + t * dy;
+  return Math.hypot(px - cx, py - cy) < hitRadius;
+}
+
+function hexEdgePointToward(
+  cx: number,
+  cy: number,
+  tx: number,
+  ty: number,
+  radius: number
+): { x: number; y: number } {
+  const dx = tx - cx;
+  const dy = ty - cy;
+  const len = Math.hypot(dx, dy);
+  if (!len) return { x: cx, y: cy };
+
+  const angle = Math.atan2(dy, dx);
+  const sector = Math.PI / 3;
+  const local = ((angle + Math.PI / 6) % sector + sector) % sector;
+  const dist = (radius * Math.cos(sector / 2)) / Math.cos(local - sector / 2);
+
+  return {
+    x: cx + (dx / len) * dist,
+    y: cy + (dy / len) * dist,
+  };
+}
+
+function linkLineCoords(a: Node, b: Node, hexRadius: number) {
+  const start = hexEdgePointToward(a.x, a.y, b.x, b.y, hexRadius);
+  const end = hexEdgePointToward(b.x, b.y, a.x, a.y, hexRadius);
+  return { start, end };
+}
+
+function buildNeighborLinks(nodes: Node[], hexRadius: number): readonly (readonly [number, number])[] {
+  const hitRadius = hexRadius * 0.82;
+  const maxNeighbors = 5;
+  const linkSet = new Set<string>();
+  const links: [number, number][] = [];
+
+  for (let i = 0; i < nodes.length; i++) {
+    const ranked = nodes
+      .map((other, j) => ({ j, d: i === j ? Infinity : nodeDistance(nodes[i], other) }))
+      .filter(({ d }) => Number.isFinite(d))
+      .sort((a, b) => a.d - b.d);
+
+    const first = ranked[0]?.d ?? Infinity;
+    const second = ranked[1]?.d ?? first;
+    const third = ranked[2]?.d ?? second;
+    const neighborCutoff = Math.max(second * 1.08, third * 1.02, first * 1.65);
+
+    let added = 0;
+    for (const { j, d } of ranked) {
+      if (added >= maxNeighbors) break;
+      if (d > neighborCutoff) break;
+
+      const a = Math.min(i, j);
+      const b = Math.max(i, j);
+      const key = `${a}-${b}`;
+      if (linkSet.has(key)) continue;
+
+      const { start, end } = linkLineCoords(nodes[i], nodes[j], hexRadius);
+      const blocked = nodes.some((node, k) => {
+        if (k === i || k === j) return false;
+        return segmentHitsHex(start.x, start.y, end.x, end.y, node.x, node.y, hitRadius);
+      });
+
+      if (!blocked) {
+        links.push([a, b]);
+        linkSet.add(key);
+        added += 1;
+      }
+    }
+  }
+
+  return links;
+}
+
 const scale = 1.2;
 const baseNodes: Node[] = [
   { x: 48, y: 40, tone: 'green' },
@@ -51,19 +148,16 @@ const mainNodes = baseNodes.map(({ x, y, tone }) => ({
   tone,
 }));
 
-const mainLinks = [
-  [0, 1],
-  [1, 2],
-  [2, 3],
-  [0, 4],
-  [1, 5],
-  [2, 6],
-  [4, 5],
-  [5, 6],
-  [0, 5],
-  [2, 5],
-  [3, 6],
-] as const;
+const mainCenterY = mainNodes.reduce((sum, node) => sum + node.y, 0) / mainNodes.length;
+const mobileYSpread = 2.074;
+
+const mainNodesMobile = mainNodes.map(({ x, y, tone }) => ({
+  x,
+  y: Math.round(mainCenterY + (y - mainCenterY) * mobileYSpread),
+  tone,
+}));
+
+const mainLinksMobile = buildNeighborLinks(mainNodesMobile, r);
 
 const secondaryNodes: Node[] = [
   { x: 60, y: 30, tone: 'green' },
@@ -73,24 +167,10 @@ const secondaryNodes: Node[] = [
   { x: 210, y: 104, tone: 'green' },
 ];
 
-const secondaryLinks = [
-  [0, 1],
-  [1, 2],
-  [0, 3],
-  [1, 4],
-  [3, 4],
-  [2, 4],
-] as const;
-
 const pad = r + 12;
 
-const bridgeLinks: readonly (readonly [number, number])[] = [
-  [4, 0],
-  [5, 1],
-  [6, 2],
-  [5, 3],
-  [4, 4],
-];
+const mainLinks = buildNeighborLinks(mainNodes, r);
+const secondaryLinks = buildNeighborLinks(secondaryNodes, r);
 
 const networks: Network[] = [
   {
@@ -113,41 +193,123 @@ const networks: Network[] = [
   {
     networks.map((network, networkIndex) => (
       <div class:list={['live-bg__people-group', `live-bg__people-group--${network.id}`]}>
-        <svg class="live-bg__people-svg" viewBox={network.viewBox} xmlns="http://www.w3.org/2000/svg">
-          {
-            network.links.map(([a, b], i) => (
-              <line
-                class="live-bg__people-link"
-                vector-effect="non-scaling-stroke"
-                x1={network.nodes[a].x}
-                y1={network.nodes[a].y}
-                x2={network.nodes[b].x}
-                y2={network.nodes[b].y}
-                style={`animation-delay: ${i * 0.28 + networkIndex * 0.35}s`}
-              />
-            ))
-          }
-          {
-            network.nodes.map((node, i) => (
-              <g
-                class:list={['live-bg__people-node', `live-bg__people-node--${node.tone}`]}
-                transform={`translate(${node.x} ${node.y})`}
-                data-node={i}
-                style={`animation-delay: ${i * 0.32 + networkIndex * 0.45}s`}
+        {
+          network.id === 'main' ? (
+            <>
+              <svg
+                class="live-bg__people-svg live-bg__people-svg--desktop"
+                viewBox={network.viewBox}
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <polygon class="live-bg__people-hex" points={hexPoints(0, 0, r)} />
-                <circle class="live-bg__people-head" cx="0" cy="-5" r="4.2" />
-                <path class="live-bg__people-body" d="M-6 2 Q0 6 6 2 L5 14 Q0 11 -5 14 Z" />
-              </g>
-            ))
-          }
-        </svg>
+                {
+                  network.links.map(([a, b], i) => {
+                    const line = linkLineCoords(network.nodes[a], network.nodes[b], r);
+                    return (
+                      <line
+                        class="live-bg__people-link"
+                        vector-effect="non-scaling-stroke"
+                        x1={line.start.x}
+                        y1={line.start.y}
+                        x2={line.end.x}
+                        y2={line.end.y}
+                        style={`animation-delay: ${i * 0.28 + networkIndex * 0.35}s`}
+                      />
+                    );
+                  })
+                }
+                {
+                  network.nodes.map((node, i) => (
+                    <g
+                      class:list={['live-bg__people-node', `live-bg__people-node--${node.tone}`]}
+                      transform={`translate(${node.x} ${node.y})`}
+                      data-node={i}
+                      style={`animation-delay: ${i * 0.32 + networkIndex * 0.45}s`}
+                    >
+                      <polygon class="live-bg__people-hex" points={hexPoints(0, 0, r)} />
+                      <circle class="live-bg__people-head" cx="0" cy="-5" r="4.2" />
+                      <path class="live-bg__people-body" d="M-6 2 Q0 6 6 2 L5 14 Q0 11 -5 14 Z" />
+                    </g>
+                  ))
+                }
+              </svg>
+              <svg
+                class="live-bg__people-svg live-bg__people-svg--mobile"
+                viewBox={buildViewBox(mainNodesMobile, pad)}
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {
+                  mainLinksMobile.map(([a, b], i) => {
+                    const line = linkLineCoords(mainNodesMobile[a], mainNodesMobile[b], r);
+                    return (
+                      <line
+                        class="live-bg__people-link"
+                        vector-effect="non-scaling-stroke"
+                        x1={line.start.x}
+                        y1={line.start.y}
+                        x2={line.end.x}
+                        y2={line.end.y}
+                        style={`animation-delay: ${i * 0.28 + networkIndex * 0.35}s`}
+                      />
+                    );
+                  })
+                }
+                {
+                  mainNodesMobile.map((node, i) => (
+                    <g
+                      class:list={['live-bg__people-node', `live-bg__people-node--${node.tone}`]}
+                      transform={`translate(${node.x} ${node.y})`}
+                      data-node={i}
+                      style={`animation-delay: ${i * 0.32 + networkIndex * 0.45}s`}
+                    >
+                      <polygon class="live-bg__people-hex" points={hexPoints(0, 0, r)} />
+                      <circle class="live-bg__people-head" cx="0" cy="-5" r="4.2" />
+                      <path class="live-bg__people-body" d="M-6 2 Q0 6 6 2 L5 14 Q0 11 -5 14 Z" />
+                    </g>
+                  ))
+                }
+              </svg>
+            </>
+          ) : (
+            <svg class="live-bg__people-svg" viewBox={network.viewBox} xmlns="http://www.w3.org/2000/svg">
+              {
+                network.links.map(([a, b], i) => {
+                  const line = linkLineCoords(network.nodes[a], network.nodes[b], r);
+                  return (
+                    <line
+                      class="live-bg__people-link"
+                      vector-effect="non-scaling-stroke"
+                      x1={line.start.x}
+                      y1={line.start.y}
+                      x2={line.end.x}
+                      y2={line.end.y}
+                      style={`animation-delay: ${i * 0.28 + networkIndex * 0.35}s`}
+                    />
+                  );
+                })
+              }
+              {
+                network.nodes.map((node, i) => (
+                  <g
+                    class:list={['live-bg__people-node', `live-bg__people-node--${node.tone}`]}
+                    transform={`translate(${node.x} ${node.y})`}
+                    data-node={i}
+                    style={`animation-delay: ${i * 0.32 + networkIndex * 0.45}s`}
+                  >
+                    <polygon class="live-bg__people-hex" points={hexPoints(0, 0, r)} />
+                    <circle class="live-bg__people-head" cx="0" cy="-5" r="4.2" />
+                    <path class="live-bg__people-body" d="M-6 2 Q0 6 6 2 L5 14 Q0 11 -5 14 Z" />
+                  </g>
+                ))
+              }
+            </svg>
+          )
+        }
       </div>
     ))
   }
 </div>
 
-<script define:vars={{ bridgeLinks }}>
+<script>
   function isVisibleRect(rect) {
     return Boolean(rect && rect.width > 0 && rect.height > 0);
   }
@@ -156,9 +318,13 @@ const networks: Network[] = [
     return window.matchMedia('(max-width: 767px)').matches;
   }
 
-  function getNodeCenter(networkId, nodeIndex) {
+  function getNodeAnchor(networkId, nodeIndex) {
     const group = document.querySelector(`.live-bg__people-group--${networkId}`);
-    const node = group?.querySelector(`[data-node="${nodeIndex}"]`);
+    const nodeSelector =
+      networkId === 'main'
+        ? `.live-bg__people-svg--desktop [data-node="${nodeIndex}"]`
+        : `[data-node="${nodeIndex}"]`;
+    const node = group?.querySelector(nodeSelector);
     const container = document.querySelector('.live-bg__people');
     if (!node || !container || !group) return null;
 
@@ -173,7 +339,118 @@ const networks: Network[] = [
     return {
       x: nodeRect.left + nodeRect.width / 2 - boxRect.left,
       y: nodeRect.top + nodeRect.height / 2 - boxRect.top,
+      r: Math.min(nodeRect.width, nodeRect.height) * 0.48,
+      el: node,
+      networkId,
+      nodeIndex,
     };
+  }
+
+  function hexEdgePointToward(cx, cy, tx, ty, radius) {
+    const dx = tx - cx;
+    const dy = ty - cy;
+    const len = Math.hypot(dx, dy);
+    if (!len) return { x: cx, y: cy };
+
+    const angle = Math.atan2(dy, dx);
+    const sector = Math.PI / 3;
+    const local = ((angle + Math.PI / 6) % sector + sector) % sector;
+    const dist = (radius * Math.cos(sector / 2)) / Math.cos(local - sector / 2);
+
+    return {
+      x: cx + (dx / len) * dist,
+      y: cy + (dy / len) * dist,
+    };
+  }
+
+  function getNodeCenter(networkId, nodeIndex) {
+    const anchor = getNodeAnchor(networkId, nodeIndex);
+    if (!anchor) return null;
+    return { x: anchor.x, y: anchor.y };
+  }
+
+  function segmentHitsCircle(x1, y1, x2, y2, cx, cy, radius) {
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len2 = dx * dx + dy * dy;
+    if (!len2) return Math.hypot(cx - x1, cy - y1) < radius;
+
+    const t = Math.max(0, Math.min(1, ((cx - x1) * dx + (cy - y1) * dy) / len2));
+    const px = x1 + t * dx;
+    const py = y1 + t * dy;
+    return Math.hypot(px - cx, py - cy) < radius;
+  }
+
+  function collectHexAnchors(container) {
+    const anchors = [];
+
+    container.querySelectorAll('.live-bg__people-svg--desktop [data-node]').forEach((node) => {
+      const nodeIndex = Number(node.getAttribute('data-node'));
+      const anchor = getNodeAnchor('main', nodeIndex);
+      if (anchor) anchors.push(anchor);
+    });
+
+    container.querySelectorAll('.live-bg__people-group--secondary [data-node]').forEach((node) => {
+      const nodeIndex = Number(node.getAttribute('data-node'));
+      const anchor = getNodeAnchor('secondary', nodeIndex);
+      if (anchor) anchors.push(anchor);
+    });
+
+    return anchors;
+  }
+
+  function bridgeLineClear(from, to, fromEl, toEl, anchors) {
+    return !anchors.some((anchor) => {
+      if (anchor.el === fromEl || anchor.el === toEl) return false;
+      return segmentHitsCircle(from.x, from.y, to.x, to.y, anchor.x, anchor.y, anchor.r * 0.82);
+    });
+  }
+
+  function buildScreenBridgeLinks(container) {
+    const mainNodes = container.querySelectorAll('.live-bg__people-svg--desktop [data-node]');
+    const secondaryNodes = container.querySelectorAll('.live-bg__people-group--secondary [data-node]');
+    const anchors = collectHexAnchors(container);
+    const candidates = [];
+
+    mainNodes.forEach((mainNode) => {
+      const mainIndex = Number(mainNode.getAttribute('data-node'));
+      const from = getNodeAnchor('main', mainIndex);
+      if (!from) return;
+
+      secondaryNodes.forEach((secondaryNode) => {
+        const secIndex = Number(secondaryNode.getAttribute('data-node'));
+        const to = getNodeAnchor('secondary', secIndex);
+        if (!to) return;
+
+        const fromEdge = hexEdgePointToward(from.x, from.y, to.x, to.y, from.r);
+        const toEdge = hexEdgePointToward(to.x, to.y, from.x, from.y, to.r);
+        if (!bridgeLineClear(fromEdge, toEdge, from.el, to.el, anchors)) return;
+
+        candidates.push({
+          from: fromEdge,
+          to: toEdge,
+          d: Math.hypot(toEdge.x - fromEdge.x, toEdge.y - fromEdge.y),
+          mi: mainIndex,
+          si: secIndex,
+        });
+      });
+    });
+
+    candidates.sort((a, b) => a.d - b.d);
+
+    const picked = [];
+    const usedMain = new Set();
+    const usedSec = new Set();
+
+    for (const candidate of candidates) {
+      if (picked.length >= 3) break;
+      if (usedMain.has(candidate.mi) || usedSec.has(candidate.si)) continue;
+      picked.push(candidate);
+      usedMain.add(candidate.mi);
+      usedSec.add(candidate.si);
+    }
+
+    return picked;
   }
 
   function drawPeopleBridge() {
@@ -192,14 +469,10 @@ const networks: Network[] = [
 
     svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
 
-    const lines = bridgeLinks
-      .map(([mainIndex, secondaryIndex], i) => {
-        const from = getNodeCenter('main', mainIndex);
-        const to = getNodeCenter('secondary', secondaryIndex);
-        if (!from || !to) return '';
-
-        return `<line class="live-bg__people-bridge-link" vector-effect="non-scaling-stroke" x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" style="animation-delay:${i * 0.32}s"></line>`;
-      })
+    const lines = buildScreenBridgeLinks(container)
+      .map(({ from, to }, i) =>
+        `<line class="live-bg__people-bridge-link" vector-effect="non-scaling-stroke" x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" style="animation-delay:${i * 0.32}s"></line>`
+      )
       .join('');
 
     svg.innerHTML = lines;

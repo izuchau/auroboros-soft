@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../../types';
 import { getTranslations } from '../../i18n/ui';
+import BenefitIcon from '../ui/BenefitIcon.astro';
 
 interface Props {
   locale: Locale;
@@ -8,23 +9,28 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = getTranslations(locale);
+
+const benefitIconIds = ['backtest', 'risk', 'support', 'nda'] as const;
 ---
 
 <section id="about" class="section-padding bg-bg-card/50">
   <div class="container-main">
-    <h2 class="heading-soft mb-12 text-center text-3xl font-bold sm:text-4xl">{t.steps.title}</h2>
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mb-12 text-center">
+      <h2 class="heading-soft mb-4 text-3xl font-bold sm:text-4xl">{t.steps.title}</h2>
+      <p class="mx-auto max-w-2xl text-text-muted">{t.steps.subtitle}</p>
+    </div>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:items-stretch">
       {
         t.steps.items.map((item, i) => (
-          <article class="relative card-surface p-6">
+          <article class="card-surface group relative flex h-full flex-col p-6 transition hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
             {i < t.steps.items.length - 1 && (
               <div class="absolute top-1/2 -right-3 hidden h-0.5 w-6 bg-border lg:block" />
             )}
-            <span class="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 font-mono text-sm font-bold text-primary">
+            <span class="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 font-mono text-sm font-bold text-primary/80">
               {i + 1}
             </span>
             <h3 class="heading-soft mb-2 font-semibold">{item.title}</h3>
-            <p class="text-sm text-text-muted">{item.description}</p>
+            <p class="text-sm leading-relaxed text-text-muted">{item.description}</p>
           </article>
         ))
       }
@@ -35,12 +41,13 @@ const t = getTranslations(locale);
 <section class="section-padding">
   <div class="container-main">
     <h2 class="heading-soft mb-12 text-center text-3xl font-bold sm:text-4xl">{t.benefits.title}</h2>
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:items-stretch">
       {
-        t.benefits.items.map((item) => (
-          <article class="card-surface p-6 text-center">
+        t.benefits.items.map((item, i) => (
+          <article class="card-surface group flex h-full flex-col p-6 transition hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5">
+            <BenefitIcon id={benefitIconIds[i]} />
             <h3 class="heading-soft mb-2 font-semibold">{item.title}</h3>
-            <p class="text-sm text-text-muted">{item.description}</p>
+            <p class="text-sm leading-relaxed text-text-muted">{item.description}</p>
           </article>
         ))
       }

@@ -4,6 +4,10 @@ export type LocalizedString = Record<Locale, string>;
 
 export type LocalizedList = Record<Locale, string[]>;
 
+export interface ProductFeature {
+  label: LocalizedString;
+}
+
 export type VideoProvider = 'youtube' | 'vk';
 
 export interface ProductVideo {
@@ -19,7 +23,7 @@ export interface Product {
   strategy: LocalizedString;
   description: LocalizedString;
   price: LocalizedString;
-  features: LocalizedList;
+  features: ProductFeature[];
   video?: ProductVideo;
   boxLogo?: string;
 }

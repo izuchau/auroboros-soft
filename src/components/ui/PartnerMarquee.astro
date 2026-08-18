@@ -1,0 +1,37 @@
+---
+import { partners } from '../../data/partners';
+import type { Locale } from '../../types';
+import { getTranslations } from '../../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+const trackItems = [...partners, ...partners];
+---
+
+<div class="partner-marquee" aria-label={t.markets.partnersLabel}>
+  <p class="partner-marquee__label">{t.markets.partnersLabel}</p>
+
+  <div class="partner-marquee__shell">
+    <div class="partner-marquee__fade partner-marquee__fade--left" aria-hidden="true"></div>
+    <div class="partner-marquee__fade partner-marquee__fade--right" aria-hidden="true"></div>
+
+    <div class="partner-marquee__viewport">
+      <div class="partner-marquee__track">
+        {
+          trackItems.map((partner) => (
+            <div
+              class="partner-marquee__card card-surface transition hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5"
+              data-kind={partner.kind}
+            >
+              <span class="partner-marquee__name">{partner.name}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</div>

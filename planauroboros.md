@@ -40,8 +40,8 @@
 
 ### Форма заявки
 
-- [x] Formspree ID: `xeajqpob` → `https://formspree.io/f/xeajqpob`
-- [x] Email для уведомлений: **promasterboros@gmail.com** (в Formspree → Workflow → Email)
+- [x] Formspree ID: `mwlevlbw` → `https://formspree.io/f/mwlevlbw`
+- [x] Email для уведомлений: **auroboros.soft@gmail.com** (в Formspree → Workflow → Email)
 - [x] Обязательные поля: **имя**, **email**, согласие с политикой
 - [x] Необязательные: **телефон**, **сообщение**
 - [x] Отправка без перезагрузки страницы (AJAX)
@@ -57,7 +57,7 @@
 
 ### Контакты на сайте
 
-- Email в footer: **promasterboros@gmail.com**
+- Email в footer: **auroboros.soft@gmail.com**
 
 ### Живой фон (основная часть) — ✅ готово (7 августа 2026)
 
@@ -77,7 +77,7 @@
 
 ---
 
-- `.env` — `PUBLIC_FORMSPREE_ID=xeajqpob`
+- `.env` — `PUBLIC_FORMSPREE_ID=mwlevlbw`
 - `astro.config.mjs` — временный site: `https://auroborossoft.vercel.app` (поменять после регистрации домена)
 
 ---
@@ -105,6 +105,37 @@
 Файлы: `src/components/forms/ContactForm.astro`, `.env.example`, `README.md`
 
 ---
+
+### Дорожная карта сайта (обновлено 8 авг. 2026)
+
+**Шаг 1 — сделано**
+- [x] Секция «Что входит в покупку» (лицензия 1 ПК, email-доставка, дашборд, 30 дней поддержки)
+- [x] Блок «Ваши деньги на вашем счёте»
+- [x] +6 FAQ (доставка, лицензия, поддержка, деньги у брокера, Windows, что получаете)
+- [x] Telegram-канал в шапке (канала достаточно; личный чат — опционально позже)
+- [x] Заглушки под скрины/видео
+- [x] Соглашение: 1 ПК / 30 дней поддержки
+
+**Шаг 2 — ваши материалы**
+- [ ] Скриншоты дашборда MOEX pro / CRYPTO pro → `public/images/products/`
+- [ ] Видеообзор → `products.ts` (YouTube/VK embed)
+
+**Шаг 3 — юрлицо и оплата**
+- [ ] ООО «Ауроборос» (сейчас ИП; реквизиты на сайт — после регистрации ООО)
+- [ ] Текст: способы оплаты (счёт, СБП и т.д.)
+
+**Шаг 4 — SEO / техника**
+- [ ] og:image для шаринга в Telegram/VK
+- [ ] sitemap (@astrojs/sitemap)
+- [ ] Schema.org (FAQ, Organization)
+- [ ] GA4 / Метрика (ID в `.env`)
+
+**Шаг 5 — позже (когда будут продажи)**
+- [ ] Отзывы клиентов (без выдуманных цифр доходности)
+- [ ] reCAPTCHA перед продом
+- [ ] Блог / база знаний (опционально)
+
+**Не делаем сейчас:** фейковые отзывы, личный Telegram-чат в шапке (канала хватит).
 
 ### Другие задачи на потом
 
@@ -160,8 +191,8 @@ public/
 
 | Параметр | Значение |
 |----------|----------|
-| Form ID | `xeajqpob` |
-| Email (Workflow) | promasterboros@gmail.com |
+| Form ID | `mwlevlbw` |
+| Email (Workflow) | auroboros.soft@gmail.com |
 | Formshield | **Disabled** |
 | CAPTCHA | **Не настроена** (TODO перед продом) |
 

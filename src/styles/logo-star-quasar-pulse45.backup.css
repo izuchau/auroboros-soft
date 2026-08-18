@@ -1,0 +1,21 @@
+/**
+ * Backup: quasar star with 1/4 turn pulse (approved 2026-08-09).
+ * Rollback: restore logo-star-quasar-twinkle keyframes in global.css
+ * and single animation on .logo-mark--star-quasar .logo-mark__core
+ */
+
+.logo-mark--star-quasar .logo-mark__core {
+  animation: logo-star-quasar-twinkle 2.4s ease-in-out infinite;
+}
+
+@keyframes logo-star-quasar-twinkle {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(0.9) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06) rotate(45deg);
+  }
+}

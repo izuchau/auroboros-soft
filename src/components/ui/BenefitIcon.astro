@@ -1,0 +1,137 @@
+---
+interface Props {
+  id: 'backtest' | 'risk' | 'support' | 'nda';
+}
+
+const { id } = Astro.props;
+---
+
+<div class="card-icon" aria-hidden="true">
+  {
+    id === 'backtest' && (
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M8 34V28H14V34H8Z"
+          fill="currentColor"
+          fill-opacity="0.42"></path>
+        <path
+          d="M16 34V22H22V34H16Z"
+          fill="currentColor"
+          fill-opacity="0.58"></path>
+        <path
+          d="M24 34V16H30V34H24Z"
+          fill="currentColor"
+          fill-opacity="0.72"></path>
+        <path
+          d="M32 34V12H38V34H32Z"
+          fill="currentColor"
+          fill-opacity="0.86"></path>
+        <path
+          d="M8 36H40"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"></path>
+        <path
+          d="M10 14L16 20L22 17L28 24L34 18"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+        <circle cx="10" cy="14" r="2" fill="currentColor"></circle>
+        <circle cx="34" cy="18" r="2" fill="currentColor"></circle>
+      </svg>
+    )
+  }
+
+  {
+    id === 'risk' && (
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M24 7L38 14V24C38 31.5 32.5 37.5 24 41C15.5 37.5 10 31.5 10 24V14L24 7Z"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linejoin="round"></path>
+        <path
+          d="M24 16V26"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"></path>
+        <circle cx="24" cy="31" r="1.75" fill="currentColor"></circle>
+        <path
+          d="M16 24H32"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-dasharray="3 3"></path>
+      </svg>
+    )
+  }
+
+  {
+    id === 'support' && (
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M10 22C10 15.4 15.4 10 22 10H26C32.6 10 38 15.4 38 22V28H34.5C32.6 28 31 29.6 31 31.5V34.5C31 36.4 32.6 38 34.5 38H36C37.1 38 38 37.1 38 36V22C38 13.2 30.8 6 22 6H14C8.5 6 4 10.5 4 16V28C4 29.1 4.9 30 6 30H8.5C10.4 30 12 28.4 12 26.5V23.5C12 21.6 10.4 20 8.5 20H10V22Z"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linejoin="round"></path>
+        <path
+          d="M18 34H30"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"></path>
+        <path
+          d="M20 38H28"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"></path>
+        <path
+          d="M24 18V26"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"></path>
+        <path
+          d="M20 22H28"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"></path>
+      </svg>
+    )
+  }
+
+  {
+    id === 'nda' && (
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M14 8H30L38 16V38C38 39.1 37.1 40 36 40H14C12.9 40 12 39.1 12 38V10C12 8.9 12.9 8 14 8Z"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linejoin="round"></path>
+        <path
+          d="M30 8V16H38"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linejoin="round"></path>
+        <rect
+          x="18"
+          y="22"
+          width="14"
+          height="12"
+          rx="2"
+          stroke="currentColor"
+          stroke-width="1.75"></rect>
+        <path
+          d="M22 28H28"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"></path>
+        <path
+          d="M25 22V28"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"></path>
+        <circle cx="25" cy="31" r="1.5" fill="currentColor"></circle>
+      </svg>
+    )
+  }
+</div>

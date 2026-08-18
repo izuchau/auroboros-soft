@@ -20,7 +20,13 @@
 
 @layer base {
   :root {
-    --site-header-height: 4rem;
+    --site-header-height: 4.5rem;
+  }
+
+  @media (min-width: 640px) and (max-width: 767px) {
+    :root {
+      --site-header-height: 4.75rem;
+    }
   }
 
   @media (min-width: 768px) {
@@ -73,26 +79,66 @@
     @apply mx-auto max-w-6xl;
   }
 
+  /* Единый приглушённый серый на всех экранах (без color-mix — на mobile иначе выглядел белым) */
   .heading-soft {
-    @apply text-silver/85;
+    color: #b0bcc9;
   }
 
   .gradient-text {
     @apply bg-gradient-to-r from-primary via-accent to-silver bg-clip-text text-transparent;
   }
 
-  .markets-icon {
-    @apply mb-4 flex h-11 w-11 items-center justify-center text-silver/70 transition-colors duration-200;
+  .card-icon {
+    @apply mb-4 flex h-11 w-11 items-center justify-center text-primary/80 transition-colors duration-200;
   }
 
-  .markets-icon svg {
+  .card-icon svg {
     display: block;
     width: 100%;
     height: 100%;
   }
 
-  .group:hover .markets-icon {
-    @apply text-silver/85;
+  .group:hover .card-icon {
+    @apply text-primary/90;
+  }
+
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .social-links__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(34, 211, 238, 0.16);
+    background: rgba(15, 18, 24, 0.55);
+    color: rgba(34, 211, 238, 0.8);
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .social-links__item svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .social-links__item:hover {
+    color: rgba(34, 211, 238, 0.95);
+    border-color: rgba(34, 211, 238, 0.35);
+    background: rgba(34, 211, 238, 0.08);
+    box-shadow: 0 0 16px rgba(34, 211, 238, 0.12);
+  }
+
+  .social-links__item--soon {
+    cursor: default;
   }
 
   .product-box-wrap {
@@ -113,9 +159,11 @@
   }
 
   .product-box {
-    --box-w: 148px;
-    --box-h: 186px;
-    --box-d: 38px;
+    --box-w: 168px;
+    --box-h: 210px;
+    --box-d: 42px;
+    --box-brand-size: 1.0625rem;
+    --box-logo-max-h: calc(var(--box-h) * 0.78);
     position: relative;
     width: var(--box-w);
     height: var(--box-h);
@@ -140,24 +188,135 @@
     height: var(--box-h);
     transform: translateZ(calc(var(--box-d) / 2));
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    padding: 0.85rem;
+    padding: 0.4rem 0.35rem 0.35rem;
     background: linear-gradient(155deg, rgba(20, 26, 34, 0.98) 0%, rgba(8, 10, 13, 0.98) 100%);
     box-shadow: inset 0 0 24px rgba(34, 211, 238, 0.06);
   }
 
-  .product-box__face--front img {
+  .product-box__front-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
+    min-height: 0;
+    gap: 0.35rem;
+    padding: 0.25rem 0.2rem 0.3rem;
+  }
+
+  .product-box__logo-wrap {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: var(--box-logo-max-h);
+    max-height: var(--box-logo-max-h);
+  }
+
+  .product-box__face--front img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
+    object-position: center center;
     filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.22));
+  }
+
+  /* MOEX — в PNG больше «воздуха» вокруг щита */
+  .product-box--moex-pro .product-box__logo--moex-pro {
+    transform: scale(1.06);
+  }
+
+  /* CRYPTO — меньше зазор между логотипом и подписью; от нижнего края как у MOEX */
+  .product-box--crypto-pro .product-box__front-inner {
+    gap: 0.15rem;
+    padding-bottom: 0.65rem;
+  }
+
+  .product-box--crypto-pro .product-box__logo-wrap {
+    height: auto;
+    max-height: var(--box-logo-max-h);
+  }
+
+  .product-box--crypto-pro .product-box__logo--crypto-pro {
+    width: 100%;
+    height: auto;
+    max-height: calc(var(--box-logo-max-h) * 0.97);
+    transform: none;
+    object-position: center bottom;
+  }
+
+  .product-box--crypto-pro .product-box__brand-zone {
+    margin-top: -0.35rem;
+  }
+
+  .product-box__brand-zone {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0;
+  }
+
+  .product-box__brand {
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: var(--box-brand-size);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .product-box__brand--crypto-pro {
+    font-size: calc(var(--box-brand-size) * 0.92);
+    letter-spacing: 0.01em;
+  }
+
+  .product-box__brand-a,
+  .product-box__brand-b {
+    display: inline;
+  }
+
+  .product-box__brand-b {
+    margin-left: 0.16em;
+  }
+
+  /* MOEX PRO — как в дашборде MOEX Pro */
+  .product-box__brand--moex-pro .product-box__brand-a {
+    color: #ff5d6c;
+    text-shadow: 0 0 14px rgba(248, 81, 73, 0.38);
+  }
+
+  .product-box__brand--moex-pro .product-box__brand-b {
+    color: #7eeeff;
+    text-shadow: 0 0 14px rgba(31, 136, 168, 0.42);
+  }
+
+  /* CRYPTO PRO — как в дашборде Crypto Pro */
+  .product-box__brand--crypto-pro .product-box__brand-a {
+    color: #1aa89c;
+    text-shadow: 0 0 12px rgba(34, 211, 197, 0.22);
+  }
+
+  .product-box__brand--crypto-pro .product-box__brand-b {
+    color: #ff8a3d;
+    text-shadow: 0 0 16px rgba(255, 138, 61, 0.34);
   }
 
   .product-box__face--front img.product-box__logo--screen {
     mix-blend-mode: screen;
-    filter: drop-shadow(0 0 16px rgba(52, 211, 153, 0.18))
-      drop-shadow(0 0 12px rgba(248, 113, 113, 0.14));
+    filter: drop-shadow(0 0 10px rgba(52, 211, 153, 0.1))
+      drop-shadow(0 0 8px rgba(248, 113, 113, 0.06));
   }
 
   .product-box__face--back {
@@ -236,12 +395,333 @@
     @apply rounded-2xl border border-border/50 bg-bg-card/55 backdrop-blur-sm;
   }
 
+  /* Partner marquee — infinite horizontal scroll (Bothub-style) */
+  .partner-marquee {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .partner-marquee__label {
+    margin: 0;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(148, 163, 184, 0.75);
+  }
+
+  .partner-marquee__shell {
+    position: relative;
+  }
+
+  .partner-marquee__viewport {
+    overflow: hidden;
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+  }
+
+  .partner-marquee__fade {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    width: min(12vw, 5rem);
+  }
+
+  .partner-marquee__fade--left {
+    left: 0;
+    background: linear-gradient(to right, var(--color-bg) 0%, transparent 100%);
+  }
+
+  .partner-marquee__fade--right {
+    right: 0;
+    background: linear-gradient(to left, var(--color-bg) 0%, transparent 100%);
+  }
+
+  .partner-marquee__track {
+    display: flex;
+    width: max-content;
+    gap: 1rem;
+    padding-block: 0.25rem;
+    animation: partner-marquee-scroll 42s linear infinite;
+  }
+
+  .partner-marquee__shell:hover .partner-marquee__track {
+    animation-play-state: paused;
+  }
+
+  .partner-marquee__card {
+    display: flex;
+    height: 3rem;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    padding-inline: 1.5rem;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .partner-marquee__card:hover {
+    transform: translateY(-1px);
+  }
+
+  .partner-marquee__name {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    color: rgba(203, 213, 225, 0.88);
+    transition: color 0.2s ease;
+  }
+
+  .partner-marquee__card:hover .partner-marquee__name {
+    color: rgba(34, 211, 238, 0.95);
+  }
+
+  .partner-marquee__card[data-kind='broker'] .partner-marquee__name {
+    letter-spacing: 0.04em;
+  }
+
+  @keyframes partner-marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .partner-marquee {
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .partner-marquee__label {
+      flex-shrink: 0;
+      width: 8.75rem;
+      text-align: right;
+    }
+
+    .partner-marquee__shell {
+      min-width: 0;
+      flex: 1;
+    }
+  }
+
   .logo-glow {
     filter: drop-shadow(0 0 40px rgba(34, 211, 238, 0.45)) drop-shadow(0 0 80px rgba(34, 211, 238, 0.15));
   }
 
   .logo-glow-soft {
     filter: drop-shadow(0 0 16px rgba(34, 211, 238, 0.35));
+  }
+
+  .logo-mark {
+    position: relative;
+    display: inline-flex;
+    width: fit-content;
+    line-height: 0;
+    vertical-align: middle;
+  }
+
+  .logo-mark__image {
+    display: block;
+  }
+
+  /* Emblem occupies top ~54.7% of logo.png (426px canvas) */
+  .logo-mark__emblem-zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 54.7%;
+    pointer-events: none;
+  }
+
+  .logo-mark__star {
+    position: absolute;
+    top: 62%;
+    left: 50.2%;
+    width: 13%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  .mobile-menu__logo.logo-mark .logo-mark__star {
+    top: 77%;
+  }
+
+  .logo-mark__core-wrap {
+    position: absolute;
+    inset: 4%;
+  }
+
+  .logo-mark__core {
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: screen;
+  }
+
+  /* Circle — rollback via starVariant="circle" (see logo-star-circle.backup.css) */
+  .logo-mark--star-circle .logo-mark__core {
+    border-radius: 9999px;
+    animation: logo-star-core-pulse 2.4s ease-in-out infinite;
+    background: radial-gradient(
+      circle at 50% 45%,
+      #ffffff 0%,
+      #ecfeff 14%,
+      #a5f3fc 32%,
+      #22d3ee 52%,
+      #06b6d4 68%,
+      #0891b2 82%,
+      rgba(34, 211, 238, 0.2) 94%,
+      transparent 100%
+    );
+    box-shadow:
+      0 0 4px rgba(255, 255, 255, 0.95),
+      0 0 10px rgba(165, 243, 252, 0.8),
+      0 0 18px rgba(34, 211, 238, 0.65),
+      0 0 28px rgba(34, 211, 238, 0.3);
+  }
+
+  .logo-mark--star-circle .logo-mark__ring--cyan {
+    border-color: rgba(34, 211, 238, 0.55);
+  }
+
+  .logo-mark--star-circle .logo-mark__ring--soft {
+    border-color: rgba(125, 211, 252, 0.5);
+  }
+
+  /* Quasar — four-point star, cyan toned down ~15% */
+  .logo-mark--star-quasar .logo-mark__core {
+    border-radius: 0;
+    clip-path: polygon(
+      50% 0%,
+      57% 41%,
+      100% 50%,
+      57% 59%,
+      50% 100%,
+      43% 59%,
+      0% 50%,
+      43% 41%
+    );
+    background: radial-gradient(
+      circle at 50% 45%,
+      #ffffff 0%,
+      #eefcff 14%,
+      #9ad4ea 32%,
+      #2eb8d4 52%,
+      #159db8 68%,
+      #0a8098 82%,
+      rgba(34, 211, 238, 0.17) 94%,
+      transparent 100%
+    );
+    box-shadow:
+      0 0 3px rgba(255, 255, 255, 0.9),
+      0 0 8px rgba(165, 243, 252, 0.68),
+      0 0 14px rgba(34, 211, 238, 0.55),
+      0 0 22px rgba(34, 211, 238, 0.26);
+    filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.35));
+    animation: logo-star-quasar-pulse 2.4s ease-in-out infinite;
+  }
+
+  .logo-mark--star-quasar .logo-mark__core-wrap {
+    animation: logo-star-quasar-spin 8s linear infinite;
+  }
+
+  .logo-mark--star-quasar .logo-mark__ring--cyan {
+    border-color: rgba(34, 211, 238, 0.47);
+  }
+
+  .logo-mark--star-quasar .logo-mark__ring--soft {
+    border-color: rgba(125, 211, 252, 0.42);
+  }
+
+  @keyframes logo-star-quasar-pulse {
+    0%,
+    100% {
+      opacity: 0.72;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes logo-star-quasar-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .logo-mark__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    animation: logo-star-ring-pulse 2.1s ease-out infinite;
+  }
+
+  .logo-mark__ring--soft {
+    animation-delay: 1.05s;
+  }
+
+  @keyframes logo-star-core-pulse {
+    0%,
+    100% {
+      opacity: 0.72;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+
+  @keyframes logo-star-ring-pulse {
+    0% {
+      transform: scale(0.75);
+      opacity: 0.75;
+    }
+    100% {
+      transform: scale(2.5);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-mark__core,
+    .logo-mark__ring {
+      animation: none;
+    }
+
+    .logo-mark__core {
+      opacity: 0.9;
+      transform: none;
+    }
+
+    .logo-mark--star-quasar .logo-mark__core-wrap {
+      animation: none;
+      transform: none;
+    }
   }
 
   .hero-spotlight {
@@ -566,6 +1046,10 @@
     width: 100%;
     height: auto;
     display: block;
+  }
+
+  .live-bg__people-svg--mobile {
+    display: none;
   }
 
   .live-bg__people-bridge {
@@ -1211,6 +1695,72 @@
     }
   }
 
+  .header-telegram-link::before,
+  .header-telegram-link::after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    pointer-events: none;
+  }
+
+  .header-telegram-link::before {
+    border: 1px solid rgba(34, 211, 238, 0.55);
+    animation: header-telegram-live-ring 2s ease-out infinite;
+  }
+
+  .header-telegram-link::after {
+    background: var(--color-primary);
+    box-shadow: 0 0 8px rgba(34, 211, 238, 0.85);
+    animation: header-telegram-live-dot 1.8s ease-in-out infinite;
+  }
+
+  .header-telegram-link__icon {
+    animation: header-telegram-icon-glow 2.4s ease-in-out infinite;
+  }
+
+  .header-telegram-link:hover .header-telegram-link__icon {
+    animation-play-state: paused;
+  }
+
+  @keyframes header-telegram-live-dot {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes header-telegram-live-ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.75;
+    }
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+
+  @keyframes header-telegram-icon-glow {
+    0%,
+    100% {
+      filter: drop-shadow(0 0 2px rgba(34, 211, 238, 0.15));
+      opacity: 0.82;
+    }
+    50% {
+      filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.55));
+      opacity: 1;
+    }
+  }
+
   .mobile-menu-toggle__icon,
   .mobile-menu-toggle__icon::before,
   .mobile-menu-toggle__icon::after {
@@ -1274,9 +1824,27 @@
       opacity: 0.3;
       animation: live-people-float-2 30s ease-in-out infinite;
     }
+
+    .live-bg__people-hex {
+      fill: rgba(8, 10, 13, 0.82);
+    }
+
+    .live-bg__people-head,
+    .live-bg__people-body {
+      fill: rgba(8, 10, 13, 0.88);
+    }
   }
 
   @media (max-width: 767px) {
+    #site-header .logo-mark--header .logo-mark__star {
+      width: 14.5%;
+    }
+
+    #site-header .logo-mark--header.logo-mark--star-quasar .logo-mark__core-wrap,
+    .mobile-menu__panel .logo-mark--star-quasar .logo-mark__core-wrap {
+      animation: logo-star-quasar-spin 8s linear infinite;
+    }
+
     .live-bg__orderbook {
       opacity: 0.44;
       mask-image: linear-gradient(
@@ -1358,6 +1926,14 @@
       animation: none;
     }
 
+    .live-bg__people-svg--desktop {
+      display: none;
+    }
+
+    .live-bg__people-svg--mobile {
+      display: block;
+    }
+
     .live-bg__people-link {
       stroke-width: 0.9;
       stroke: rgba(34, 211, 238, 0.42);
@@ -1386,9 +1962,10 @@
     }
 
     .product-box {
-      --box-w: 118px;
-      --box-h: 148px;
-      --box-d: 30px;
+      --box-w: 138px;
+      --box-h: 172px;
+      --box-d: 34px;
+      --box-brand-size: 0.9rem;
     }
 
     .product-box-wrap {

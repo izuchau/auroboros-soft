@@ -6,53 +6,206 @@ import { getTranslations, localePath } from '../../i18n/ui';
 
 const locale = 'en';
 const t = getTranslations(locale);
+const updated = 'August 8, 2026';
 ---
 
 <BaseLayout locale={locale} title={t.legal.privacyTitle} description={t.legal.privacyTitle}>
   <Header locale={locale} />
   <main class="section-padding pt-44">
     <article class="container-main max-w-3xl">
-      <h1 class="heading-soft mb-8 text-3xl font-bold">{t.legal.privacyTitle}</h1>
+      <h1 class="heading-soft mb-2 text-3xl font-bold">{t.legal.privacyTitle}</h1>
+      <p class="mb-8 text-xs text-text-dim">Last updated: {updated}</p>
 
       <div class="space-y-6 text-sm leading-relaxed text-text-muted">
         <p>
-          This Privacy Policy describes how Auroboros Soft (the "Site") collects and processes personal data of
-          users.
+          This Privacy Policy explains what personal data Auroboros Soft (the "Site") collects, how we use it,
+          and what rights you have. By using the Site and submitting the contact form, you acknowledge that you
+          have read this Policy.
         </p>
 
         <section>
-          <h2 class="heading-soft mb-3 text-lg font-semibold">1. Data we collect</h2>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">1. Data controller</h2>
           <p>
-            When you submit the contact form, we may receive your name, email, phone number, message, selected
-            product, and request type.
+            The data controller for personal data collected through the Site is Auroboros Soft ("we", "us").
+          </p>
+          <p class="mt-2">
+            Privacy contact:{' '}
+            <a href="mailto:auroboros.soft@gmail.com" class="text-primary hover:underline">auroboros.soft@gmail.com</a>.
           </p>
         </section>
 
         <section>
-          <h2 class="heading-soft mb-3 text-lg font-semibold">2. Purpose of processing</h2>
-          <p>
-            Data is used to contact you, process orders for trading bots or custom development, and improve our
-            services.
+          <h2 class="heading-soft mb-3 text-lg font-semibold">2. Data we collect</h2>
+          <p>We may process the following categories of data:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>
+              <strong class="text-text">Contact form data:</strong> name, email address, phone number (if
+              provided), message text, request type (ready product, custom development, consultation), selected
+              market, product name, and interface language (locale).
+            </li>
+            <li>
+              <strong class="text-text">Technical data:</strong> IP address, browser and device type, date and
+              time of access, and server log data — to the extent needed to operate and secure the Site.
+            </li>
+            <li>
+              <strong class="text-text">Cookies and similar technologies</strong> — as described in Section 9
+              below.
+            </li>
+          </ul>
+          <p class="mt-2">
+            We do not intentionally collect special categories of personal data and we do not ask for trading
+            account or exchange passwords.
           </p>
         </section>
 
         <section>
-          <h2 class="heading-soft mb-3 text-lg font-semibold">3. Third parties</h2>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">3. How we collect data</h2>
           <p>
-            We use Formspree to deliver form submissions to email. Data is not shared with third parties for
-            marketing without your consent.
+            Personal data is provided voluntarily when you fill out the contact form. Technical data may be
+            collected automatically by your browser and hosting provider when you visit the Site.
           </p>
         </section>
 
         <section>
-          <h2 class="heading-soft mb-3 text-lg font-semibold">4. Your rights</h2>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">4. Purposes of processing</h2>
+          <p>We use personal data to:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>review and handle your inquiries and requests;</li>
+            <li>contact you about trading bots, custom development, or consultations;</li>
+            <li>maintain correspondence and a record of communications;</li>
+            <li>keep the Site secure and protect it from spam;</li>
+            <li>comply with applicable law.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">5. Legal basis</h2>
           <p>
-            You may request access, correction, or deletion of your data by emailing
-            <a href="mailto:promasterboros@gmail.com" class="text-primary hover:underline">promasterboros@gmail.com</a>.
+            Depending on your location, processing is based on your consent (including when you submit the form),
+            steps taken at your request before entering into a contract, and our legitimate interests in operating
+            and securing the Site — where permitted by applicable law (including the GDPR where it applies).
           </p>
         </section>
 
-        <p class="text-xs text-text-dim">This document is a template. Consult a legal professional before publishing.</p>
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">6. Sharing with third parties</h2>
+          <p>
+            We do not sell your personal data or share it with third parties for their marketing. Access is
+            limited to authorized personnel and the following recipients, only as needed:
+          </p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>
+              <strong class="text-text">Formspree</strong> (formspree.io) — delivers form submissions to our
+              email;
+            </li>
+            <li>
+              <strong class="text-text">Google reCAPTCHA</strong> (when enabled) — bot protection on the form;
+            </li>
+            <li>
+              <strong class="text-text">Hosting provider</strong> (e.g. Vercel) — serves the Site;
+            </li>
+            <li>
+              <strong class="text-text">YouTube</strong> — when you watch embedded videos (youtube-nocookie.com
+              mode, where used).
+            </li>
+          </ul>
+          <p class="mt-2">
+            These services process data under their own privacy policies. We share only what is necessary for
+            each function.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">7. International transfers</h2>
+          <p>
+            Some recipients (Formspree, Google, hosting providers) may process data on servers outside your
+            country. By submitting the form, you consent to such transfers to the extent required to handle your
+            request and operate the Site. We aim to work with providers that maintain appropriate safeguards.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">8. Retention</h2>
+          <p>
+            We retain personal data only as long as needed for the purposes above: until your inquiry is
+            resolved and for a reasonable period to maintain records and protect our rights, unless a longer
+            period is required by law. You may request earlier deletion where there is no legal reason to keep
+            the data.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">9. Cookies and technical data</h2>
+          <p>
+            The Site uses cookies and similar technologies for functionality, traffic analysis, and advertising.
+            On your first visit, we show a notice: by clicking "Accept all", you agree to the use of cookies. If you
+            do not agree, you should stop using the Site.
+          </p>
+          <p class="mt-2">
+            We may use services such as Google Analytics and advertising pixels — when enabled, they are activated
+            for users who accepted the notice. When reCAPTCHA is enabled, Google may set cookies under its{' '}
+            <a
+              href="https://policies.google.com/privacy"
+              class="text-primary hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Privacy Policy
+            </a>
+            . Embedded YouTube videos may use cookies from Google.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">10. Security</h2>
+          <p>
+            We use organizational and technical measures to protect personal data from unauthorized access,
+            alteration, disclosure, or destruction, including HTTPS, restricted access to inquiry mailboxes, and
+            anti-spam measures (honeypot and, where needed, reCAPTCHA).
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">11. Your rights</h2>
+          <p>Depending on applicable law, you may have the right to:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>access the personal data we hold about you;</li>
+            <li>request correction, restriction, or deletion;</li>
+            <li>withdraw consent where processing is consent-based;</li>
+            <li>lodge a complaint with a supervisory authority.</li>
+          </ul>
+          <p class="mt-2">
+            To exercise your rights, email{' '}
+            <a href="mailto:auroboros.soft@gmail.com" class="text-primary hover:underline">auroboros.soft@gmail.com</a>.
+            We will respond within a reasonable time and may ask for information to verify your identity.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">12. Children</h2>
+          <p>
+            The Site and our services are not directed at anyone under 18. We do not knowingly collect personal
+            data from minors. If you believe a child has provided data to us, contact us and we will delete it.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">13. Changes to this Policy</h2>
+          <p>
+            We may update this Privacy Policy from time to time. The current version is always on this page;
+            the date at the top shows when it was last revised. Continued use of the Site after changes means
+            you accept the updated Policy, unless applicable law requires otherwise.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">14. Contact</h2>
+          <p>For privacy-related questions:</p>
+          <p class="mt-2">
+            Email:{' '}
+            <a href="mailto:auroboros.soft@gmail.com" class="text-primary hover:underline">auroboros.soft@gmail.com</a>
+          </p>
+        </section>
       </div>
 
       <a href={localePath(locale)} class="mt-8 inline-block text-primary hover:underline">{t.legal.backHome}</a>

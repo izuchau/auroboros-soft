@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import { getTranslations, localePath } from '../../i18n/ui';
+
+const locale = 'ru';
+const t = getTranslations(locale);
+const updated = '9 августа 2026 г.';
+const termsPath = localePath(locale, 'terms');
+---
+
+<BaseLayout locale={locale} title={t.legal.ndaTitle} description={t.legal.ndaTitle}>
+  <Header locale={locale} />
+  <main class="section-padding pt-44">
+    <article class="container-main max-w-3xl">
+      <h1 class="heading-soft mb-2 text-3xl font-bold">{t.legal.ndaTitle}</h1>
+      <p class="mb-8 text-xs text-text-dim">Последнее обновление: {updated}</p>
+
+      <div class="space-y-6 text-sm leading-relaxed text-text-muted">
+        <p>
+          Настоящее Соглашение о нераспространении конфиденциальной информации (далее — «Соглашение»)
+          применяется <strong class="text-text">только к услугам разработки торгового робота на заказ</strong> и не
+          распространяется на покупку готовых продуктов (MOEX pro, CRYPTO pro и других готовых решений), если иное
+          не согласовано сторонами письменно.
+        </p>
+        <p>
+          Перед обсуждением деталей проекта на заказ стороны могут подписать Соглашение в электронной форме
+          (переписка по email, обмен сканами или электронными подписями) либо на бумажном носителе.
+        </p>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">1. Стороны</h2>
+          <p>
+            <strong class="text-text">Исполнитель</strong> — Auroboros Soft.
+          </p>
+          <p class="mt-2">
+            <strong class="text-text">Клиент</strong> — физическое или юридическое лицо, обращающееся за разработкой
+            торгового робота на заказ.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">2. Конфиденциальная информация</h2>
+          <p>
+            Под конфиденциальной информацией понимаются любые сведения, переданные одной стороной другой в связи с
+            обсуждением, оценкой или выполнением проекта на заказ, включая, но не ограничиваясь:
+          </p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>описание торговых стратегий, логики входа/выхода, фильтров и правил риска;</li>
+            <li>исходный код, технические задания, схемы, алгоритмы и архитектурные решения;</li>
+            <li>результаты бэктеста, метрики, отчёты и внутренние материалы по проекту;</li>
+            <li>коммерческие условия, сметы, переписка и иные данные, прямо обозначенные как конфиденциальные.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">3. Обязательства сторон</h2>
+          <p>Каждая сторона обязуется:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>не разглашать конфиденциальную информацию третьим лицам без письменного согласия другой стороны;</li>
+            <li>использовать такую информацию только для целей обсуждения, разработки и сопровождения проекта на заказ;</li>
+            <li>обеспечить разумные меры защиты от несанкционированного доступа и копирования;</li>
+            <li>ограничить доступ к информации сотрудниками и подрядчиками, которым она необходима для работы по проекту.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">4. Исключения</h2>
+          <p>Обязательства по неразглашению не распространяются на информацию, которая:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>стала общедоступной не по вине получающей стороны;</li>
+            <li>была известна получающей стороне до её получения без обязательства сохранять конфиденциальность;</li>
+            <li>получена от третьего лица на законных основаниях без ограничений на раскрытие;</li>
+            <li>подлежит раскрытию по требованию закона или уполномоченного органа — в минимально необходимом объёме.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">5. Срок действия</h2>
+          <p>
+            Соглашение вступает в силу с момента его принятия сторонами и действует в течение срока обсуждения и
+            выполнения проекта на заказ, а также <strong class="text-text">3 (трёх) лет</strong> после его завершения,
+            если более длительный срок не согласован отдельно.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">6. Права на результаты</h2>
+          <p>
+            Настоящее Соглашение не передаёт права на интеллектуальную собственность. Условия передачи прав на
+            разработанное ПО, исходный код и сроки сопровождения определяются в переписке, договоре или{' '}
+            <a href={termsPath} class="text-primary hover:underline">Пользовательском соглашении</a> при оформлении
+            заказа.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">7. Контакты</h2>
+          <p>
+            Чтобы запросить подписание Соглашения перед обсуждением проекта на заказ, напишите:
+          </p>
+          <p class="mt-2">
+            Email:{' '}
+            <a href="mailto:auroboros.soft@gmail.com" class="text-primary hover:underline">auroboros.soft@gmail.com</a>
+          </p>
+        </section>
+      </div>
+
+      <a href={localePath(locale)} class="mt-8 inline-block text-primary hover:underline">{t.legal.backHome}</a>
+    </article>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

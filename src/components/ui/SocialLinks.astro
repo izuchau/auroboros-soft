@@ -1,0 +1,42 @@
+---
+import type { Locale } from '../../types';
+import { getTranslations } from '../../i18n/ui';
+import { socialLinks } from '../../data/social';
+import SocialIcon from './SocialIcon.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+---
+
+<ul class="social-links" role="list">
+  {
+    socialLinks.map((link) => (
+      <li>
+        {link.comingSoon ? (
+          <span
+            class="social-links__item social-links__item--soon"
+            aria-label={`${link.label[locale]} — ${t.footer.socialSoon}`}
+            title={`${link.label[locale]} — ${t.footer.socialSoon}`}
+          >
+            <SocialIcon id={link.id} />
+          </span>
+        ) : (
+          <a
+            href={link.href}
+            class="social-links__item"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.label[locale]}
+            title={link.label[locale]}
+          >
+            <SocialIcon id={link.id} />
+          </a>
+        )}
+      </li>
+    ))
+  }
+</ul>

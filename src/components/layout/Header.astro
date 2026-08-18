@@ -3,8 +3,10 @@ import type { Locale } from '../../types';
 import { getTranslations, localePath } from '../../i18n/ui';
 import Button from '../ui/Button.astro';
 import Logo from '../ui/Logo.astro';
+import SocialIcon from '../ui/SocialIcon.astro';
 import HeaderBackground from '../ui/HeaderBackground.astro';
 import HeaderTicker from '../ui/HeaderTicker.astro';
+import { socialLinks } from '../../data/social';
 
 interface Props {
   locale: Locale;
@@ -13,6 +15,7 @@ interface Props {
 const { locale } = Astro.props;
 const t = getTranslations(locale);
 const currentPath = Astro.url.pathname.replace(/^\/(ru|en)/, '') || '/';
+const telegramHref = socialLinks.find((link) => link.id === 'telegram')?.href ?? 'https://t.me/Auroboros_soft';
 
 const navLinks = [
   { href: '#services', label: t.nav.services },
@@ -28,9 +31,9 @@ const navLinks = [
   class="fixed inset-x-0 top-0 z-40 overflow-x-hidden overflow-y-visible border-b border-primary/15 bg-bg/70 backdrop-blur-xl md:overflow-hidden"
 >
   <HeaderBackground />
-  <div class="container-main relative z-10 flex h-16 items-center justify-between gap-2 px-4 sm:px-6 md:grid md:h-[9rem] md:grid-cols-[auto_1fr_auto] md:items-center md:gap-4 lg:h-40 lg:px-8">
-    <a href={localePath(locale)} class="flex shrink-0 items-center py-1 md:h-full md:py-2">
-      <Logo variant="header" glow={true} />
+  <div class="container-main relative z-10 flex h-[4.5rem] items-center justify-between gap-2 px-4 sm:h-[4.75rem] sm:px-6 md:grid md:h-[9rem] md:grid-cols-[auto_1fr_auto] md:items-center md:gap-4 lg:h-40 lg:px-8">
+    <a href={localePath(locale)} class="flex shrink-0 items-center overflow-visible py-0.5 md:h-full md:py-2">
+      <Logo variant="header" glow={true} starVariant="quasar" />
     </a>
 
     <div class="header-nav-col hidden min-h-0 self-stretch md:flex md:flex-col md:items-center md:justify-center">
@@ -43,31 +46,42 @@ const navLinks = [
       </nav>
     </div>
 
-    <div class="flex items-center justify-end gap-2 md:gap-3">
-      <div class="flex rounded-lg border border-border bg-bg-card p-0.5 text-xs font-medium">
+      <div class="flex items-center justify-end gap-2 md:gap-3">
         <a
-          href={localePath('ru', currentPath)}
-          class:list={['rounded-md px-2 py-1 transition sm:px-2.5', locale === 'ru' ? 'bg-primary/80 text-bg' : 'text-text-muted hover:text-text']}
-          >RU</a
+          href={telegramHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="header-telegram-link relative inline-flex h-9 w-9 items-center justify-center overflow-visible rounded-lg border border-border bg-bg-card text-text-muted transition hover:border-primary/40 hover:text-primary sm:h-10 sm:w-10"
+          aria-label={t.nav.telegram}
         >
-        <a
-          href={localePath('en', currentPath)}
-          class:list={['rounded-md px-2 py-1 transition sm:px-2.5', locale === 'en' ? 'bg-primary/80 text-bg' : 'text-text-muted hover:text-text']}
-          >EN</a
+          <span class="header-telegram-link__icon h-[18px] w-[18px]">
+            <SocialIcon id="telegram" />
+          </span>
+        </a>
+        <div class="flex rounded-lg border border-border bg-bg-card p-0.5 text-xs font-medium">
+          <a
+            href={localePath('ru', currentPath)}
+            class:list={['rounded-md px-2 py-1 transition sm:px-2.5', locale === 'ru' ? 'bg-primary/80 text-bg' : 'text-text-muted hover:text-text']}
+            >RU</a
+          >
+          <a
+            href={localePath('en', currentPath)}
+            class:list={['rounded-md px-2 py-1 transition sm:px-2.5', locale === 'en' ? 'bg-primary/80 text-bg' : 'text-text-muted hover:text-text']}
+            >EN</a
+          >
+        </div>
+        <Button href="#contact" size="sm" class="hidden lg:inline-flex">{t.nav.cta}</Button>
+        <button
+          id="mobile-menu-toggle"
+          type="button"
+          class="mobile-menu-toggle inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-bg-card text-text-muted transition hover:border-primary/40 hover:text-text md:hidden"
+          aria-expanded="false"
+          aria-controls="mobile-menu-panel"
+          aria-label={t.nav.menuOpen}
         >
+          <span class="mobile-menu-toggle__icon" aria-hidden="true"></span>
+        </button>
       </div>
-      <Button href="#contact" size="sm" class="hidden lg:inline-flex">{t.nav.cta}</Button>
-      <button
-        id="mobile-menu-toggle"
-        type="button"
-        class="mobile-menu-toggle inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-bg-card text-text-muted transition hover:border-primary/40 hover:text-text md:hidden"
-        aria-expanded="false"
-        aria-controls="mobile-menu-panel"
-        aria-label={t.nav.menuOpen}
-      >
-        <span class="mobile-menu-toggle__icon" aria-hidden="true"></span>
-      </button>
-    </div>
 
     <HeaderTicker />
   </div>
@@ -84,8 +98,10 @@ const navLinks = [
     id="mobile-menu-panel"
     class="mobile-menu__panel absolute top-0 right-0 flex h-full w-[min(86vw,320px)] flex-col border-l border-border bg-bg/95 p-5 shadow-2xl backdrop-blur-xl"
   >
-    <div class="mb-6 flex items-center justify-between">
-      <span class="font-mono text-xs tracking-[0.2em] text-primary/70 uppercase">Menu</span>
+    <div class="mb-6 flex items-center justify-between gap-3">
+      <a href={localePath(locale)} class="min-w-0 shrink overflow-visible">
+        <Logo variant="footer" glow={true} starVariant="quasar" class="mobile-menu__logo !h-14 sm:!h-16" />
+      </a>
       <button
         id="mobile-menu-close"
         type="button"
@@ -107,7 +123,18 @@ const navLinks = [
         ))
       }
     </nav>
-    <div class="mt-auto pt-6">
+    <div class="mt-auto space-y-3 pt-6">
+      <a
+        href={telegramHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mobile-menu__link flex items-center gap-3 rounded-xl px-4 py-3 text-base text-silver/85 transition hover:bg-primary/5 hover:text-text"
+      >
+        <span class="h-5 w-5 text-primary/80">
+          <SocialIcon id="telegram" />
+        </span>
+        {t.nav.telegram}
+      </a>
       <Button href="#contact" class="mobile-menu__cta w-full">{t.nav.cta}</Button>
     </div>
   </div>

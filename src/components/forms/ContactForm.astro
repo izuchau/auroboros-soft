@@ -20,7 +20,7 @@ const {
 } = Astro.props;
 
 const t = getTranslations(locale);
-const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID ?? 'xeajqpob';
+const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID ?? 'mwlevlbw';
 const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY ?? '';
 const formAction = `https://formspree.io/f/${formspreeId}`;
 const captchaEnabled = Boolean(recaptchaSiteKey);
@@ -148,8 +148,10 @@ const captchaEnabled = Boolean(recaptchaSiteKey);
   <label class="flex items-start gap-3 text-sm text-text-muted">
     <input type="checkbox" name="consent" required class="mt-1 rounded border-border" />
     <span>
-      {t.contact.consent}
+      {t.contact.consent}{' '}
       <a href={localePath(locale, '/privacy')} class="text-primary hover:underline">{t.contact.privacyLink}</a>
+      {' '}{t.contact.consentAnd}{' '}
+      <a href={localePath(locale, '/terms')} class="text-primary hover:underline">{t.contact.termsLink}</a>
     </span>
   </label>
 
@@ -243,7 +245,7 @@ const captchaEnabled = Boolean(recaptchaSiteKey);
             if (form.id === 'order-contact-form') {
               setTimeout(() => {
                 document.getElementById('order-modal-close')?.click();
-              }, 2000);
+              }, 4000);
             }
           } else {
             const detail =

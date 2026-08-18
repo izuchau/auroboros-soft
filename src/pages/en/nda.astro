@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import { getTranslations, localePath } from '../../i18n/ui';
+
+const locale = 'en';
+const t = getTranslations(locale);
+const updated = 'August 9, 2026';
+const termsPath = localePath(locale, 'terms');
+---
+
+<BaseLayout locale={locale} title={t.legal.ndaTitle} description={t.legal.ndaTitle}>
+  <Header locale={locale} />
+  <main class="section-padding pt-44">
+    <article class="container-main max-w-3xl">
+      <h1 class="heading-soft mb-2 text-3xl font-bold">{t.legal.ndaTitle}</h1>
+      <p class="mb-8 text-xs text-text-dim">Last updated: {updated}</p>
+
+      <div class="space-y-6 text-sm leading-relaxed text-text-muted">
+        <p>
+          This Non-Disclosure Agreement ("Agreement") applies <strong class="text-text">only to custom trading bot
+          development services</strong> and does not cover purchases of ready-made products (MOEX pro, CRYPTO pro, or
+          other off-the-shelf solutions) unless otherwise agreed in writing.
+        </p>
+        <p>
+          Before discussing project details, the parties may sign this Agreement electronically (email correspondence,
+          scanned copies, or e-signatures) or on paper.
+        </p>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">1. Parties</h2>
+          <p>
+            <strong class="text-text">Provider</strong> — Auroboros Soft.
+          </p>
+          <p class="mt-2">
+            <strong class="text-text">Client</strong> — any individual or legal entity requesting custom trading bot
+            development.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">2. Confidential information</h2>
+          <p>
+            Confidential information means any data shared by one party with the other in connection with discussing,
+            scoping, or delivering a custom project, including but not limited to:
+          </p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>trading strategy descriptions, entry/exit logic, filters, and risk rules;</li>
+            <li>source code, specifications, diagrams, algorithms, and architecture;</li>
+            <li>backtest results, metrics, reports, and internal project materials;</li>
+            <li>commercial terms, estimates, correspondence, and other data marked as confidential.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">3. Obligations</h2>
+          <p>Each party agrees to:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>not disclose confidential information to third parties without the other party's written consent;</li>
+            <li>use such information only to discuss, develop, and support the custom project;</li>
+            <li>take reasonable steps to protect it from unauthorized access or copying;</li>
+            <li>limit access to staff and contractors who need it to work on the project.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">4. Exceptions</h2>
+          <p>Confidentiality obligations do not apply to information that:</p>
+          <ul class="mt-2 list-disc space-y-1 pl-5">
+            <li>becomes public through no fault of the receiving party;</li>
+            <li>was already known to the receiving party without a confidentiality duty;</li>
+            <li>is received from a third party lawfully and without disclosure restrictions;</li>
+            <li>must be disclosed by law or by a competent authority — to the minimum extent required.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">5. Term</h2>
+          <p>
+            This Agreement takes effect when accepted by both parties and remains in force for the duration of project
+            discussions and delivery, and for <strong class="text-text">3 (three) years</strong> after completion unless
+            a longer period is agreed separately.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">6. Intellectual property</h2>
+          <p>
+            This Agreement does not transfer intellectual property rights. Terms for delivery of software, source code,
+            and support are defined in correspondence, a contract, or the{' '}
+            <a href={termsPath} class="text-primary hover:underline">Terms of Service</a> when the order is placed.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="heading-soft mb-3 text-lg font-semibold">7. Contact</h2>
+          <p>To request signing before discussing a custom project, email:</p>
+          <p class="mt-2">
+            <a href="mailto:auroboros.soft@gmail.com" class="text-primary hover:underline">auroboros.soft@gmail.com</a>
+          </p>
+        </section>
+      </div>
+
+      <a href={localePath(locale)} class="mt-8 inline-block text-primary hover:underline">{t.legal.backHome}</a>
+    </article>
+  </main>
+  <Footer locale={locale} />
+</BaseLayout>

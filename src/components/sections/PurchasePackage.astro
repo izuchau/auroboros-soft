@@ -1,0 +1,102 @@
+---
+import type { Locale } from '../../types';
+import { getTranslations } from '../../i18n/ui';
+import { dashboardPreviews } from '../../data/dashboardPreviews';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+---
+
+<section id="included" class="section-padding border-y border-border/60 bg-bg-card/30">
+  <div class="container-main">
+    <div class="mb-10 text-center">
+      <h2 class="heading-soft mb-4 text-3xl font-bold sm:text-4xl">{t.purchase.title}</h2>
+      <div class="mx-auto max-w-2xl space-y-1 text-text-muted">
+        <p>{t.purchase.subtitle}</p>
+        <p>{t.purchase.subtitleItems}</p>
+      </div>
+    </div>
+
+    <div class="grid gap-8 lg:grid-cols-2 lg:items-start">
+      <div class="card-surface group p-6 transition hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 sm:p-8">
+        <h3 class="heading-soft mb-5 text-lg font-semibold">{t.purchase.includedTitle}</h3>
+        <ul class="space-y-4">
+          {
+            t.purchase.includedItems.map((item) => (
+              <li class="flex gap-3 text-sm leading-relaxed text-text-muted">
+                <span class="mt-0.5 shrink-0 text-primary/80">✓</span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-6 rounded-xl border border-primary/15 bg-primary/5 px-4 py-3 text-sm text-text-muted">
+          {t.purchase.supportNote}
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        <div class="card-surface group p-6 transition hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 sm:p-8">
+          <h3 class="heading-soft mb-4 text-lg font-semibold">{t.purchase.trustTitle}</h3>
+          <ul class="space-y-3">
+            {
+              t.purchase.trustItems.map((item) => (
+                <li class="flex gap-3 text-sm leading-relaxed text-text-muted">
+                  <span class="mt-0.5 shrink-0 text-primary/80">→</span>
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="card-surface group overflow-hidden p-6 transition hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 sm:p-8">
+          <h3 class="heading-soft mb-2 text-lg font-semibold">{t.purchase.previewTitle}</h3>
+          <p class="mb-5 text-sm text-text-muted">{t.purchase.previewNote}</p>
+          <div class="space-y-6">
+            {
+              dashboardPreviews.map((group) => (
+                <div>
+                  <p class="mb-3 text-xs font-medium tracking-wide text-primary/75 uppercase">{group.title[locale]}</p>
+                  <div class="grid gap-3 sm:grid-cols-2">
+                    {
+                      group.images.map((image) => (
+                        <figure class="group overflow-hidden rounded-xl border border-border bg-bg-elevated/50">
+                          <a
+                            href={image.src}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="block overflow-hidden"
+                            title={t.purchase.previewOpen}
+                          >
+                            <img
+                              src={image.src}
+                              alt={`${group.title[locale]} — ${image.caption[locale]}`}
+                              width={image.width ?? 1024}
+                              height={image.height ?? 526}
+                              loading="lazy"
+                              decoding="async"
+                              class="aspect-video w-full object-cover object-top transition duration-300 group-hover:brightness-110"
+                            />
+                          </a>
+                          <figcaption class="border-t border-border px-3 py-2 text-center text-xs text-text-dim">
+                            {image.caption[locale]}
+                          </figcaption>
+                        </figure>
+                      ))
+                    }
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+          <p class="mt-4 text-center text-xs text-text-dim">{t.purchase.previewOpen}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

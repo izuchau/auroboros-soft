@@ -121,9 +121,9 @@
     const group = document.querySelector('.live-bg__people-group--main');
     if (!group) return null;
 
-    const nodes = Array.from(group.querySelectorAll('[data-node]')).filter((node) =>
-      isVisibleRect(node.getBoundingClientRect())
-    );
+    const nodes = Array.from(
+      group.querySelectorAll('.live-bg__people-svg--mobile [data-node]')
+    ).filter((node) => isVisibleRect(node.getBoundingClientRect()));
     if (!nodes.length) return null;
 
     const node = nodes[Math.floor(Math.random() * nodes.length)];

@@ -77,8 +77,8 @@ PUBLIC_RECAPTCHA_SITE_KEY=ваш_site_key
 
 ## Email и реквизиты
 
-- Email в footer: `promasterboros@gmail.com` (`src/components/layout/Footer.astro`)
-- Formspree: `https://formspree.io/f/xeajqpob` — заявки приходят на email, указанный в Formspree
+- Email в footer: `auroboros.soft@gmail.com` (`src/components/layout/Footer.astro`)
+- Formspree: `https://formspree.io/f/mwlevlbw` — заявки приходят на email, указанный в Formspree
 
 ## Деплой
 

@@ -6,9 +6,11 @@ import Hero from '../../components/sections/Hero.astro';
 import Markets from '../../components/sections/Markets.astro';
 import Services from '../../components/sections/Services.astro';
 import Products from '../../components/sections/Products.astro';
+import PurchasePackage from '../../components/sections/PurchasePackage.astro';
 import About from '../../components/sections/About.astro';
 import FAQ from '../../components/sections/FAQ.astro';
 import Contact from '../../components/sections/Contact.astro';
+import { buildLandingStructuredData } from '../../lib/seo';
 import type { Locale } from '../../types';
 
 interface Props {
@@ -16,15 +18,18 @@ interface Props {
 }
 
 const { locale } = Astro.props;
+const site = Astro.site ?? new URL('https://auroborossoft.vercel.app');
+const structuredData = buildLandingStructuredData(locale, site);
 ---
 
-<BaseLayout locale={locale}>
+<BaseLayout locale={locale} structuredData={structuredData}>
   <Header locale={locale} />
   <main>
       <Hero locale={locale} />
       <Markets locale={locale} />
       <Services locale={locale} />
       <Products locale={locale} />
+      <PurchasePackage locale={locale} />
       <About locale={locale} />
       <FAQ locale={locale} />
     <Contact locale={locale} />

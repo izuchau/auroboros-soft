@@ -2,6 +2,7 @@
 import type { Locale } from '../../types';
 import { getTranslations, localePath } from '../../i18n/ui';
 import Logo from '../ui/Logo.astro';
+import SocialLinks from '../ui/SocialLinks.astro';
 
 interface Props {
   locale: Locale;
@@ -23,7 +24,7 @@ const year = new Date().getFullYear();
       </div>
 
       <div>
-        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-text-muted">Links</h3>
+        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-text-muted">{t.footer.links}</h3>
         <ul class="space-y-2 text-sm">
           <li><a href="#products" class="text-text-muted transition hover:text-primary">{t.nav.products}</a></li>
           <li><a href="#contact" class="text-text-muted transition hover:text-primary">{t.nav.contact}</a></li>
@@ -37,14 +38,21 @@ const year = new Date().getFullYear();
               >{t.footer.terms}</a
             >
           </li>
+          <li>
+            <a href={localePath(locale, '/nda')} class="text-text-muted transition hover:text-primary">{t.footer.nda}</a>
+          </li>
         </ul>
       </div>
 
       <div>
-        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-text-muted">Contact</h3>
-        <a href="mailto:promasterboros@gmail.com" class="text-sm text-primary hover:underline"
-          >promasterboros@gmail.com</a
+        <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-text-muted">{t.footer.contactHeading}</h3>
+        <a href="mailto:auroboros.soft@gmail.com" class="text-sm text-primary hover:underline"
+          >auroboros.soft@gmail.com</a
         >
+        <div class="mt-5">
+          <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-text-muted">{t.footer.social}</h3>
+          <SocialLinks locale={locale} />
+        </div>
         <p class="mt-4 text-xs leading-relaxed text-text-dim">{t.footer.disclaimer}</p>
       </div>
     </div>
