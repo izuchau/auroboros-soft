@@ -25,8 +25,11 @@ const translations = {
       titleLine1: 'Торговые роботы',
       titleLine2: 'для финансовых рынков',
       tagline: 'Алгоритмы, дисциплина, контроль риска',
-      subtitle:
-        'Купите готовый торговый робот для Московской биржи (акции, ОФЗ, облигации РФ) и криптовалюты на Bybit — от 27 900 ₽. Автоматическая стратегия, торговля в авторежиме, бэктест и тестовый режим перед запуском.',
+      subtitleLines: [
+        'Торговые роботы для Московской биржи',
+        'Торговые роботы для криптовалют',
+        'Автоматические стратегии для трейдинга',
+      ],
       ctaPrimary: 'Обсудить проект',
       ctaSecondary: 'Готовые решения',
     },
@@ -204,8 +207,11 @@ const translations = {
       titleLine1: 'Trading bots',
       titleLine2: 'for financial markets',
       tagline: 'Algorithms, discipline, risk control',
-      subtitle:
-        'Buy a ready-made trading bot for Moscow Exchange (equities, OFZ bonds) and crypto on Bybit — from 27,900 RUB. Automated strategy, backtesting, and test mode before live launch.',
+      subtitleLines: [
+        'Trading bots for Moscow Exchange',
+        'Trading bots for cryptocurrency',
+        'Automated strategies for trading',
+      ],
       ctaPrimary: 'Discuss project',
       ctaSecondary: 'Ready-made solutions',
     },
