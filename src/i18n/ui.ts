@@ -3,9 +3,11 @@ import type { Locale } from '../types';
 const translations = {
   ru: {
     meta: {
-      title: 'Auroboros Soft — торговые роботы для MOEX, крипто и международных бирж',
+      title: 'Купить торговый робот для MOEX и Bybit — от 27 900 ₽ | Auroboros Soft',
       description:
-        'Готовые торговые роботы для MOEX и крипторынка, разработка на заказ. Бэктест, тестовый режим на реальных котировках и поддержка.',
+        'Купить торгового робота для Московской биржи: акции, ОФЗ и облигации РФ. Торговый робот для криптовалюты на Bybit. MOEX pro и CRYPTO pro от 27 900 ₽ — торговля в авторежиме, бэктест и тестовый режим через T‑Bank.',
+      keywords:
+        'купить торгового робота, торговые роботы для московской биржи, торговый робот MOEX, робот для ОФЗ, торговый робот для облигаций россии, торговый робот для акций, купить робота для торговли, торговый робот недорого, торговый робот для криптовалюты, торговый робот Bybit, брокер T-Bank торговые роботы, торговля в авторежиме, автоматическая стратегия MOEX, торговый робот скальпер на заказ, какие бывают торговые роботы, алгоритмическая торговля, облигации робот, купить торговый робот для биржи',
     },
     nav: {
       services: 'Услуги',
@@ -24,7 +26,7 @@ const translations = {
       titleLine2: 'для финансовых рынков',
       tagline: 'Алгоритмы, дисциплина, контроль риска',
       subtitle:
-        'Готовые роботы и разработка на заказ для MOEX, криптобирж и международных площадок. Бэктест и проверка на реальных котировках перед запуском.',
+        'Купите готовый торговый робот для Московской биржи (акции, ОФЗ, облигации РФ) и криптовалюты на Bybit — от 27 900 ₽. Автоматическая стратегия, торговля в авторежиме, бэктест и тестовый режим перед запуском.',
       ctaPrimary: 'Обсудить проект',
       ctaSecondary: 'Готовые решения',
     },
@@ -35,11 +37,13 @@ const translations = {
       items: [
         {
           title: 'MOEX',
-          description: 'Облигации ОФЗ и корпоративные, акции, фьючерсы, валютный рынок, металлы на Московской бирже',
+          description:
+            'Торговые роботы для Московской биржи: акции РФ, облигации ОФЗ и корпоративные, фьючерсы, валюта и металлы. Подключение через брокера T‑Bank',
         },
         {
           title: 'Crypto',
-          description: 'Спот и фьючерсы на Bybit; Binance, OKX и другие криптобиржи — при разработке на заказ',
+          description:
+            'Торговый робот для криптовалюты на Bybit — спот и фьючерсы. Binance, OKX и другие биржи — при разработке на заказ',
         },
         {
           title: 'International',
@@ -67,7 +71,8 @@ const translations = {
     },
     products: {
       title: 'Готовые решения',
-      subtitle: 'Готовые роботы для MOEX и крипторынка — с бэктестом и тестовым режимом',
+      subtitle:
+        'Купить торгового робота для MOEX и Bybit: акции, облигации ОФЗ, криптовалюта — от 27 900 ₽. Бэктест и тестовый режим перед боевым запуском',
       watchVideo: 'Смотреть видео',
       order: 'Заказать',
       strategy: 'Стратегии',
@@ -177,9 +182,11 @@ const translations = {
   },
   en: {
     meta: {
-      title: 'Auroboros Soft — Trading Bots for MOEX, Crypto & Global Markets',
+      title: 'Buy Trading Bot for MOEX & Bybit — from 27,900 RUB | Auroboros Soft',
       description:
-        'Ready-made trading bots for MOEX and crypto, plus custom development. Backtesting, test mode on live data, and support.',
+        'Buy a trading bot for Moscow Exchange: Russian equities and OFZ bonds. Crypto bot for Bybit. MOEX pro and CRYPTO pro from 27,900 RUB — automated trading, backtesting, and test mode via T-Bank.',
+      keywords:
+        'buy trading bot, MOEX trading bot, OFZ bonds bot, crypto trading bot, Bybit, T-Bank, automated trading',
     },
     nav: {
       services: 'Services',
@@ -198,7 +205,7 @@ const translations = {
       titleLine2: 'for financial markets',
       tagline: 'Algorithms, discipline, risk control',
       subtitle:
-        'Ready-made bots and custom development for MOEX, crypto, and international markets. Backtesting and live-data validation before launch.',
+        'Buy a ready-made trading bot for Moscow Exchange (equities, OFZ bonds) and crypto on Bybit — from 27,900 RUB. Automated strategy, backtesting, and test mode before live launch.',
       ctaPrimary: 'Discuss project',
       ctaSecondary: 'Ready-made solutions',
     },
@@ -241,7 +248,8 @@ const translations = {
     },
     products: {
       title: 'Ready-made solutions',
-      subtitle: 'Ready-made bots for MOEX and crypto — with backtesting and test mode',
+      subtitle:
+        'Buy a trading bot for MOEX and Bybit: Russian equities, OFZ bonds, crypto — from 27,900 RUB. Backtesting and test mode before live launch',
       watchVideo: 'Watch video',
       order: 'Order',
       strategy: 'Strategies',

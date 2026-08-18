@@ -24,7 +24,7 @@ const { locale, title, description, structuredData } = Astro.props;
 const t = getTranslations(locale);
 const pageTitle = title ?? t.meta.title;
 const pageDescription = description ?? t.meta.description;
-const site = Astro.site ?? new URL('https://auroborossoft.vercel.app');
+const site = Astro.site ?? new URL('https://auroboros-soft.vercel.app');
 const canonicalURL = new URL(Astro.url.pathname, site);
 const alternateRu = new URL(localePath('ru', Astro.url.pathname.replace(/^\/(ru|en)/, '')), site);
 const alternateEn = new URL(localePath('en', Astro.url.pathname.replace(/^\/(ru|en)/, '')), site);
@@ -39,6 +39,7 @@ const jsonLd = structuredData ?? buildSiteStructuredData(site);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google-site-verification" content="mROOTO4ObgqYhSlmH_BKLFfbKv5xbYbfvex4zg-Oji4" />
     <meta name="description" content={pageDescription} />
+    {'keywords' in t.meta && t.meta.keywords && <meta name="keywords" content={t.meta.keywords} />}
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/png" href="/logo-icon.png" />
     <link rel="canonical" href={canonicalURL} />

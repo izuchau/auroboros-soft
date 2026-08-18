@@ -3,11 +3,41 @@ import type { FAQItem } from '../types';
 export const faqItems: FAQItem[] = [
   {
     question: {
+      ru: 'Сколько стоит купить торговый робот?',
+      en: 'How much does a trading bot cost?',
+    },
+    answer: {
+      ru: 'Готовые роботы MOEX pro (Московская биржа: акции РФ и ОФЗ) и CRYPTO pro (криптовалюта на Bybit) — 27 900 ₽ за лицензию на один компьютер. Разработка торгового робота на заказ — от 100 000 ₽, точная цена после анализа стратегии. Это недорогое готовое решение по сравнению с индивидуальной разработкой с нуля.',
+      en: 'Ready-made MOEX pro (Moscow Exchange: Russian equities and OFZ) and CRYPTO pro (crypto on Bybit) cost 27,900 RUB for a single-computer license. Custom bot development starts from 100,000 RUB after we review your strategy.',
+    },
+  },
+  {
+    question: {
+      ru: 'Какие бывают торговые роботы для биржи?',
+      en: 'What types of exchange trading bots do you offer?',
+    },
+    answer: {
+      ru: 'MOEX pro — торговый робот для Московской биржи: акции РФ и облигации ОФЗ (автоматическая стратегия, торговля в авторежиме через T‑Bank). CRYPTO pro — робот для криптовалюты на Bybit (спот и фьючерсы). На заказ делаем роботов для облигаций, скальперов, мультистратегий и других задач — под ваш брокер или биржу.',
+      en: 'MOEX pro covers Russian equities and OFZ on Moscow Exchange via T-Bank. CRYPTO pro runs on Bybit (spot and futures). Custom projects include bond bots, scalping strategies, multi-strategy systems, and more.',
+    },
+  },
+  {
+    question: {
+      ru: 'Есть ли бесплатный торговый робот?',
+      en: 'Is there a free trading bot?',
+    },
+    answer: {
+      ru: 'Полностью бесплатного готового робота мы не предлагаем — MOEX pro и CRYPTO pro продаются по лицензии. Бесплатно доступны тестовый режим на реальных котировках (без отправки ордеров) и 30 дней поддержки после покупки. Так вы проверяете робота до боевой торговли, не ожидая «робота без оплаты».',
+      en: 'We do not offer a fully free ready-made bot — MOEX pro and CRYPTO pro are licensed products. Test mode on live quotes (no orders sent) and 30 days of post-purchase support are included at no extra charge.',
+    },
+  },
+  {
+    question: {
       ru: 'Какие биржи вы поддерживаете?',
       en: 'Which exchanges do you support?',
     },
     answer: {
-      ru: 'Московская биржа (акции, облигации, фьючерсы, валюта, металлы). Готовый робот CRYPTO pro — Bybit; другие криптобиржи (Binance, OKX и др.) — при разработке на заказ. Международные площадки — через MetaTrader, Interactive Brokers и API-брокеров.',
+      ru: 'Московская биржа (акции, облигации ОФЗ, фьючерсы, валюта, металлы) — робот MOEX pro через брокера T‑Bank. Готовый CRYPTO pro — биржа Bybit; другие криптобиржи (Binance, OKX и др.) — при разработке на заказ. Международные площадки — через MetaTrader, Interactive Brokers и API-брокеров.',
       en: 'Moscow Exchange (equities, bonds, futures, FX, metals). Ready-made CRYPTO pro runs on Bybit; other crypto exchanges (Binance, OKX, etc.) are available via custom development. International markets via MetaTrader, Interactive Brokers, and API brokers.',
     },
   },

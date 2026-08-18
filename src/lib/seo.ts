@@ -1,6 +1,7 @@
 import type { Locale } from '../types';
 import type { FAQItem } from '../types';
 import { faqItems } from '../data/faq';
+import { products } from '../data/products';
 import { socialLinks } from '../data/social';
 const SITE_NAME = 'Auroboros Soft';
 const CONTACT_EMAIL = 'auroboros.soft@gmail.com';
@@ -57,6 +58,33 @@ function faqItemToQuestion(item: FAQItem, locale: Locale) {
   };
 }
 
+const PRODUCT_PRICE_RUB = 27900;
+
+export function buildProductSchemas(locale: Locale, site: URL | string) {
+  return products.map((product) => ({
+    '@type': 'Product',
+    '@id': `${absoluteUrl(`/${locale}/#products`, site)}#${product.id}`,
+    name: product.name[locale],
+    description: product.description[locale],
+    brand: {
+      '@type': 'Brand',
+      name: SITE_NAME,
+    },
+    category: product.market[locale],
+    offers: {
+      '@type': 'Offer',
+      price: PRODUCT_PRICE_RUB,
+      priceCurrency: 'RUB',
+      availability: 'https://schema.org/InStock',
+      url: absoluteUrl(`/${locale}/#products`, site),
+      seller: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+      },
+    },
+  }));
+}
+
 export function buildLandingStructuredData(locale: Locale, site: URL | string) {
   return {
     '@context': 'https://schema.org',
@@ -64,6 +92,7 @@ export function buildLandingStructuredData(locale: Locale, site: URL | string) {
       buildOrganizationSchema(site),
       buildWebSiteSchema(site),
       buildFaqPageSchema(locale, site),
+      ...buildProductSchemas(locale, site),
     ],
   };
 }
