@@ -140,7 +140,12 @@ const captchaEnabled = Boolean(recaptchaSiteKey);
   {
     captchaEnabled && (
       <div class="flex justify-center">
-        <div class="g-recaptcha" data-sitekey={recaptchaSiteKey} id={`${formId}-recaptcha`}></div>
+        <div
+          class="g-recaptcha overflow-hidden rounded-xl"
+          data-sitekey={recaptchaSiteKey}
+          data-theme="dark"
+          id={`${formId}-recaptcha`}
+        ></div>
       </div>
     )
   }
