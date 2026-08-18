@@ -1,7 +1,8 @@
 # Plan Auroboros Soft — лендинг
 
-Статус проекта на **7 августа 2026**.  
-Папка: `D:\Auroboros_Soft`
+Статус проекта на **18 августа 2026**.  
+Папка: `D:\Auroboros_Soft`  
+**Live:** https://auroboros-soft.vercel.app/ru/
 
 ---
 
@@ -15,175 +16,114 @@
 
 ## Что уже сделано
 
-### Технологии
+### Технологии и деплой
 
 - [x] Astro 7 + Tailwind CSS 4 + TypeScript
 - [x] Двуязычность: `/ru/` и `/en/`
-- [x] Git-репозиторий инициализирован
+- [x] GitHub → Vercel (автодеплой из `main`)
+- [x] `site` и sitemap: `https://auroboros-soft.vercel.app`
+- [x] Sitemap (`@astrojs/sitemap`)
+- [x] Schema.org: Organization, WebSite, FAQ, Product (MOEX pro, CRYPTO pro)
 
-### Дизайн
+### Дизайн и контент
 
-- [x] Тёмная тема под логотип (cyan / `#22d3ee`)
-- [x] Логотип в шапке (увеличенная высота header)
-- [x] Прозрачный фон логотипа (чёрный фон удалён из PNG)
-- [x] Секции: Hero, рынки, услуги, роботы, этапы, преимущества, FAQ, контакты
-- [x] Адаптивная вёрстка
+- [x] Тёмная тема (cyan / `#22d3ee`)
+- [x] Логотип **AUROBOROS** + «infinity in the universe» (`public/logo.png`)
+- [x] Живой фон, шапка с рыночными данными, burger-меню на мобиле
+- [x] Секции: Hero, рынки, услуги, роботы, покупка, этапы, преимущества, FAQ, контакты
+- [x] Marquee бирж и брокеров (MOEX, QUIK, T-Bank, Bybit, Binance и др.)
+- [x] Соцсети: Telegram, MAX, YouTube, TikTok, Instagram, VK Video
+- [x] NDA-страница (`/ru/nda`, `/en/nda`)
+- [x] Скриншоты дашборда MOEX pro / CRYPTO pro
 
 ### Продукты
 
-- [x] **MOEX pro** — 27 900 ₽
-- [x] **CRYPTO pro** — 27 900 ₽
-- [x] Карточки с кнопкой «Заказать» → модальное окно с формой
-- [x] Поддержка видео YouTube / VK в карточках (заглушки — заменить на реальные ссылки)
-
-Данные: `src/data/products.ts`
+- [x] **MOEX pro** — 27 900 ₽ (акции РФ, ОФЗ, T-Bank, уведомления MAX)
+- [x] **CRYPTO pro** — 27 900 ₽ (Bybit спот/фьючерсы, Telegram)
+- [x] Карточки + модалка «Заказать»
 
 ### Форма заявки
 
-- [x] Formspree ID: `mwlevlbw` → `https://formspree.io/f/mwlevlbw`
-- [x] Email для уведомлений: **auroboros.soft@gmail.com** (в Formspree → Workflow → Email)
-- [x] Обязательные поля: **имя**, **email**, согласие с политикой
-- [x] Необязательные: **телефон**, **сообщение**
-- [x] Отправка без перезагрузки страницы (AJAX)
-- [x] Модалка заказа закрывается после успешной отправки
-- [x] Honeypot `_gotcha` против ботов
-- [x] Formshield **отключён** (иначе заявки уходили в Spam и письма не приходили)
+- [x] Formspree ID: `mwlevlbw` → auroboros.soft@gmail.com
+- [x] AJAX-отправка, honeypot, согласие с privacy/terms
+- [x] **Google reCAPTCHA v2** (тёмная тема, галочка в форме)
+- [x] Formshield **отключён** (заявки уходили в Spam)
+
+### SEO и аналитика
+
+- [x] Meta title / description / keywords (MOEX, ОФЗ, Bybit, T-Bank)
+- [x] FAQ с SEO-вопросами (цена, типы роботов, бесплатный робот)
+- [x] **og:image** — из актуального `logo.png` (`scripts/generate-og-image.py`)
+- [x] Яндекс.Вебмастер (верификация + sitemap)
+- [x] Google Search Console (верификация + sitemap)
+- [x] GA4 (`G-5RY4R4N5WY`) — после cookie-баннера
+- [x] Яндекс.Метрика (`111704399`) — после cookie-баннера
 
 ### Юридические страницы
 
 - [x] `/ru/privacy`, `/en/privacy`
 - [x] `/ru/terms`, `/en/terms`
-- [x] Дисклеймер о рисках торговли в footer
-
-### Контакты на сайте
-
-- Email в footer: **auroboros.soft@gmail.com**
-
-### Живой фон (основная часть) — ✅ готово (7 августа 2026)
-
-- [x] Диагональный график японских свечей (cyan, с откатами, точка на линии)
-- [x] Живая линия рынка под графиком (7 вариаций, снизу-слева → вверх-направо)
-- [x] Биржевой стакан слева (14 уровней, 7 состояний, сделки-кружки/квадраты)
-- [x] Сети участников рынка справа (соты с силуэтами, пунктирные связи) — вместо логотипов
-- [x] Орбиты, частицы, сетка, ticker/volume слой
-
-Файлы: `LiveBackground.astro`, `BackgroundCandleLayer`, `BackgroundMarketLineLayer`, `BackgroundOrderBookLayer`, `BackgroundPeopleLayer`
-
-### Шапка — вариант B (строка данных)
-
-- [x] База варианта A: сетка, scan, glow, уголки терминала
-- [x] Строка рыночных данных (mono): MOEX, BTC/USDT, SPREAD и т.д.
-- [x] 7 наборов, медленная смена (~4.2 с), без графика
+- [x] Дисклеймер о рисках в footer
 
 ---
 
-- `.env` — `PUBLIC_FORMSPREE_ID=mwlevlbw`
-- `astro.config.mjs` — временный site: `https://auroborossoft.vercel.app` (поменять после регистрации домена)
+## Не сделано / на потом
+
+### Контент (ваши материалы)
+
+- [ ] **Видеообзор** роботов → `products.ts` (YouTube / VK embed)
+- [ ] **Отзывы клиентов** — только реальные, после продаж
+
+### Юрлицо и оплата
+
+- [ ] ООО «Ауроборос» (сейчас ИП; реквизиты на сайт — после регистрации)
+- [ ] ИНН / ОГРН в footer
+- [ ] Отдельный блок способов оплаты (счёт, СБП — частично в FAQ)
+
+### Домен и инфраструктура
+
+- [ ] Зарегистрировать свой домен (например `auroborossoft.ru`)
+- [ ] После покупки: Vercel → Custom Domain, обновить `astro.config.mjs`, `robots.txt`, reCAPTCHA domains, Метрика, Вебмастер, Search Console
+
+### Опционально
+
+- [ ] Переобход главной в Яндекс.Вебмастере (ускоряет FAQ-сниппеты, не обязательно)
+- [ ] Formspree «Restrict to Domain» (платная функция — сейчас CAPTCHA + honeypot)
+- [ ] Блог / база знаний
+- [ ] Юридические тексты — согласовать с юристом
+
+**Не делаем:** фейковые отзывы, выдуманная доходность.
 
 ---
 
-## Не сделано / отложено
-
-### ⏳ CAPTCHA — СДЕЛАТЬ ПЕРЕД ВЫКЛАДКОЙ В ИНТЕРНЕТ
-
-**Статус:** код подготовлен, ключи **не настроены**, капча **не активна**.
-
-Почему отложено: встроенная CAPTCHA Formspree без Google открывает **другую страницу** (плохой UX, зацикливание). Для капчи **внутри формы** нужен Google reCAPTCHA v2.
-
-**Когда будете выкладывать сайт — сделать:**
-
-1. [google.com/recaptcha/admin](https://www.google.com/recaptcha/admin) → **reCAPTCHA v2** (галочка «I'm not a robot»)
-2. Domains: ваш домен + `localhost`
-3. В `.env` добавить:
-   ```
-   PUBLIC_RECAPTCHA_SITE_KEY=ваш_site_key
-   ```
-4. Formspree → Settings → CAPTCHA → **Custom reCAPTCHA Key** → **Secret Key** от Google
-5. Перезапустить `npm run dev`, проверить галочку в форме
-6. Включить Formshield обратно (опционально, после тестов)
-
-Файлы: `src/components/forms/ContactForm.astro`, `.env.example`, `README.md`
-
----
-
-### Дорожная карта сайта (обновлено 8 авг. 2026)
-
-**Шаг 1 — сделано**
-- [x] Секция «Что входит в покупку» (лицензия 1 ПК, email-доставка, дашборд, 30 дней поддержки)
-- [x] Блок «Ваши деньги на вашем счёте»
-- [x] +6 FAQ (доставка, лицензия, поддержка, деньги у брокера, Windows, что получаете)
-- [x] Telegram-канал в шапке (канала достаточно; личный чат — опционально позже)
-- [x] Заглушки под скрины/видео
-- [x] Соглашение: 1 ПК / 30 дней поддержки
-
-**Шаг 2 — ваши материалы**
-- [ ] Скриншоты дашборда MOEX pro / CRYPTO pro → `public/images/products/`
-- [ ] Видеообзор → `products.ts` (YouTube/VK embed)
-
-**Шаг 3 — юрлицо и оплата**
-- [ ] ООО «Ауроборос» (сейчас ИП; реквизиты на сайт — после регистрации ООО)
-- [ ] Текст: способы оплаты (счёт, СБП и т.д.)
-
-**Шаг 4 — SEO / техника**
-- [ ] og:image для шаринга в Telegram/VK
-- [ ] sitemap (@astrojs/sitemap)
-- [ ] Schema.org (FAQ, Organization)
-- [ ] GA4 / Метрика (ID в `.env`)
-
-**Шаг 5 — позже (когда будут продажи)**
-- [ ] Отзывы клиентов (без выдуманных цифр доходности)
-- [ ] reCAPTCHA перед продом
-- [ ] Блог / база знаний (опционально)
-
-**Не делаем сейчас:** фейковые отзывы, личный Telegram-чат в шапке (канала хватит).
-
-### Другие задачи на потом
-
-- [ ] Заменить заглушки видео в `products.ts` на реальные YouTube / VK
-- [ ] Добавить реальные тексты / кейсы / скриншоты роботов
-- [ ] Зарегистрировать домен **auroborossoft**
-- [ ] Обновить `site` в `astro.config.mjs`
-- [ ] Деплой: Vercel / Netlify / GitHub Pages
-- [ ] Юридические тексты — согласовать с юристом (privacy, terms)
-- [ ] Яндекс.Метрика / GA4
-- [ ] Favicon из логотипа (сейчас используется logo.png)
-- [ ] Реквизиты компании в footer (ИНН, ОГРН — если есть)
-
----
-
-## Команды
+## Полезные команды
 
 ```bash
-# Запуск локально
 cd D:\Auroboros_Soft
+
+# Локально
 npm run dev
 # → http://localhost:4321/ru/
 
-# Остановка
-Ctrl + C
-
-# Сборка для публикации
+# Сборка
 npm run build
 
-# Просмотр сборки
-npm run preview
+# Пересобрать og:image после смены logo.png
+python scripts/generate-og-image.py
 ```
 
 ---
 
-## Структура проекта
+## Переменные окружения (Vercel / .env)
 
-```
-src/
-  components/     UI, секции, формы
-  data/           products.ts, faq.ts
-  i18n/           переводы RU/EN
-  layouts/        BaseLayout
-  pages/          ru/, en/
-public/
-  logo.png        логотип
-.env              Formspree ID (не коммитить секреты)
-```
+| Переменная | Назначение |
+|------------|------------|
+| `PUBLIC_FORMSPREE_ID` | `mwlevlbw` |
+| `PUBLIC_RECAPTCHA_SITE_KEY` | Site Key reCAPTCHA v2 |
+| `PUBLIC_GA_MEASUREMENT_ID` | `G-5RY4R4N5WY` |
+| `PUBLIC_YANDEX_METRIKA_ID` | `111704399` |
+
+Secret Key reCAPTCHA — только в Formspree → Settings → CAPTCHA → Custom reCAPTCHA Key.
 
 ---
 
@@ -194,21 +134,32 @@ public/
 | Form ID | `mwlevlbw` |
 | Email (Workflow) | auroboros.soft@gmail.com |
 | Formshield | **Disabled** |
-| CAPTCHA | **Не настроена** (TODO перед продом) |
+| CAPTCHA | **Google reCAPTCHA v2** (Custom Key в Formspree) |
 
 ---
 
-## История решений
+## Структура проекта
 
-1. **Formshield включён** → заявки попадали в Spam, письма не приходили → **отключили**.
-2. **Formspree interstitial CAPTCHA** → редирект на другую страницу, зацикливание → **отказались**.
-3. **reCAPTCHA v2 в форме** → код готов, настройка ключей **отложена до деплоя**.
+```
+src/
+  components/     UI, секции, формы
+  data/           products.ts, faq.ts, partners.ts, social.ts
+  i18n/           переводы RU/EN
+  lib/seo.ts      Schema.org, og:image path
+  layouts/        BaseLayout
+  pages/          ru/, en/
+public/
+  logo.png        логотип на сайте
+  og-image.png    превью при шаринге (генерируется из logo.png)
+scripts/
+  generate-og-image.py
+.env              ключи (не коммитить)
+```
 
 ---
 
-## Следующий шаг (когда будете готовы)
+## Следующий шаг
 
-1. Доработать контент и видео роботов локально
-2. Выложить на Vercel/Netlify
-3. **Настроить CAPTCHA** (см. раздел выше)
-4. Подключить домен
+1. **Видео** в карточки роботов (если есть запись)
+2. **Свой домен** — когда купите
+3. **Реквизиты ООО** — когда зарегистрируете
