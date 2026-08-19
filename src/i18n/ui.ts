@@ -7,7 +7,7 @@ const translations = {
       description:
         'Купить торгового робота для Московской биржи: акции, ОФЗ и облигации РФ. Торговый робот для криптовалюты на Bybit. MOEX pro и CRYPTO pro от 27 900 ₽ — торговля в авторежиме, бэктест и тестовый режим через T‑Bank.',
       keywords:
-        'купить торгового робота, торговые роботы для московской биржи, торговый робот MOEX, робот для ОФЗ, торговый робот для облигаций россии, торговый робот для акций, купить робота для торговли, торговый робот недорого, торговый робот для криптовалюты, торговый робот Bybit, брокер T-Bank торговые роботы, торговля в авторежиме, автоматическая стратегия MOEX, торговый робот скальпер на заказ, какие бывают торговые роботы, алгоритмическая торговля, облигации робот, купить торговый робот для биржи',
+        'купить торгового робота, торговые роботы для московской биржи, торговый робот MOEX, робот для ОФЗ, торговый робот для облигаций россии, торговый робот для акций, купить робота для торговли, торговый робот недорого, торговый робот для криптовалюты, торговый робот Bybit, брокер T-Bank торговые роботы, торговля в авторежиме, автоматическая стратегия MOEX, торговый робот скальпер на заказ, какие бывают торговые роботы, алгоритмическая торговля, облигации робот, купить торговый робот для биржи, MOEX pro, CRYPTO pro, купить MOEX pro, купить CRYPTO pro, торговый робот MOEX pro',
     },
     nav: {
       services: 'Услуги',
@@ -244,7 +244,7 @@ const translations = {
       description:
         'Buy a trading bot for Moscow Exchange: Russian equities and OFZ bonds. Crypto bot for Bybit. MOEX pro and CRYPTO pro from 27,900 RUB — automated trading, backtesting, and test mode via T-Bank.',
       keywords:
-        'buy trading bot, MOEX trading bot, OFZ bonds bot, crypto trading bot, Bybit, T-Bank, automated trading',
+        'buy trading bot, MOEX trading bot, OFZ bonds bot, crypto trading bot, Bybit, T-Bank, automated trading, MOEX pro, CRYPTO pro, buy MOEX pro',
     },
     nav: {
       services: 'Services',
