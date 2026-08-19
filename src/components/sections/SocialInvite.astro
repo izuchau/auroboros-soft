@@ -1,0 +1,66 @@
+---
+import type { Locale } from '../../types';
+import { getTranslations } from '../../i18n/ui';
+import { socialLinks } from '../../data/social';
+import SocialIcon from '../ui/SocialIcon.astro';
+import Button from '../ui/Button.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+
+const telegram = socialLinks.find((link) => link.id === 'telegram')!;
+const max = socialLinks.find((link) => link.id === 'max')!;
+
+const channels = [
+  {
+    link: telegram,
+    headline: t.socialInvite.telegramHeadline,
+    description: t.socialInvite.telegramDescription,
+    cta: t.socialInvite.telegramCta,
+  },
+  {
+    link: max,
+    headline: t.socialInvite.maxHeadline,
+    description: t.socialInvite.maxDescription,
+    cta: t.socialInvite.maxCta,
+  },
+] as const;
+---
+
+<section id="channels" class="section-padding border-y border-border/60 bg-bg-card/30">
+  <div class="container-main">
+    <div class="mb-10 text-center">
+      <h2 class="heading-soft mb-4 text-3xl font-bold sm:text-4xl">{t.socialInvite.title}</h2>
+      <p class="mx-auto max-w-2xl text-text-muted">{t.socialInvite.subtitle}</p>
+    </div>
+    <div class="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
+      {
+        channels.map(({ link, headline, description, cta }) => (
+          <article class="card-surface group flex h-full flex-col p-6 transition hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 sm:p-8">
+            <span class="card-icon mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary/80 transition group-hover:border-primary/40 group-hover:text-primary">
+              <span class="h-7 w-7">
+                <SocialIcon id={link.id} />
+              </span>
+            </span>
+            <h3 class="heading-soft mb-3 text-lg font-semibold">{headline}</h3>
+            <p class="mb-6 flex-1 text-sm leading-relaxed text-text-muted">{description}</p>
+            <Button
+              href={link.href}
+              variant="secondary"
+              size="md"
+              class="w-full sm:w-auto"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {cta}
+            </Button>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

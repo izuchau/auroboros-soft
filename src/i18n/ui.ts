@@ -106,7 +106,7 @@ const translations = {
     },
     steps: {
       title: 'Как мы работаем',
-      subtitle: 'От первого созвона до передачи робота и инструкции по запуску',
+      subtitle: 'От первой заявки до передачи робота и инструкции по запуску',
       items: [
         { title: 'Анализ', description: 'Изучаем стратегию, брокера или биржу и технические требования к роботу' },
         { title: 'Разработка', description: 'Разрабатываем робота, проводим бэктест и встраиваем гибкие настройки' },
@@ -123,8 +123,53 @@ const translations = {
         { title: 'NDA', description: 'Конфиденциальность вашей стратегии' },
       ],
     },
+    launchSteps: {
+      title: 'Подключение и запуск: 3 шага',
+      subtitle: 'От открытия счёта до боевой торговли',
+      cta: 'Оставить заявку',
+      items: [
+        {
+          title: 'Откройте счёт',
+          description:
+            'Откройте счёт в T‑Bank для торговли на Московской бирже и счёт на Bybit для крипторынка.',
+        },
+        {
+          title: 'Установите бота',
+          description: 'Получите робота на email и установите по инструкции на компьютер.',
+        },
+        {
+          title: 'Запустите робота',
+          description:
+            'Сначала тестовый режим на реальных котировках, затем боевая торговля с вашими настройками.',
+        },
+      ],
+    },
+    socialInvite: {
+      title: 'Будьте в курсе: новости и поддержка',
+      subtitle: 'Подписывайтесь — публикуем обновления роботов, отвечаем на вопросы и помогаем с первыми шагами',
+      telegramHeadline: 'Загляните в Telegram-канал',
+      telegramDescription:
+        'Результаты торговли, обновления, ответы на вопросы и помощь с запуском.',
+      telegramCta: 'Перейти в Telegram',
+      maxHeadline: 'Присоединяйтесь в MAX',
+      maxDescription: 'Новости, анонсы и поддержка — дублируем важное в канале MAX.',
+      maxCta: 'Перейти в MAX',
+    },
     faq: {
       title: 'Частые вопросы',
+    },
+    videoInvite: {
+      title: 'Смотрите видео и обзоры',
+      subtitle:
+        'Демонстрации платформы, разборы функций и ответы на частые вопросы — в наших видеоканалах',
+      youtubeHeadline: 'Обзоры и демонстрации на YouTube',
+      youtubeDescription:
+        'Записи с разбором интерфейса, настройки роботов и практические советы по запуску.',
+      youtubeCta: 'Смотреть на YouTube',
+      vkvideoHeadline: 'Видео на VK Видео',
+      vkvideoDescription:
+        'Те же материалы на VK Видео — удобно смотреть без VPN и делиться ссылкой.',
+      vkvideoCta: 'Смотреть VK Видео',
     },
     contact: {
       title: 'Связаться с нами',
@@ -161,8 +206,20 @@ const translations = {
       contactHeading: 'Контакты',
       social: 'Соцсети',
       socialSoon: 'скоро',
-      disclaimer:
-        'Торговля на финансовых рынках связана с риском потери капитала. Робот не гарантирует доходность. Информация на сайте — не совет, что покупать или продавать.',
+      disclaimer: {
+        title: 'Важная информация, дисклеймер, отказ от ответственности.',
+        intro:
+          'Вся информация, представленная на данном сайте, и предлагаемые услуги, товары носят исключительно информационный характер и не являются:',
+        items: [
+          'Индивидуальной инвестиционной рекомендацией (ИИР) в соответствии с Федеральным законом от 22.04.1996 N 39-ФЗ «О рынке ценных бумаг».',
+          'Предложением или побуждением к совершению каких-либо действий, сделок с ценными бумагами или иными финансовыми инструментами.',
+          'Гарантией получения прибыли или избежания убытков.',
+        ],
+        paragraphs: [
+          'Решения об инвестициях всегда должны приниматься инвестором самостоятельно, на основе его собственного анализа и оценки рисков. Исполнитель услуг не несет ответственности за результаты инвестиционных решений, принятых на основе информации, представленной в данной статье, в процессе консультации, в результате получения услуги. Рекомендуется обращаться за консультацией к лицензированному финансовому советнику, имеющему квалификационный аттестат в соответствии с законодательством РФ.',
+          'Торговля на финансовых рынках связана с риском потери части или всего капитала. Роботы не гарантируют доходность, прибыль в прошлом не гарантирует прибыль в будущем. Информация на сайте — не совет, что покупать или продавать или какие действия предпринимать.',
+        ],
+      },
       rights: 'Все права защищены',
     },
     cookies: {
@@ -284,7 +341,7 @@ const translations = {
     },
     steps: {
       title: 'How we work',
-      subtitle: 'From the first call to delivering the bot and launch instructions',
+      subtitle: 'From first request to bot delivery and launch instructions',
       items: [
         { title: 'Analysis', description: 'We review your strategy, broker or exchange, and technical requirements for the bot' },
         { title: 'Development', description: 'We build the bot, run backtests, and integrate flexible settings' },
@@ -301,8 +358,53 @@ const translations = {
         { title: 'NDA', description: 'Confidentiality of your strategy' },
       ],
     },
+    launchSteps: {
+      title: 'Connect and launch: 3 steps',
+      subtitle: 'From broker accounts to live trading',
+      cta: 'Get in touch',
+      items: [
+        {
+          title: 'Open accounts',
+          description:
+            'Open a T-Bank account for MOEX trading and a Bybit account for crypto markets.',
+        },
+        {
+          title: 'Install the bot',
+          description: 'Receive the bot by email and install it on your computer using the guide.',
+        },
+        {
+          title: 'Launch the bot',
+          description:
+            'Start in test mode on live market data, then switch to live trading with your settings.',
+        },
+      ],
+    },
+    socialInvite: {
+      title: 'Stay in the loop: news and support',
+      subtitle: 'Subscribe for bot updates, Q&A, and help getting started',
+      telegramHeadline: 'Visit our Telegram channel',
+      telegramDescription:
+        'Trading results, updates, Q&A, and launch support.',
+      telegramCta: 'Join Telegram',
+      maxHeadline: 'Join us on MAX',
+      maxDescription: 'News, announcements, and support — we mirror important updates on MAX.',
+      maxCta: 'Join MAX',
+    },
     faq: {
       title: 'FAQ',
+    },
+    videoInvite: {
+      title: 'Watch our videos and reviews',
+      subtitle:
+        'Platform demos, feature walkthroughs, and answers to common questions — on our video channels',
+      youtubeHeadline: 'Reviews and demos on YouTube',
+      youtubeDescription:
+        'Walkthroughs of the interface, bot setup, and practical tips for getting started.',
+      youtubeCta: 'Watch on YouTube',
+      vkvideoHeadline: 'Videos on VK Video',
+      vkvideoDescription:
+        'The same content on VK Video — easy to watch and share with a single link.',
+      vkvideoCta: 'Watch on VK Video',
     },
     contact: {
       title: 'Contact us',
@@ -339,8 +441,20 @@ const translations = {
       contactHeading: 'Contact',
       social: 'Social',
       socialSoon: 'coming soon',
-      disclaimer:
-        'Trading financial markets involves the risk of losing capital. The bot does not guarantee returns. Information on this site is not advice on what to buy or sell.',
+      disclaimer: {
+        title: 'Important Information, Disclaimer, and Limitation of Liability',
+        intro:
+          'All information presented on this website, and the services and products offered, are provided for informational purposes only and do not constitute:',
+        items: [
+          'Individual investment recommendations (IIR) within the meaning of Federal Law No. 39-FZ of 22 April 1996 "On the Securities Market".',
+          'An offer or solicitation to perform any actions or transactions involving securities or other financial instruments.',
+          'A guarantee of profit or avoidance of losses.',
+        ],
+        paragraphs: [
+          'Investment decisions should always be made independently by the investor based on their own analysis and risk assessment. The service provider is not liable for the results of investment decisions made based on information presented on this website, during consultations, or as a result of receiving services. We recommend consulting a licensed financial advisor holding the appropriate qualification certificate under applicable law.',
+          'Trading in financial markets involves the risk of losing part or all of your capital. Trading bots do not guarantee returns; past performance does not guarantee future results. Information on this website is not advice on what to buy, sell, or otherwise do.',
+        ],
+      },
       rights: 'All rights reserved',
     },
     cookies: {

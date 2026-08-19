@@ -57,11 +57,29 @@ const year = new Date().getFullYear();
           <h3 class="mb-3 text-sm font-semibold uppercase tracking-wide text-text-muted">{t.footer.social}</h3>
           <SocialLinks locale={locale} />
         </div>
-        <p class="mt-4 text-xs leading-relaxed text-text-dim">{t.footer.disclaimer}</p>
       </div>
     </div>
+  </div>
 
-    <div class="mt-10 border-t border-border pt-6 text-center text-xs text-text-dim">
+  <div class="border-t border-border">
+    <div class="container-main px-4 py-6 sm:px-6 lg:px-8">
+      <section class="text-xs leading-relaxed text-text-dim" aria-label={t.footer.disclaimer.title}>
+        <h3 class="mb-3 text-sm font-medium text-text-muted">{t.footer.disclaimer.title}</h3>
+        <p class="mb-3">{t.footer.disclaimer.intro}</p>
+        <ul class="mb-3 list-disc space-y-1.5 pl-5">
+          {t.footer.disclaimer.items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        {t.footer.disclaimer.paragraphs.map((paragraph) => (
+          <p class="mb-3 last:mb-0">{paragraph}</p>
+        ))}
+      </section>
+    </div>
+  </div>
+
+  <div class="border-t border-border">
+    <div class="container-main px-4 py-6 text-center text-xs text-text-dim sm:px-6 lg:px-8">
       © {year} Auroboros Soft. {t.footer.rights}.
     </div>
   </div>

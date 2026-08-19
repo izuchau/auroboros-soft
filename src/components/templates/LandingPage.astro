@@ -8,7 +8,10 @@ import Services from '../../components/sections/Services.astro';
 import Products from '../../components/sections/Products.astro';
 import PurchasePackage from '../../components/sections/PurchasePackage.astro';
 import About from '../../components/sections/About.astro';
+import LaunchSteps from '../../components/sections/LaunchSteps.astro';
 import FAQ from '../../components/sections/FAQ.astro';
+import SocialInvite from '../../components/sections/SocialInvite.astro';
+import VideoInvite from '../../components/sections/VideoInvite.astro';
 import Contact from '../../components/sections/Contact.astro';
 import { buildLandingStructuredData } from '../../lib/seo';
 import type { Locale } from '../../types';
@@ -18,7 +21,7 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const site = Astro.site ?? new URL('https://auroborossoft.vercel.app');
+const site = Astro.site ?? new URL('https://auroboros-soft.vercel.app');
 const structuredData = buildLandingStructuredData(locale, site);
 ---
 
@@ -28,11 +31,14 @@ const structuredData = buildLandingStructuredData(locale, site);
       <Hero locale={locale} />
       <Markets locale={locale} />
       <Services locale={locale} />
+      <SocialInvite locale={locale} />
+      <LaunchSteps locale={locale} />
       <Products locale={locale} />
       <PurchasePackage locale={locale} />
       <About locale={locale} />
       <FAQ locale={locale} />
-    <Contact locale={locale} />
+      <VideoInvite locale={locale} />
+      <Contact locale={locale} />
   </main>
   <Footer locale={locale} />
 </BaseLayout>
