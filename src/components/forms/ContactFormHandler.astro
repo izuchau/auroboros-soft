@@ -1,40 +1,52 @@
 ---
-const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY ?? '';
-const captchaEnabled = Boolean(recaptchaSiteKey);
+const smartCaptchaClientKey = import.meta.env.PUBLIC_YANDEX_SMARTCAPTCHA_CLIENT_KEY ?? '';
+const captchaEnabled = Boolean(smartCaptchaClientKey);
 ---
 
 {
   captchaEnabled && (
-    <script src="https://www.google.com/recaptcha/api.js?hl=ru" async defer></script>
+    <>
+      <script is:inline>
+        window.initSmartCaptcha = function () {
+          if (!window.smartCaptcha) return;
+
+          document.querySelectorAll('[data-smart-captcha]:not([data-rendered])').forEach((el) => {
+            const sitekey = el.dataset.sitekey;
+            if (!sitekey) return;
+
+            const widgetId = window.smartCaptcha.render(el, {
+              sitekey,
+              hl: 'ru',
+            });
+
+            el.dataset.rendered = 'true';
+            el.dataset.widgetId = String(widgetId);
+          });
+        };
+      </script>
+      <script
+        src="https://smartcaptcha.cloud.yandex.ru/captcha.js?render=onload&onload=initSmartCaptcha"
+        defer
+      />
+    </>
   )
 }
 
 <script define:vars={{ captchaEnabled }}>
-  function getRecaptchaApi() {
-    return window.grecaptcha;
-  }
-
-  function resetRecaptcha(form) {
-    const api = getRecaptchaApi();
-    const widget = form.querySelector('.g-recaptcha');
-    if (!api || !widget) return;
-
-    const widgets = document.querySelectorAll('.g-recaptcha');
-    let widgetId = 0;
-    widgets.forEach((el, index) => {
-      if (el === widget) widgetId = index;
-    });
+  function resetSmartCaptcha(form) {
+    const api = window.smartCaptcha;
+    const widget = form.querySelector('[data-smart-captcha]');
+    if (!api || !widget?.dataset.widgetId) return;
 
     try {
-      api.reset(widgetId);
+      api.reset(Number(widget.dataset.widgetId));
     } catch {
       /* widget not ready */
     }
   }
 
-  function getRecaptchaToken(form) {
-    const field = form.querySelector('textarea[name="g-recaptcha-response"]');
-    return field?.value?.trim() ?? '';
+  function getSmartCaptchaToken(form) {
+    return form.querySelector('input[name="smart-token"]')?.value?.trim() ?? '';
   }
 
   function initContactForms() {
@@ -60,7 +72,7 @@ const captchaEnabled = Boolean(recaptchaSiteKey);
         status.classList.remove('hidden');
 
         try {
-          if (formCaptchaEnabled && !getRecaptchaToken(form)) {
+          if (formCaptchaEnabled && !getSmartCaptchaToken(form)) {
             throw new Error(captchaRequiredMsg);
           }
 
@@ -73,7 +85,7 @@ const captchaEnabled = Boolean(recaptchaSiteKey);
 
           for (const [key, value] of [...formData.entries()]) {
             if (key.startsWith('_') || key === 'consent' || key === 'name' || key === 'email') continue;
-            if (key === 'g-recaptcha-response') continue;
+            if (key === 'smart-token') continue;
             if (!value || String(value).trim() === '') {
               formData.delete(key);
             }
@@ -92,7 +104,7 @@ const captchaEnabled = Boolean(recaptchaSiteKey);
               'form-status rounded-xl px-4 py-3 text-sm bg-accent/10 text-accent border border-accent/20';
             status.textContent = successMsg;
             form.reset();
-            resetRecaptcha(form);
+            resetSmartCaptcha(form);
 
             if (form.id === 'order-contact-form') {
               setTimeout(() => {
@@ -112,7 +124,7 @@ const captchaEnabled = Boolean(recaptchaSiteKey);
           status.className =
             'form-status rounded-xl px-4 py-3 text-sm bg-red-500/10 text-red-400 border border-red-500/20';
           status.textContent = error instanceof Error ? error.message : errorMsg;
-          resetRecaptcha(form);
+          resetSmartCaptcha(form);
         } finally {
           if (submitBtn) submitBtn.disabled = false;
         }
