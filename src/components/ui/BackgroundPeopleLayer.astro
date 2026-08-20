@@ -483,8 +483,6 @@ const networks: Network[] = [
   }
 
   function initPeopleBridge() {
-    if (window.__LIVE_BG_LITE__) return;
-
     const svg = document.getElementById('people-bridge-svg');
     if (!svg || svg.dataset.initialized) return;
     svg.dataset.initialized = 'true';

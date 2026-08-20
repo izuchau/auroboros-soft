@@ -202,8 +202,6 @@ const initialPath = candlesPath(initialSet);
   }
 
   function initBackgroundCandles() {
-    if (window.__LIVE_BG_LITE__) return;
-
     const clipPoly = document.getElementById('bg-candles-clip-poly');
     const pathEl = document.getElementById('bg-candles-path');
     const group = document.getElementById('bg-candles-group');

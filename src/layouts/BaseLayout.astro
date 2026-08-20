@@ -81,19 +81,6 @@ const jsonLd = structuredData ?? buildSiteStructuredData(site);
         rel="stylesheet"
       />
     </noscript>
-    <script is:inline>
-      (function () {
-        var m = window.matchMedia;
-        if (
-          m('(max-width: 767px)').matches ||
-          m('(prefers-reduced-motion: reduce)').matches ||
-          m('(pointer: coarse)').matches
-        ) {
-          document.documentElement.classList.add('live-bg-lite');
-          window.__LIVE_BG_LITE__ = true;
-        }
-      })();
-    </script>
     <JsonLd data={jsonLd} />
     <title>{pageTitle}</title>
   </head>
