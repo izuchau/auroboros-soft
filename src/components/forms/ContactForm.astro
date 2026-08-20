@@ -141,9 +141,8 @@ const captchaEnabled = Boolean(recaptchaSiteKey);
     captchaEnabled && (
       <div class="flex justify-center">
         <div
-          class="g-recaptcha overflow-hidden rounded-xl"
-          data-sitekey={recaptchaSiteKey}
-          data-theme="dark"
+          class="overflow-hidden rounded-xl"
+          data-recaptcha-widget
           id={`${formId}-recaptcha`}
         ></div>
       </div>
@@ -167,21 +166,41 @@ const captchaEnabled = Boolean(recaptchaSiteKey);
 
 {
   captchaEnabled && (
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
   )
 }
 
 <script define:vars={{ recaptchaSiteKey }}>
+  function getRecaptchaApi() {
+    return window.grecaptcha?.enterprise;
+  }
+
+  function renderRecaptchaWidgets() {
+    const api = getRecaptchaApi();
+    if (!api || !recaptchaSiteKey) return;
+
+    api.ready(() => {
+      document.querySelectorAll('[data-recaptcha-widget]:not([data-rendered])').forEach((el) => {
+        const widgetId = api.render(el, {
+          sitekey: recaptchaSiteKey,
+          theme: 'dark',
+          action: 'contact',
+        });
+        el.dataset.rendered = 'true';
+        el.dataset.widgetId = String(widgetId);
+      });
+    });
+  }
+
   function resetRecaptcha(form) {
-    if (typeof grecaptcha !== 'undefined') {
-      const widget = form.querySelector('.g-recaptcha');
-      if (widget) {
-        try {
-          grecaptcha.reset();
-        } catch {
-          /* widget not ready */
-        }
-      }
+    const api = getRecaptchaApi();
+    const widget = form.querySelector('[data-recaptcha-widget]');
+    if (!api || !widget?.dataset.widgetId) return;
+
+    try {
+      api.reset(Number(widget.dataset.widgetId));
+    } catch {
+      /* widget not ready */
     }
   }
 
@@ -274,5 +293,20 @@ const captchaEnabled = Boolean(recaptchaSiteKey);
   }
 
   initContactForms();
-  document.addEventListener('astro:page-load', initContactForms);
+  renderRecaptchaWidgets();
+
+  if (!getRecaptchaApi()) {
+    const timer = window.setInterval(() => {
+      if (getRecaptchaApi()) {
+        window.clearInterval(timer);
+        renderRecaptchaWidgets();
+      }
+    }, 200);
+    window.setTimeout(() => window.clearInterval(timer), 10000);
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initContactForms();
+    renderRecaptchaWidgets();
+  });
 </script>
