@@ -1,4 +1,19 @@
 <script>
+  function isValidPhone(value) {
+    const trimmed = String(value).trim();
+    if (!trimmed || /[a-zA-Zа-яА-ЯёЁ]/.test(trimmed)) return false;
+
+    const digits = trimmed.replace(/\D/g, '');
+    if (digits.length < 10 || digits.length > 15) return false;
+    if (/^(\d)\1{9,}$/.test(digits)) return false;
+
+    if (digits.length === 11 && /^[78]/.test(digits)) return true;
+    if (digits.length === 10 && /^9/.test(digits)) return true;
+    if (trimmed.startsWith('+') && digits.length >= 10) return true;
+
+    return digits.length >= 10;
+  }
+
   function initContactForms() {
     document.querySelectorAll('.contact-form').forEach((form) => {
       if (form.dataset.initialized) return;
@@ -7,6 +22,8 @@
       const status = form.querySelector('.form-status');
       const successMsg = form.dataset.success ?? 'Sent';
       const errorMsg = form.dataset.error ?? 'Error';
+      const phoneInvalidMsg = form.dataset.phoneInvalid ?? errorMsg;
+      const notRobotRequiredMsg = form.dataset.notRobotRequired ?? errorMsg;
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -20,6 +37,22 @@
         status.classList.remove('hidden');
 
         try {
+          const honeypot = form.querySelector('input[name="_gotcha"]');
+          if (honeypot?.value?.trim()) {
+            throw new Error(errorMsg);
+          }
+
+          const phoneInput = form.querySelector('input[name="phone"]');
+          const phone = phoneInput?.value ?? '';
+          if (!isValidPhone(phone)) {
+            throw new Error(phoneInvalidMsg);
+          }
+
+          const notRobot = form.querySelector('input[name="not_robot"]');
+          if (!notRobot?.checked) {
+            throw new Error(notRobotRequiredMsg);
+          }
+
           const formData = new FormData(form);
 
           const email = formData.get('email');
@@ -28,7 +61,9 @@
           }
 
           for (const [key, value] of [...formData.entries()]) {
-            if (key.startsWith('_') || key === 'consent' || key === 'name' || key === 'email') continue;
+            if (key.startsWith('_') || key === 'consent' || key === 'not_robot' || key === 'name' || key === 'email') {
+              continue;
+            }
             if (!value || String(value).trim() === '') {
               formData.delete(key);
             }

@@ -31,6 +31,8 @@ const formAction = `https://formspree.io/f/${formspreeId}`;
   method="POST"
   data-success={t.contact.success}
   data-error={t.contact.error}
+  data-phone-invalid={t.contact.phoneInvalid}
+  data-not-robot-required={t.contact.captchaRequired}
 >
   <input type="hidden" name="_subject" value="Auroboros Soft — новая заявка" />
   <input type="hidden" name="locale" value={locale} />
@@ -69,14 +71,14 @@ const formAction = `https://formspree.io/f/${formspreeId}`;
   </div>
 
   <label class="block">
-    <span class="mb-1.5 block text-sm text-text-muted">
-      {t.contact.phone}
-      <span class="text-text-dim"> ({t.contact.optional})</span>
-    </span>
+    <span class="mb-1.5 block text-sm text-text-muted">{t.contact.phone} *</span>
     <input
       type="tel"
       name="phone"
+      required
       autocomplete="tel"
+      inputmode="tel"
+      placeholder={t.contact.phonePlaceholder}
       class="w-full rounded-xl border border-border bg-bg-elevated px-4 py-3 text-sm outline-none transition focus:border-primary"
     />
   </label>
@@ -131,6 +133,11 @@ const formAction = `https://formspree.io/f/${formspreeId}`;
       placeholder={t.contact.messagePlaceholder}
       class="w-full resize-none rounded-xl border border-border bg-bg-elevated px-4 py-3 text-sm outline-none transition focus:border-primary"
     ></textarea>
+  </label>
+
+  <label class="flex items-start gap-3 text-sm text-text-muted">
+    <input type="checkbox" name="not_robot" required class="mt-1 rounded border-border" />
+    <span>{t.contact.notRobot}</span>
   </label>
 
   <label class="flex items-start gap-3 text-sm text-text-muted">
