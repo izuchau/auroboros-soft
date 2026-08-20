@@ -3,10 +3,11 @@ import type { FAQItem } from '../types';
 import { faqItems } from '../data/faq';
 import { products } from '../data/products';
 import { socialLinks } from '../data/social';
+import { localePath } from '../i18n/ui';
 const SITE_NAME = 'Auroboros Soft';
 const CONTACT_EMAIL = 'auroboros.soft@gmail.com';
 
-export const OG_IMAGE_PATH = '/og-image.png';
+export const OG_IMAGE_PATH = '/og-image.png?v=2';
 export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
 
@@ -42,7 +43,7 @@ export function buildWebSiteSchema(site: URL | string) {
 export function buildFaqPageSchema(locale: Locale, site: URL | string) {
   return {
     '@type': 'FAQPage',
-    '@id': `${absoluteUrl(`/${locale}/`, site)}#faq`,
+    '@id': absoluteUrl(`${localePath(locale)}#faq`, site),
     mainEntity: faqItems.map((item) => faqItemToQuestion(item, locale)),
   };
 }
@@ -63,7 +64,7 @@ const PRODUCT_PRICE_RUB = 27900;
 export function buildProductSchemas(locale: Locale, site: URL | string) {
   return products.map((product) => ({
     '@type': 'Product',
-    '@id': `${absoluteUrl(`/${locale}/#products`, site)}#${product.id}`,
+    '@id': `${absoluteUrl(`${localePath(locale)}#products`, site)}#${product.id}`,
     name: product.name[locale],
     description: product.description[locale],
     brand: {
@@ -76,7 +77,7 @@ export function buildProductSchemas(locale: Locale, site: URL | string) {
       price: PRODUCT_PRICE_RUB,
       priceCurrency: 'RUB',
       availability: 'https://schema.org/InStock',
-      url: absoluteUrl(`/${locale}/#products`, site),
+      url: absoluteUrl(`${localePath(locale)}#products`, site),
       seller: {
         '@type': 'Organization',
         name: SITE_NAME,

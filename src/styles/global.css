@@ -745,6 +745,22 @@
     color: rgba(34, 211, 238, 0.55);
   }
 
+  /* Mobile / touch / reduced-motion: static gradient only — skip heavy SVG + JS layers */
+  html.live-bg-lite .live-bg__candles,
+  html.live-bg-lite .live-bg__market-line,
+  html.live-bg-lite .live-bg__orderbook,
+  html.live-bg-lite .live-bg__people,
+  html.live-bg-lite .trade-layer,
+  html.live-bg-lite .live-bg__particles,
+  html.live-bg-lite .live-bg__orb {
+    display: none !important;
+  }
+
+  html.live-bg-lite .live-bg__grid {
+    animation: none;
+    opacity: 0.35;
+  }
+
   .live-bg__gradient {
     position: absolute;
     inset: 0;

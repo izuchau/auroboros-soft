@@ -24,10 +24,11 @@ const { locale, title, description, structuredData } = Astro.props;
 const t = getTranslations(locale);
 const pageTitle = title ?? t.meta.title;
 const pageDescription = description ?? t.meta.description;
-const site = Astro.site ?? new URL('https://auroboros-soft.vercel.app');
+const site = Astro.site ?? new URL('https://auroboros.ru');
 const canonicalURL = new URL(Astro.url.pathname, site);
-const alternateRu = new URL(localePath('ru', Astro.url.pathname.replace(/^\/(ru|en)/, '')), site);
-const alternateEn = new URL(localePath('en', Astro.url.pathname.replace(/^\/(ru|en)/, '')), site);
+const pathWithoutLocale = Astro.url.pathname.replace(/^\/(ru|en)(?=\/|$)/, '') || '/';
+const alternateRu = new URL(localePath('ru', pathWithoutLocale), site);
+const alternateEn = new URL(localePath('en', pathWithoutLocale), site);
 const ogImageURL = absoluteUrl(OG_IMAGE_PATH, site);
 const jsonLd = structuredData ?? buildSiteStructuredData(site);
 ---
@@ -64,9 +65,35 @@ const jsonLd = structuredData ?? buildSiteStructuredData(site);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+    <script is:inline>
+      (function () {
+        var m = window.matchMedia;
+        if (
+          m('(max-width: 767px)').matches ||
+          m('(prefers-reduced-motion: reduce)').matches ||
+          m('(pointer: coarse)').matches
+        ) {
+          document.documentElement.classList.add('live-bg-lite');
+          window.__LIVE_BG_LITE__ = true;
+        }
+      })();
+    </script>
     <JsonLd data={jsonLd} />
     <title>{pageTitle}</title>
   </head>

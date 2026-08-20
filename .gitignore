@@ -1,5 +1,6 @@
 # build output
 dist/
+site-upload.zip
 # generated types
 .astro/
 

@@ -5,13 +5,13 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // Временный URL для бесплатного хостинга — замените после регистрации домена
-  site: 'https://auroboros-soft.vercel.app',
+  // Timeweb: временно tw1.ru, потом заменить на https://auroboros.ru
+  site: 'https://auroboros.ru',
   i18n: {
     defaultLocale: 'ru',
     locales: ['ru', 'en'],
     routing: {
-      prefixDefaultLocale: true,
+      prefixDefaultLocale: false,
     },
   },
   integrations: [

@@ -489,6 +489,11 @@ export function getLocaleFromUrl(url: URL): Locale {
 }
 
 export function localePath(locale: Locale, path = ''): string {
-  const normalized = path.startsWith('/') ? path : `/${path}`;
-  return `/${locale}${normalized === '/' ? '' : normalized}`;
+  const normalized = path ? (path.startsWith('/') ? path : `/${path}`) : '/';
+  const withSlash = normalized === '/' ? '/' : normalized.replace(/\/?$/, '/');
+
+  if (locale === 'ru') {
+    return withSlash;
+  }
+  return withSlash === '/' ? '/en/' : `/en${withSlash}`;
 }

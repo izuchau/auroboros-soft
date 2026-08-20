@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from PIL import Image, ImageDraw
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC = ROOT / "public"
@@ -14,18 +14,12 @@ OUTPUT_PATH = PUBLIC / "og-image.png"
 WIDTH = 1200
 HEIGHT = 630
 BG = (8, 10, 13, 255)  # matches --color-bg #080a0d
-ACCENT = (34, 211, 238, 40)  # subtle primary glow
 
 
 def main() -> None:
     logo = Image.open(LOGO_PATH).convert("RGBA")
 
     canvas = Image.new("RGBA", (WIDTH, HEIGHT), BG)
-    draw = ImageDraw.Draw(canvas)
-
-    # Soft vignette accents
-    draw.ellipse((-120, -80, 420, 320), fill=ACCENT)
-    draw.ellipse((780, 360, 1320, 760), fill=(34, 211, 238, 24))
 
     max_logo_w = int(WIDTH * 0.62)
     max_logo_h = int(HEIGHT * 0.72)

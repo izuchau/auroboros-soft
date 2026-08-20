@@ -1,0 +1,5 @@
+RewriteEngine On
+
+# Старые URL /ru/* → корень (для закладок и SEO)
+RewriteRule ^ru/?$ / [R=301,L]
+RewriteRule ^ru/(.*)$ /$1 [R=301,L]

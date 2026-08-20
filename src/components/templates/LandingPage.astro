@@ -21,7 +21,7 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const site = Astro.site ?? new URL('https://auroboros-soft.vercel.app');
+const site = Astro.site ?? new URL('https://auroboros.ru');
 const structuredData = buildLandingStructuredData(locale, site);
 ---
 
