@@ -2,15 +2,9 @@
 
 interface Window {
   grecaptcha?: {
-    enterprise?: {
-      ready: (callback: () => void) => void;
-      render: (
-        container: HTMLElement | string,
-        parameters: { sitekey: string; theme?: string; action?: string },
-      ) => number;
-      reset: (widgetId?: number) => void;
-      getResponse: (widgetId?: number) => string;
-    };
+    ready: (callback: () => void) => void;
+    reset: (widgetId?: number) => void;
+    getResponse: (widgetId?: number) => string;
   };
   ym?: ((counterId: number, method: string, ...args: unknown[]) => void) & { a?: unknown[]; l?: number };
 }
