@@ -23,7 +23,8 @@ const t = getTranslations(locale);
 const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID ?? 'mwlevlbw';
 const recaptchaSiteKey = import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY ?? '';
 const formAction = `https://formspree.io/f/${formspreeId}`;
-const captchaEnabled = Boolean(recaptchaSiteKey);
+// Off for now: Google keeps rejecting the site key. Formspree + honeypot still block spam.
+const captchaEnabled = false;
 ---
 
 <form
