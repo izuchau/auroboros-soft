@@ -2,6 +2,7 @@
 import type { Locale } from '../../types';
 import { getTranslations } from '../../i18n/ui';
 import ContactForm from '../forms/ContactForm.astro';
+import ContactFormHandler from '../forms/ContactFormHandler.astro';
 
 interface Props {
   locale: Locale;
@@ -41,6 +42,8 @@ const t = getTranslations(locale);
     <ContactForm locale={locale} formId="order-contact-form" showTitle={false} />
   </div>
 </div>
+
+<ContactFormHandler />
 
 <script>
   function initOrderModal() {
