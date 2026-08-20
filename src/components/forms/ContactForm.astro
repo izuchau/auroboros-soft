@@ -21,9 +21,7 @@ const {
 
 const t = getTranslations(locale);
 const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID ?? 'mwlevlbw';
-const smartCaptchaClientKey = import.meta.env.PUBLIC_YANDEX_SMARTCAPTCHA_CLIENT_KEY ?? '';
 const formAction = `https://formspree.io/f/${formspreeId}`;
-const captchaEnabled = Boolean(smartCaptchaClientKey);
 ---
 
 <form
@@ -33,8 +31,6 @@ const captchaEnabled = Boolean(smartCaptchaClientKey);
   method="POST"
   data-success={t.contact.success}
   data-error={t.contact.error}
-  data-captcha-required={t.contact.captchaRequired}
-  data-captcha-enabled={captchaEnabled ? 'true' : 'false'}
 >
   <input type="hidden" name="_subject" value="Auroboros Soft — новая заявка" />
   <input type="hidden" name="locale" value={locale} />
@@ -136,18 +132,6 @@ const captchaEnabled = Boolean(smartCaptchaClientKey);
       class="w-full resize-none rounded-xl border border-border bg-bg-elevated px-4 py-3 text-sm outline-none transition focus:border-primary"
     ></textarea>
   </label>
-
-  {
-    captchaEnabled && (
-      <div class="flex justify-center">
-        <div
-          class="smart-captcha-widget flex min-h-[100px] justify-center overflow-hidden rounded-xl"
-          data-smart-captcha
-          data-sitekey={smartCaptchaClientKey}
-        ></div>
-      </div>
-    )
-  }
 
   <label class="flex items-start gap-3 text-sm text-text-muted">
     <input type="checkbox" name="consent" required class="mt-1 rounded border-border" />

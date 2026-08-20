@@ -1,54 +1,4 @@
----
-const smartCaptchaClientKey = import.meta.env.PUBLIC_YANDEX_SMARTCAPTCHA_CLIENT_KEY ?? '';
-const captchaEnabled = Boolean(smartCaptchaClientKey);
----
-
-{
-  captchaEnabled && (
-    <>
-      <script is:inline>
-        window.initSmartCaptcha = function () {
-          if (!window.smartCaptcha) return;
-
-          document.querySelectorAll('[data-smart-captcha]:not([data-rendered])').forEach((el) => {
-            const sitekey = el.dataset.sitekey;
-            if (!sitekey) return;
-
-            const widgetId = window.smartCaptcha.render(el, {
-              sitekey,
-              hl: 'ru',
-            });
-
-            el.dataset.rendered = 'true';
-            el.dataset.widgetId = String(widgetId);
-          });
-        };
-      </script>
-      <script
-        src="https://smartcaptcha.cloud.yandex.ru/captcha.js?render=onload&onload=initSmartCaptcha"
-        defer
-      />
-    </>
-  )
-}
-
-<script define:vars={{ captchaEnabled }}>
-  function resetSmartCaptcha(form) {
-    const api = window.smartCaptcha;
-    const widget = form.querySelector('[data-smart-captcha]');
-    if (!api || !widget?.dataset.widgetId) return;
-
-    try {
-      api.reset(Number(widget.dataset.widgetId));
-    } catch {
-      /* widget not ready */
-    }
-  }
-
-  function getSmartCaptchaToken(form) {
-    return form.querySelector('input[name="smart-token"]')?.value?.trim() ?? '';
-  }
-
+<script>
   function initContactForms() {
     document.querySelectorAll('.contact-form').forEach((form) => {
       if (form.dataset.initialized) return;
@@ -57,8 +7,6 @@ const captchaEnabled = Boolean(smartCaptchaClientKey);
       const status = form.querySelector('.form-status');
       const successMsg = form.dataset.success ?? 'Sent';
       const errorMsg = form.dataset.error ?? 'Error';
-      const captchaRequiredMsg = form.dataset.captchaRequired ?? errorMsg;
-      const formCaptchaEnabled = form.dataset.captchaEnabled === 'true';
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -72,10 +20,6 @@ const captchaEnabled = Boolean(smartCaptchaClientKey);
         status.classList.remove('hidden');
 
         try {
-          if (formCaptchaEnabled && !getSmartCaptchaToken(form)) {
-            throw new Error(captchaRequiredMsg);
-          }
-
           const formData = new FormData(form);
 
           const email = formData.get('email');
@@ -85,7 +29,6 @@ const captchaEnabled = Boolean(smartCaptchaClientKey);
 
           for (const [key, value] of [...formData.entries()]) {
             if (key.startsWith('_') || key === 'consent' || key === 'name' || key === 'email') continue;
-            if (key === 'smart-token') continue;
             if (!value || String(value).trim() === '') {
               formData.delete(key);
             }
@@ -104,7 +47,6 @@ const captchaEnabled = Boolean(smartCaptchaClientKey);
               'form-status rounded-xl px-4 py-3 text-sm bg-accent/10 text-accent border border-accent/20';
             status.textContent = successMsg;
             form.reset();
-            resetSmartCaptcha(form);
 
             if (form.id === 'order-contact-form') {
               setTimeout(() => {
@@ -124,7 +66,6 @@ const captchaEnabled = Boolean(smartCaptchaClientKey);
           status.className =
             'form-status rounded-xl px-4 py-3 text-sm bg-red-500/10 text-red-400 border border-red-500/20';
           status.textContent = error instanceof Error ? error.message : errorMsg;
-          resetSmartCaptcha(form);
         } finally {
           if (submitBtn) submitBtn.disabled = false;
         }
