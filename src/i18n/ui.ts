@@ -3,7 +3,8 @@ import type { Locale } from '../types';
 const translations = {
   ru: {
     meta: {
-      title: 'Купить торговый робот для MOEX и Bybit — от 27 900 ₽ | Auroboros Soft',
+      title:
+        'Купить торгового робота для торговли на Московской бирже Акциями и ОФЗ. Торговые боты для фондового и криптовалютного рынка, биржи.',
       description:
         'Купить торгового робота для Московской биржи: акции, ОФЗ и облигации РФ. Торговый робот для криптовалюты на Bybit. MOEX pro и CRYPTO pro от 27 900 ₽ — торговля в авторежиме, бэктест и тестовый режим через T‑Bank.',
       keywords:
@@ -240,7 +241,8 @@ const translations = {
   },
   en: {
     meta: {
-      title: 'Buy Trading Bot for MOEX & Bybit — from 27,900 RUB | Auroboros Soft',
+      title:
+        'Buy a trading bot for Moscow Exchange stocks and OFZ. Trading bots for stock and crypto markets and exchanges.',
       description:
         'Buy a trading bot for Moscow Exchange: Russian equities and OFZ bonds. Crypto bot for Bybit. MOEX pro and CRYPTO pro from 27,900 RUB — automated trading, backtesting, and test mode via T-Bank.',
       keywords:
